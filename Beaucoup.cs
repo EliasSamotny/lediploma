@@ -31,7 +31,7 @@ namespace l_application_pour_diploma{
             }
             pictureBox1.Image = bmp;
         }
-        private void refr(){
+        internal void refr(){
             if (dataGridView1.Rows.Count > 1){
                 destins = new ();
                 previos = new ();

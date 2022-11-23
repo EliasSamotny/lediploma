@@ -211,6 +211,8 @@ namespace l_application_pour_diploma{
                     if (checkBox3.Checked) fillcolors();
                     else clearcolors();
                     if (trouv != null) trouv.refresh();
+                    if (beaucoup != null) beaucoup.refr();
+                    if (vran != null) vran.refr();
                 }
                 else
                 {
