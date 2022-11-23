@@ -61,7 +61,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(341, 222);
+            this.groupBox1.Size = new System.Drawing.Size(341, 265);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Les routes plus courts";
@@ -76,7 +76,7 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(323, 165);
+            this.textBox1.Size = new System.Drawing.Size(323, 208);
             this.textBox1.TabIndex = 3;
             // 
             // label1
@@ -96,7 +96,7 @@
             this.groupBox2.Controls.Add(this.textBox3);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(12, 245);
+            this.groupBox2.Location = new System.Drawing.Point(12, 288);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(165, 86);
             this.groupBox2.TabIndex = 10;
@@ -155,7 +155,7 @@
             this.groupBox3.Controls.Add(this.numericUpDown1);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Location = new System.Drawing.Point(183, 245);
+            this.groupBox3.Location = new System.Drawing.Point(183, 288);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(173, 86);
             this.groupBox3.TabIndex = 10;
@@ -239,7 +239,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Location = new System.Drawing.Point(363, 16);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(443, 315);
+            this.pictureBox1.Size = new System.Drawing.Size(513, 358);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
@@ -249,7 +249,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(726, 343);
+            this.ClientSize = new System.Drawing.Size(796, 386);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);

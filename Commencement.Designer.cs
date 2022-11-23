@@ -40,6 +40,7 @@
             this.sauvegarderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.desFenêtresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.desCalculationsDeCheminsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.langueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.françaisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.russeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,7 +67,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.diagrammeDeVoronoїToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -207,7 +208,8 @@
             // 
             this.desFenêtresToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.desCalculationsDeCheminsToolStripMenuItem,
-            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem});
+            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem,
+            this.diagrammeDeVoronoїToolStripMenuItem});
             this.desFenêtresToolStripMenuItem.Name = "desFenêtresToolStripMenuItem";
             this.desFenêtresToolStripMenuItem.Size = new System.Drawing.Size(78, 26);
             this.desFenêtresToolStripMenuItem.Text = "Fenêtres";
@@ -218,6 +220,13 @@
             this.desCalculationsDeCheminsToolStripMenuItem.Size = new System.Drawing.Size(392, 26);
             this.desCalculationsDeCheminsToolStripMenuItem.Text = "Calculations de chemins pour deux points";
             this.desCalculationsDeCheminsToolStripMenuItem.Click += new System.EventHandler(this.desCalculationsDeCheminsToolStripMenuItem_Click);
+            // 
+            // calculationsDeChemanPourBeaucoupPointsToolStripMenuItem
+            // 
+            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Name = "calculationsDeChemanPourBeaucoupPointsToolStripMenuItem";
+            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Size = new System.Drawing.Size(392, 26);
+            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Calculations de cheman pour beaucoup points";
+            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Click += new System.EventHandler(this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem_Click);
             // 
             // langueToolStripMenuItem
             // 
@@ -578,12 +587,12 @@
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
-            // calculationsDeChemanPourBeaucoupPointsToolStripMenuItem
+            // diagrammeDeVoronoїToolStripMenuItem
             // 
-            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Name = "calculationsDeChemanPourBeaucoupPointsToolStripMenuItem";
-            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Size = new System.Drawing.Size(392, 26);
-            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Calculations de cheman pour beaucoup points";
-            this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Click += new System.EventHandler(this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem_Click);
+            this.diagrammeDeVoronoїToolStripMenuItem.Name = "diagrammeDeVoronoїToolStripMenuItem";
+            this.diagrammeDeVoronoїToolStripMenuItem.Size = new System.Drawing.Size(392, 26);
+            this.diagrammeDeVoronoїToolStripMenuItem.Text = "Diagramme de Voronoї";
+            this.diagrammeDeVoronoїToolStripMenuItem.Click += new System.EventHandler(this.diagrammeDeVoronoїToolStripMenuItem_Click);
             // 
             // Commencement
             // 
@@ -666,5 +675,6 @@
         private GroupBox groupBox5;
         private CheckBox checkBox3;
         private ToolStripMenuItem calculationsDeChemanPourBeaucoupPointsToolStripMenuItem;
+        private ToolStripMenuItem diagrammeDeVoronoїToolStripMenuItem;
     }
 }

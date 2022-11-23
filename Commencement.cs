@@ -21,12 +21,13 @@ namespace l_application_pour_diploma{
         }
         internal Trouvation? trouv;
         internal Beaucoup? beaucoup;
+        internal Vran? vran;
         private void Form1_Load(object sender, EventArgs e) {
             russeToolStripMenuItem_Click(sender,e);
             dataGridView1.AutoResizeColumns(); 
         }
-        private void button1_Click(object sender, EventArgs e){refreshdata(true);}
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e){refreshdata(checkBox2.Checked);}
+        private void button1_Click(object sender, EventArgs e){ refreshdata(true); }
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e){ refreshdata(checkBox2.Checked); }
         private void refreshdata(bool t){            
             if (t) {
                 dataGridView1.RowCount = (int) numericUpDown1.Value;
@@ -252,8 +253,10 @@ namespace l_application_pour_diploma{
                 groupBox5.Text = "La carte de chaleur de paysage";
                 checkBox3.Text = "Afficher la carte";
                 calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Calculations de cheman pour beaucoup points";
+                diagrammeDeVoronoїToolStripMenuItem.Text = "Diagramme de Voronoї";
                 if (trouv != null) trouv.toFrancais();
                 if (beaucoup != null) beaucoup.toFrancais();
+                if (vran != null) vran.toFrancais();
                 lang = 0;
             }
         }
@@ -284,8 +287,10 @@ namespace l_application_pour_diploma{
                 groupBox5.Text = "Тепловая карта ландшафта";
                 checkBox3.Text = "Показать карту";
                 calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Вычисление оптимальной точки встречи";
+                diagrammeDeVoronoїToolStripMenuItem.Text = "Диаграмма Вороного";
                 if (trouv != null) trouv.toRusse();
                 if (beaucoup != null) beaucoup.toRusse();
+                if (vran != null) vran.toRusse();
                 lang = 1;
             }
         }
@@ -383,6 +388,13 @@ namespace l_application_pour_diploma{
                 beaucoup.Show();
             }
             beaucoup.Focus();
+        }
+        private void diagrammeDeVoronoїToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (vran == null) {
+                vran = new Vran(this);
+                vran.Show();
+            }
+            vran.Focus();
         }
     }
 }
