@@ -299,7 +299,7 @@ namespace l_application_pour_diploma{
         private void button2_Click(object sender, EventArgs e){
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    if (checkBox1.Checked && Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value.ToString()) < 0)
+                    if (checkBox1.Checked && Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
                         dataGridView1.Rows[i].Cells[j].Value = -1;
                     else dataGridView1.Rows[i].Cells[j].Value = 1;
             try { dataGridView1.Rows[0].Cells[0].Value = (decimal)dataGridView1.Rows[0].Cells[0].Value;}

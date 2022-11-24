@@ -178,7 +178,9 @@ namespace l_application_pour_diploma{
                 //filling with a coleurs
                 for (int i = 0; i < dataGridView2.RowCount; i++)
                     for (int j = 0; j < dataGridView2.ColumnCount; j++) {
-                        if (!ifacentrepoint(i, j))
+                        if (Convert.ToDecimal(own.dataGridView1.Rows[i].Cells[j].Value) <= 0)
+                            dataGridView2.Rows[i].Cells[j].Style.BackColor = Color.Black;
+                        else if (!ifacentrepoint(i, j))
                             dataGridView2.Rows[i].Cells[j].Style.BackColor = ColeurList[randcol[mindest(i, j)]];
                     }
 
@@ -370,6 +372,7 @@ namespace l_application_pour_diploma{
         private void radioButton1_CheckedChanged(object sender, EventArgs e) { refr(); }
         private void radioButton2_CheckedChanged(object sender, EventArgs e) { refr(); }
         private void radioButton3_CheckedChanged(object sender, EventArgs e) { refr(); }
+        private void Vran_FormClosing(object sender, FormClosingEventArgs e){ own.vran = null; }
         private void numericUpDown6_ValueChanged(object sender, EventArgs e) {
             dataGridView2.DefaultCellStyle.Format = 'N' + numericUpDown6.Value.ToString();
             dataGridView2.AutoResizeColumns();
@@ -383,10 +386,43 @@ namespace l_application_pour_diploma{
             dataGridView1.AutoResizeColumns();
         }
         internal void toFrancais() {
-            MessageBox.Show("Pas fait");
+            groupBox1.Text = "Les points";
+            groupBox4.Text = "Reflexion de cellules";
+            label7.Text = "La taille de fonte";
+            label8.Text = "La quantité de signs";
+            button4.Text = "Computer";
+            button5.Text = "Suppremer";
+            button6.Text = "Aujouter";
+            groupBox2.Text = "Le destin de chercher de chemins";
+            radioButton3.Text = "III rayon (32 directions)";
+            radioButton2.Text = "II rayon (16 directions)";
+            radioButton1.Text = "I rayon (8 directions)";
+            button2.Text = "Suppremer";
+            label4.Text = "La ligne";
+            label3.Text = "La colonne";
+            Text = "Voronoi";
+            Column1.HeaderText = "La ligne";
+            Column2.HeaderText = "La colonne";
         }
         internal void toRusse(){
-            MessageBox.Show("Pas fait");
+            groupBox1.Text = "Точки";
+            groupBox4.Text = "Отображение ячеек";
+            label7.Text = "Размер шрифта";
+            label8.Text = "Количество знаков";
+            button4.Text = "Вычислить";
+            button5.Text = "Удалить";
+            button6.Text = "Добавить";
+            groupBox2.Text = "Кол-во направлений поиска";
+            radioButton3.Text = "III радиус (32 направления)";
+            radioButton2.Text = "II радиус (16 направления)";
+            radioButton1.Text = "I радиус (8 направлений)";
+            button2.Text = "Удалить";
+            label4.Text = "Строка";
+            label3.Text = "Столбец";
+            Text = "Диаграмма Вороного";
+
+            Column1.HeaderText = "Строка";
+            Column2.HeaderText = "Стоблец";
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e){
