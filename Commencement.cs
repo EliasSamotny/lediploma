@@ -24,6 +24,7 @@ namespace l_application_pour_diploma{
         internal Vran? vran;
         private void Form1_Load(object sender, EventArgs e) {
             russeToolStripMenuItem_Click(sender,e);
+            button2_Click(sender, e);
             dataGridView1.AutoResizeColumns(); 
         }
         private void button1_Click(object sender, EventArgs e){ refreshdata(true); }
@@ -62,6 +63,7 @@ namespace l_application_pour_diploma{
             }
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
+            if (vran != null) vran.refr();
             dataGridView1.AutoResizeColumns();
         }
         private void numericUpDown2_ValueChanged(object sender, EventArgs e) { refreshdata(checkBox2.Checked); }
@@ -214,8 +216,7 @@ namespace l_application_pour_diploma{
                     if (beaucoup != null) beaucoup.refr();
                     if (vran != null) vran.refr();
                 }
-                else
-                {
+                else{
                     MessageBox.Show("Please choose .xls or .xlsx file only.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Error); //custom messageBox to show error
                 }
             }
@@ -305,6 +306,7 @@ namespace l_application_pour_diploma{
             try { dataGridView1.Rows[0].Cells[0].Value = (decimal)dataGridView1.Rows[0].Cells[0].Value;}
             catch (Exception){ dataGridView1.Rows[0].Cells[0].Value = (int)dataGridView1.Rows[0].Cells[0].Value; }
             if (trouv != null) trouv.refresh();
+            if (vran != null) vran.refr();
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
         }
@@ -387,6 +389,7 @@ namespace l_application_pour_diploma{
         private void calculationsDeChemanPourBeaucoupPointsToolStripMenuItem_Click(object sender, EventArgs e){
             if (beaucoup == null){
                 beaucoup = new Beaucoup(this);
+                if (lang == 1) beaucoup.toRusse();
                 beaucoup.Show();
             }
             beaucoup.Focus();
@@ -394,6 +397,7 @@ namespace l_application_pour_diploma{
         private void diagrammeDeVoronoїToolStripMenuItem_Click(object sender, EventArgs e) {
             if (vran == null) {
                 vran = new Vran(this);
+                if (lang == 1) vran.toRusse();
                 vran.Show();
             }
             vran.Focus();

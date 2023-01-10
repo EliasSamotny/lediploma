@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office2019.Excel.RichData2;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,16 +16,18 @@ namespace l_application_pour_diploma{
     public partial class Vran : Form{
         private Commencement own;
         private List<Color> ColeurList = new List<Color> { Color.Red, Color.OrangeRed, Color.Orange, Color.Yellow, Color.YellowGreen, 
-            Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.Blue, Color.DarkBlue, Color.Cyan, Color.BlueViolet, 
-            Color.Violet, Color.DarkViolet};
+            Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.MediumBlue, Color.DarkBlue, Color.Cyan, Color.BlueViolet, 
+            Color.Violet, Color.Silver, Color.Gold, Color.SeaGreen};
         List<decimal[,]> destins;
         internal List<Point[,]> previos;
         internal int x = 1, y = 1, x1 = 1, y1 = 1;
         List<Point> curr;
         internal bool[,] vis, vis1, accessible;
+        List<Point> curr_points;
         public Vran(Commencement o) {
             InitializeComponent();
             own = o;
+            curr_points = new();
         }
         private bool availpoint(int u, int v) { return Convert.ToDecimal(own.dataGridView1.Rows[u].Cells[v].Value) >= 0; }
         private void Vran_Load(object sender, EventArgs e) {
@@ -46,7 +49,13 @@ namespace l_application_pour_diploma{
                     dataGridView2.Rows[i].Cells[j].Style.BackColor = Color.White;
                 }
             dataGridView2.AutoResizeColumns();
-            if (dataGridView1.RowCount > 1) {
+            if (dataGridView1.RowCount > 0) {
+                if (curr_points.Count > 0 && curr_points.Count == dataGridView1.RowCount){
+                    dataGridView1.RowCount = 0;
+                    foreach(var el in curr_points)
+                        dataGridView1.Rows.Add(new object[] { (el.X + 1), (el.Y + 1) });
+                }
+                curr_points = new();
                 List<int> randcol = new List<int>();
                 for (int i = 0; i < dataGridView1.RowCount; i++) { //choosing les coleurs
                     Random r = new Random();
@@ -72,8 +81,7 @@ namespace l_application_pour_diploma{
                     vis1 = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
                     accessible = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
                     for (int i = 0; i < own.dataGridView1.RowCount; i++)
-                        for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
-                        {
+                        for (int j = 0; j < own.dataGridView1.ColumnCount; j++){
                             accessible[i, j] = false;
                             vis1[i, j] = false;
                         }
@@ -175,17 +183,149 @@ namespace l_application_pour_diploma{
                         }
                     }
                 }
+                List<List<Point>> owingpoints = new List<List<Point>> (); //list of sets of chosen points
+                for (int i = 0; i < dataGridView1.RowCount; i++) {
+                    Point p = new Point(Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) - 1,
+                            Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) - 1);
+                    List<Point> lp = new List<Point> { p };
+                    owingpoints.Add(lp);
+                }
                 //filling with a coleurs
                 for (int i = 0; i < dataGridView2.RowCount; i++)
                     for (int j = 0; j < dataGridView2.ColumnCount; j++) {
                         if (Convert.ToDecimal(own.dataGridView1.Rows[i].Cells[j].Value) <= 0)
                             dataGridView2.Rows[i].Cells[j].Style.BackColor = Color.Black;
-                        else if (!ifacentrepoint(i, j))
-                            dataGridView2.Rows[i].Cells[j].Style.BackColor = ColeurList[randcol[mindest(i, j)]];
+                        else if (!ifacentrepoint(i, j)){
+                            int h = mindest(i, j);
+                            dataGridView2.Rows[i].Cells[j].Style.BackColor = ColeurList[randcol[h % (randcol.Count)]];
+                            owingpoints[h].Add(new Point(i, j));
+                        }
                     }
-
+                var opersets = owingpoints;
+                for (int i = 0; i < opersets.Count; i++){ //compress sets
+                    while (opersets[i].Count > 1) { 
+                        if (!if_not_a_ligne(opersets[i])){
+                            opersets[i] = sort(opersets[i]);
+                            opersets[i] = new List<Point> { opersets[i][opersets[i].Count / 2] };
+                            break;
+                        }
+                        else {
+                            List<Point> currfrontiers = new List<Point>();
+                            foreach (var el in opersets[i]) {
+                                if (if_front(opersets[i], el)) {
+                                    currfrontiers.Add(el);
+                                }
+                            }
+                            if (currfrontiers.Count < opersets[i].Count) {
+                                foreach (var el in currfrontiers) {
+                                    opersets[i].Remove(el);
+                                }
+                            }
+                            else {
+                                List<int> rank = new ();// 0 - id, 1 - rank
+                                foreach (var el in currfrontiers) {
+                                    rank.Add(calcrank(currfrontiers, el));
+                                }
+                                int maxind = 0; int maxrank = rank[maxind]; 
+                                for (int j = 1; j < currfrontiers.Count; j++) {
+                                    if (rank[j] > maxrank) {
+                                        maxind = j;
+                                        maxrank = rank[j];
+                                    }
+                                }
+                                opersets[i] = new List<Point> { new Point(currfrontiers[maxind].X, currfrontiers[maxind].Y) };
+                            }
+                        }
+                    }
+                    dataGridView2.Rows[opersets[i][0].X].Cells[opersets[i][0].Y].Style.BackColor = Color.DarkKhaki;
+                    curr_points.Add(new(opersets[i][0].X, opersets[i][0].Y));
+                }                
                 Cursor.Current = Cursors.Default;
+                //foreach (var el in curr_points) 
+                //    MessageBox.Show(el.ToString());
             }
+        }
+        private int calcrank(List<Point> set, Point point){
+            int count = 0;
+            if (set.Contains(new Point(point.X - 1, point.Y - 1))) count++;
+            if (set.Contains(new Point(point.X - 1, point.Y    ))) count += 2;
+            if (set.Contains(new Point(point.X - 1, point.Y + 1))) count++;
+            if (set.Contains(new Point(point.X    , point.Y + 1))) count += 2;
+            if (set.Contains(new Point(point.X + 1, point.Y + 1))) count++;
+            if (set.Contains(new Point(point.X + 1, point.Y    ))) count += 2;
+            if (set.Contains(new Point(point.X + 1, point.Y - 1))) count++;
+            if (set.Contains(new Point(point.X    , point.Y - 1))) count += 2;
+            return count;
+        }
+        private bool if_front(List<Point> set, Point point) {
+            if (!set.Contains(new Point(point.X - 1, point.Y - 1))) return true;
+            if (!set.Contains(new Point(point.X - 1, point.Y    ))) return true;
+            if (!set.Contains(new Point(point.X - 1, point.Y + 1))) return true;
+            if (!set.Contains(new Point(point.X    , point.Y + 1))) return true;
+            if (!set.Contains(new Point(point.X + 1, point.Y + 1))) return true;
+            if (!set.Contains(new Point(point.X + 1, point.Y    ))) return true;
+            if (!set.Contains(new Point(point.X + 1, point.Y - 1))) return true;
+            if (!set.Contains(new Point(point.X    , point.Y - 1))) return true;
+            return false;
+        }
+        private List<Point> sort (List<Point> set){
+            List<Point> sorted = set;
+            if (set[0].X == set[1].X) {
+                List<List<int>> igrecs = new();
+                for (int i = 0; i < set.Count; i++) {
+                    igrecs.Add( new List<int> { i, set[i].Y} );
+                }
+                igrecs = QSort(igrecs);
+                sorted = new();
+                foreach (var el in igrecs) {
+                    sorted.Add(set[el[0]]);
+                }
+            }
+            else if (set[0].Y == set[1].Y) {
+                List<List<int>> exs = new();
+                for (int i = 0; i < set.Count; i++)
+                {
+                    exs.Add(new List<int> { i, set[i].X });
+                }
+                exs = QSort(exs);
+                sorted = new();
+                foreach (var el in exs)
+                {
+                    sorted.Add(set[el[0]]);
+                }
+            }
+            return sorted;
+        }
+        private List<List<int>> QSort(List<List<int>> set) {
+            int count = 1;
+            while (count > 0) {
+                count = 0;
+                for (int i = 0; i < set.Count - 1; i++)
+                    if (set[i][1] < set[i + 1][1]){
+                        (set[i][0], set[i][1], set[i + 1][0], set[i + 1][1]) = (set[i + 1][0], set[i + 1][1], set[i][0], set[i][1]);
+                        count++;
+                    }
+            }
+            return set;
+        }
+        private bool if_not_a_ligne(List<Point> set){
+            int currx0 = set[0].X, curry0 = set[0].Y, currx1 = set[1].X, curry1 = set[1].Y;
+            if (currx0 == currx1 || curry0 == curry1) {
+                if (currx0 == currx1) {
+                    for (int i = 2; i < set.Count; i++) {
+                        if (set[i].X != currx0) return true;
+                    }
+                    return false;
+                }
+                else if (curry0 == curry1) {
+                    for (int i = 2; i < set.Count; i++) {
+                        if (set[i].Y != curry0) return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            else return true;
         }
         private bool ifacentrepoint(int x, int y) {
             for (int i = 0; i < dataGridView1.RowCount; i++) {
@@ -214,8 +354,7 @@ namespace l_application_pour_diploma{
                     return false;
             return true;
         }
-        private bool chckrespoints()
-        {
+        private bool chckrespoints(){
             for (int i = 0; i < own.dataGridView1.RowCount; i++)
                 for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
                     if (!vis1[i, j]) return false;
@@ -226,18 +365,14 @@ namespace l_application_pour_diploma{
                 for (byte i = 0; i < 8; i++) {
                     if (!visiteda(u, v, i)){
                         switch (i) {
-                            case 0:{
-                                    vis1[u - 1, v - 1] = true;
-                                    accessible[u - 1, v - 1] = true;
-                                    reseachpoints(u - 1, v - 1); break;
-                                }
-                            case 1: { vis1[u, v - 1] = true; accessible[u, v - 1] = true; reseachpoints(u, v - 1); break; }
+                            case 0: { vis1[u - 1, v - 1] = true; accessible[u - 1, v - 1] = true; reseachpoints(u - 1, v - 1); break; }
+                            case 1: { vis1[u    , v - 1] = true; accessible[u    , v - 1] = true; reseachpoints(u    , v - 1); break; }
                             case 2: { vis1[u + 1, v - 1] = true; accessible[u + 1, v - 1] = true; reseachpoints(u + 1, v - 1); break; }
-                            case 3: { vis1[u + 1, v] = true; accessible[u + 1, v] = true; reseachpoints(u + 1, v); break; }
+                            case 3: { vis1[u + 1, v    ] = true; accessible[u + 1, v    ] = true; reseachpoints(u + 1, v    ); break; }
                             case 4: { vis1[u + 1, v + 1] = true; accessible[u + 1, v + 1] = true; reseachpoints(u + 1, v + 1); break; }
-                            case 5: { vis1[u, v + 1] = true; accessible[u, v + 1] = true; reseachpoints(u, v + 1); break; }
+                            case 5: { vis1[u    , v + 1] = true; accessible[u    , v + 1] = true; reseachpoints(u    , v + 1); break; }
                             case 6: { vis1[u - 1, v + 1] = true; accessible[u - 1, v + 1] = true; reseachpoints(u - 1, v + 1); break; }
-                            case 7: { vis1[u - 1, v] = true; accessible[u - 1, v] = true; reseachpoints(u - 1, v); break; }
+                            case 7: { vis1[u - 1, v    ] = true; accessible[u - 1, v    ] = true; reseachpoints(u - 1, v    ); break; }
                         }
                     }
                 }
@@ -357,7 +492,7 @@ namespace l_application_pour_diploma{
                 }
             }
             if (t)
-                dataGridView1.Rows.Add(new Object[] { xl, yl });
+                dataGridView1.Rows.Add(new object[] { xl, yl });
             refr();
         }
         private void button5_Click(object sender, EventArgs e){
@@ -368,6 +503,7 @@ namespace l_application_pour_diploma{
                     dataGridView1.Rows.RemoveAt(i);
                     break;
                 }
+            refr();
         }
         private void radioButton1_CheckedChanged(object sender, EventArgs e) { refr(); }
         private void radioButton2_CheckedChanged(object sender, EventArgs e) { refr(); }
