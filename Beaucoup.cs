@@ -5,7 +5,7 @@ namespace l_application_pour_diploma{
         List<decimal[,]> destins;
         internal List<Point[,]> previos;
         int d;
-        internal int x = 1, y = 1, x1 = 1, y1 = 1,u,v,x2,y2;
+        internal int x = 1, y = 1, x1 = 1, y1 = 1,x2,y2;
         List<Point> curr;
         internal bool[,] vis, vis1, accessible;
         public Beaucoup(Commencement o){
