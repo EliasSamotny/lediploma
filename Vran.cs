@@ -60,8 +60,7 @@ namespace l_application_pour_diploma{
                 for (int i = 0; i < dataGridView1.RowCount; i++) { //choosing les coleurs
                     Random r = new Random();
                     int cur = r.Next(ColeurList.Count);
-                    while (randcol.Contains(cur))
-                    {
+                    while (randcol.Contains(cur)) {
                         cur = r.Next(ColeurList.Count);
                     }
                     randcol.Add(cur);
@@ -201,7 +200,16 @@ namespace l_application_pour_diploma{
                             owingpoints[h].Add(new Point(i, j));
                         }
                     }
-                var opersets = owingpoints;
+                //var opersets = new List<List<Point>> (owingpoints);
+                var opersets = new List<List<Point>>();
+                foreach (var sub in owingpoints) {
+                    List<Point> s = new();
+                    foreach (var el in sub) {
+                        s.Add(el);
+                    }
+                    opersets.Add(s);
+                }
+                
                 for (int i = 0; i < opersets.Count; i++){ //compress sets
                     while (opersets[i].Count > 1) { 
                         if (!if_not_a_ligne(opersets[i])){
@@ -210,12 +218,7 @@ namespace l_application_pour_diploma{
                             break;
                         }
                         else {
-                            List<Point> currfrontiers = new List<Point>();
-                            foreach (var el in opersets[i]) {
-                                if (if_front(opersets[i], el)) {
-                                    currfrontiers.Add(el);
-                                }
-                            }
+                            List<Point> currfrontiers = new List<Point>(get_frontiers(opersets[i]));
                             if (currfrontiers.Count < opersets[i].Count) {
                                 foreach (var el in currfrontiers) {
                                     opersets[i].Remove(el);
@@ -241,9 +244,131 @@ namespace l_application_pour_diploma{
                     curr_points.Add(new(opersets[i][0].X, opersets[i][0].Y));
                 }                
                 Cursor.Current = Cursors.Default;
-                //foreach (var el in curr_points) 
-                //    MessageBox.Show(el.ToString());
+
+                //waving from current centres to determine a min radius for each
+                for (int t = 0; t < curr_points.Count; t++) {
+                    var currfront = new List<Point> (get_frontiers(owingpoints[t]));
+                    decimal[,] curr_values = new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
+                    Point[,] previousl = new Point[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
+
+                    x = curr_points[t].X; x1 = x;
+                    y = curr_points[t].Y; y1 = y;
+
+                    vis1 = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
+                    for (int i = 0; i < own.dataGridView1.RowCount; i++)
+                        for (int j = 0; j < own.dataGridView1.ColumnCount; j++){
+                            vis1[i, j] = !owingpoints[t].Contains(new Point(i,j));
+                            curr_values[i, j] = -2;
+                        }
+                    vis1[x, y] = true;
+                    previousl[x, y] = new(-2, -2);
+                    curr_values[x, y] = 0;
+
+                    while (!checkallvisl(vis1)){                        
+                        calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 1, y1 - 1);
+                        calculcell(owingpoints[t], ref curr_values, ref previousl, x1, y1 - 1);
+                        calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 1, y1 - 1);
+                        calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 1, y1);
+                        calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 1, y1 + 1);
+                        calculcell(owingpoints[t], ref curr_values, ref previousl, x1, y1 + 1);
+                        calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 1, y1 + 1);
+                        calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 1, y1);
+                        if (!radioButton1.Checked) {
+                            calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 1, y1 - 2);
+                            calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 1, y1 - 2);
+                            calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 2, y1 - 1);
+                            calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 2, y1 + 1);
+                            calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 1, y1 + 2);
+                            calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 1, y1 + 2);
+                            calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 2, y1 + 1);
+                            calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 2, y1 - 1);
+                            if (!radioButton2.Checked) {
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 2, y1 - 3);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 1, y1 - 3);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 1, y1 - 3);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 2, y1 - 3);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 3, y1 - 2);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 3, y1 - 1);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 3, y1 + 1);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 3, y1 + 2);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 2, y1 + 3);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 1, y1 + 3);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 1, y1 + 3);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 2, y1 + 3);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 3, y1 + 2);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 3, y1 + 1);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 3, y1 - 1);
+                                calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 3, y1 - 2);
+                            }
+                        }
+                        //transmission le point actuel a le point le plus proche et minimum
+                        var frontiers = new List<Points>();
+                        for (int i = 0; i < own.dataGridView1.RowCount; i++)//searching frontier points
+                            for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
+                                if (curr_values[i, j] != -2 && !vis1[i, j])
+                                    frontiers.Add(new Points(i, j, curr_values[i, j]));
+                        decimal mindest = Decimal.MaxValue;
+                        foreach (var p in frontiers)//searching the minimum points
+                            if (p.dest < mindest)
+                                mindest = p.dest;
+                        var points = new List<Points>();
+                        foreach (var p in frontiers)
+                            if (p.dest == mindest)
+                                points.Add(new Points(p.xl, p.yl, (decimal)Math.Sqrt(Math.Pow(x1 - p.xl, 2) + Math.Pow(y1 - p.yl, 2))));
+
+                        if (points.Count == 1) { x1 = points[0].xl; y1 = points[0].yl; }//if it is alone to choose, equal et continue
+                        else if (points.Count > 1) { //if not, search nearest to (0,0) 
+                            mindest = Decimal.MaxValue;
+                            foreach (var p in points)
+                                if (p.dest < mindest)
+                                    mindest = p.dest;
+                            var points1 = new List<Points>();
+                            foreach (var p in points)
+                                if (p.dest == mindest)
+                                    points1.Add(new Points(p.xl, p.yl, (decimal)Math.Sqrt(Math.Pow(p.xl, 2) + Math.Pow(p.yl, 2))));
+                            if (points1.Count == 1) { x1 = points1[0].xl; y1 = points1[0].yl; }//if it is alone to choose, equal et continue
+                            else if (points1.Count > 1)  {//if not, choosing with least x
+                                int minx = own.dataGridView1.RowCount;
+                                foreach (var p in points1)
+                                    if (p.xl < minx)
+                                        minx = p.xl;
+                                foreach (var p in points1)
+                                    if (p.xl == minx)
+                                    {
+                                        x1 = points1[0].xl;
+                                        y1 = points1[0].yl;
+                                        break;
+                                    }
+                            }
+                        }
+                        vis1[x1, y1] = true;
+                    }
+                    decimal minv = curr_values[currfront[0].X, currfront[0].Y] ;
+                    for (int u = 1; u < currfront.Count; u++){
+                        if (minv > curr_values[currfront[u].X, currfront[u].Y])
+                            minv = curr_values[currfront[u].X, currfront[u].Y];
+                    }
+                    string formate = "0.##"; ;
+                    if (numericUpDown6.Value > 2){
+                        for (int n = 2; n < numericUpDown6.Value; n++)
+                            formate += "#";
+                    }
+
+                    dataGridView2.Rows[x].Cells[y].Value = own.dataGridView1.Rows[x].Cells[y].Value.ToString() +"("+ minv.ToString(formate)+")";
+                    dataGridView2.AutoResizeColumns();
+                    dataGridView2.AutoResizeRows();
+                }
+
             }
+        }
+        private List<Point> get_frontiers (List<Point> set) {
+            List<Point> frontl = new(); 
+            foreach (var el in set) {
+                if (if_front(set, el)) {
+                    frontl.Add(el);
+                }
+            }
+            return frontl;
         }
         private int calcrank(List<Point> set, Point point){
             int count = 0;
@@ -412,10 +537,33 @@ namespace l_application_pour_diploma{
                 }
             }
         }
+        private void calculcell(List<Point> set,ref decimal[,] dest, ref Point[,] prev, int xc, int yc) {
+            if (set.Contains(new Point(xc,yc))) {//if consists
+                decimal cur = Convert.ToDecimal(((Convert.ToDouble(own.dataGridView1.Rows[xc].Cells[yc].Value) + Convert.ToDouble(own.dataGridView1.Rows[x1].Cells[y1].Value)) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dest[x1, y1])));
+                if (dest[xc, yc] == -2)  {//if not visited at all
+                    dest[xc, yc] = cur;
+                    prev[xc, yc] = new Point(x1, y1);
+                }
+                else if (cur < dest[xc, yc]) {//if from this point is shorter than known path
+                    dest[xc, yc] = cur;
+                    prev[xc, yc] = new Point(x1, y1);
+                }
+                else if (Convert.ToDecimal(own.dataGridView1.Rows[xc].Cells[yc].Value) == -1){  //if point unpassable
+                    dest[xc, yc] = -1;
+                    prev[xc, yc] = new Point(-1, -1);
+                }
+            }
+        }
         private bool checkallvis() {
             for (int i = 0; i < own.dataGridView1.RowCount; i++)
                 for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
                     if (!vis[i, j]) return false;
+            return true;
+        }
+        private bool checkallvisl(bool[,] set){
+            for (int i = 0; i < own.dataGridView1.RowCount; i++)
+                for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
+                    if (!set[i, j]) return false;
             return true;
         }
         private bool pointavailiter(int i, int j){
@@ -491,9 +639,10 @@ namespace l_application_pour_diploma{
                     break;
                 }
             }
-            if (t)
+            if (t) {
                 dataGridView1.Rows.Add(new object[] { xl, yl });
-            refr();
+                refr();
+            }
         }
         private void button5_Click(object sender, EventArgs e){
             int xl = Convert.ToInt32(numericUpDown3.Value);
@@ -511,15 +660,15 @@ namespace l_application_pour_diploma{
         private void Vran_FormClosing(object sender, FormClosingEventArgs e){ own.vran = null; }
         private void numericUpDown6_ValueChanged(object sender, EventArgs e) {
             dataGridView2.DefaultCellStyle.Format = 'N' + numericUpDown6.Value.ToString();
+            //dataGridView1.DefaultCellStyle.Format = 'N' + numericUpDown6.Value.ToString();
             dataGridView2.AutoResizeColumns();
-            dataGridView1.DefaultCellStyle.Format = 'N' + numericUpDown6.Value.ToString();
-            dataGridView1.AutoResizeColumns();
+            dataGridView2.AutoResizeRows();
         }
         private void numericUpDown5_ValueChanged(object sender, EventArgs e){
             dataGridView2.DefaultCellStyle.Font = new Font("Palatino Linotype", (float)numericUpDown5.Value);
+            //dataGridView1.DefaultCellStyle.Font = new Font("Palatino Linotype", (float)numericUpDown5.Value);
             dataGridView2.AutoResizeColumns();
-            dataGridView1.DefaultCellStyle.Font = new Font("Palatino Linotype", (float)numericUpDown5.Value);
-            dataGridView1.AutoResizeColumns();
+            dataGridView2.AutoResizeRows();
         }
         internal void toFrancais() {
             groupBox1.Text = "Les points";
