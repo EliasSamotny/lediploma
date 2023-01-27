@@ -1,5 +1,8 @@
 ﻿using ex = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
+using System.Xml.Serialization;
+using System.Linq.Expressions;
+using System.Windows.Forms;
 
 namespace l_application_pour_diploma{
     public partial class Commencement : Form{
@@ -24,8 +27,41 @@ namespace l_application_pour_diploma{
         internal Vran? vran;
         private void Form1_Load(object sender, EventArgs e) {
             russeToolStripMenuItem_Click(sender,e);
-            button2_Click(sender, e);
-            dataGridView1.AutoResizeColumns(); 
+            dataGridView1.AutoResizeColumns();
+            set_mount();
+        }
+        private void set_mount(){
+            int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
+            
+            for (int i = 0; i < r; i++){
+                for (int j = 0; j < c; j++){
+                    try{
+                        dataGridView1.Rows[i].Cells[j].Value = mountagne(i, j, r, c);
+                    }
+                    catch (Exception){
+                        dataGridView1.Rows[i].Cells[j].Value = -1;
+                    }
+                }
+            }
+            /*dataGridView1.Rows[r / 2].Cells[c / 2].Value = -1;
+            if (r % 2 == 0) {
+                dataGridView1.Rows[r / 2 + 1].Cells[c / 2].Value = -1;
+                if (c % 2 == 0){
+                    dataGridView1.Rows[r / 2].Cells[c / 2 + 1].Value = -1;
+                    dataGridView1.Rows[r / 2 + 1].Cells[c / 2].Value = -1;
+                }
+            }
+            else {
+                if (c % 2 == 0)
+                    dataGridView1.Rows[r / 2].Cells[c / 2 + 1].Value = -1;
+            }*/
+            if (checkBox3.Checked) fillcolors();
+            else clearcolors();
+        }
+        private decimal mountagne(int i, int j,int r, int c){
+            double icoef = 0.5*2;
+            double jcoef = 0.5*2;
+            return 40 / (decimal) (Math.Pow((i - r / 2) * icoef, 2) + Math.Pow((j - c / 2) * jcoef, 2));
         }
         private void button1_Click(object sender, EventArgs e){ refreshdata(true); }
         private void numericUpDown1_ValueChanged(object sender, EventArgs e){ refreshdata(checkBox2.Checked); }
@@ -65,6 +101,7 @@ namespace l_application_pour_diploma{
             else clearcolors();
             if (vran != null) vran.refr();
             dataGridView1.AutoResizeColumns();
+            dataGridView1.AutoResizeRows();
         }
         private void numericUpDown2_ValueChanged(object sender, EventArgs e) { refreshdata(checkBox2.Checked); }
         private void numericUpDown1_KeyPress(object sender, KeyPressEventArgs e) {  }
@@ -298,13 +335,16 @@ namespace l_application_pour_diploma{
             }
         }
         private void button2_Click(object sender, EventArgs e){
+            set_unites();
+        }
+        private void set_unites() {
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
                     if (checkBox1.Checked && Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
                         dataGridView1.Rows[i].Cells[j].Value = -1;
                     else dataGridView1.Rows[i].Cells[j].Value = 1;
-            try { dataGridView1.Rows[0].Cells[0].Value = (decimal)dataGridView1.Rows[0].Cells[0].Value;}
-            catch (Exception){ dataGridView1.Rows[0].Cells[0].Value = (int)dataGridView1.Rows[0].Cells[0].Value; }
+            try { dataGridView1.Rows[0].Cells[0].Value = (decimal)dataGridView1.Rows[0].Cells[0].Value; }
+            catch (Exception) { dataGridView1.Rows[0].Cells[0].Value = (int)dataGridView1.Rows[0].Cells[0].Value; }
             if (trouv != null) trouv.refresh();
             if (vran != null) vran.refr();
             if (checkBox3.Checked) fillcolors();
@@ -401,6 +441,13 @@ namespace l_application_pour_diploma{
                 vran.Show();
             }
             vran.Focus();
+        }
+
+        private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e){
+            int col = dataGridView1.ColumnCount - 1;
+            for (int i = 0; i < dataGridView1.RowCount; i++){
+                dataGridView1.Rows[i].Cells[col].Value = dataGridView1.Rows[i].Cells[col - 1].Value;
+            }
         }
     }
 }

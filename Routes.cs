@@ -32,15 +32,27 @@
 
                 for (int i = route.Count - 1; i > 0 ; i--) {
                     textBox1.AppendText("(" + (route[i].X+1)+" , " + (route[i].Y+1) + ") --> (" + (route[i-1].X+1) + " , " + (route[i-1].Y+1) + ")\r\n") ;
-                    Point[] p1i = new Point[] { 
+                    Point[] p1i = new Point[] {
+                        new (route[i].Y * d + d / 2 - 1, route[i].X * d + d / 2),
+                        new (route[i].Y * d + d / 2 - 1, route[i].X * d + 1 + d / 2),
+                        new (route[i].Y * d + d / 2 - 1, route[i].X * d + 2 + d / 2),
                         new (route[i].Y * d + d / 2, route[i].X * d + d / 2), 
                         new (route[i].Y * d + d / 2, route[i].X * d + 1 + d / 2),
-                        new (route[i].Y * d + d / 2, route[i].X * d + 2 + d / 2)
+                        new (route[i].Y * d + d / 2, route[i].X * d + 2 + d / 2),
+                        new (route[i].Y * d + d / 2 + 1, route[i].X * d + d / 2),
+                        new (route[i].Y * d + d / 2 + 1, route[i].X * d + 1 + d / 2),
+                        new (route[i].Y * d + d / 2 + 1, route[i].X * d + 2 + d / 2)
                     };
-                    Point[] p2i = new Point[] { 
+                    Point[] p2i = new Point[] {
+                        new(route[i - 1].Y * d + d/2 - 1, route[i - 1].X * d + d / 2),
+                        new(route[i - 1].Y * d + d/2 - 1, route[i - 1].X * d + 1 + d / 2),
+                        new(route[i - 1].Y * d + d/2 - 1, route[i - 1].X * d + 2 + d / 2),
                         new(route[i - 1].Y * d + d/2, route[i - 1].X * d + d / 2), 
                         new(route[i - 1].Y * d + d/2, route[i - 1].X * d + 1 + d / 2),
-                        new(route[i - 1].Y * d + d/2, route[i - 1].X * d + 2 + d / 2)
+                        new(route[i - 1].Y * d + d/2, route[i - 1].X * d + 2 + d / 2),
+                        new(route[i - 1].Y * d + d/2 + 1, route[i - 1].X * d + d / 2),
+                        new(route[i - 1].Y * d + d/2 + 1, route[i - 1].X * d + 1 + d / 2),
+                        new(route[i - 1].Y * d + d/2 + 1, route[i - 1].X * d + 2 + d / 2)
                     };
                     for (int j = 0; j < p1i.Length; j++){
                         carte.DrawLine(new Pen(Color.Black), p1i[j], p2i[j]);
@@ -101,7 +113,7 @@
             }
             findroute();
         }
-        private void Routes_FormClosing(object sender, FormClosingEventArgs e){own.r = null;}
+        private void Routes_FormClosing(object sender, FormClosingEventArgs e){ own.r = null;}
         private void Routes_ResizeBegin(object sender, EventArgs e) {  refr(); }
         private void Routes_ResizeEnd(object sender, EventArgs e) { refr(); }
         private void pictureBox1_Resize(object sender, EventArgs e) { refr(); }

@@ -24,6 +24,7 @@ namespace l_application_pour_diploma{
         List<Point> curr;
         internal bool[,] vis, vis1, accessible;
         List<Point> curr_points;
+        internal Packs? forfait;
         public Vran(Commencement o) {
             InitializeComponent();
             own = o;
@@ -348,18 +349,23 @@ namespace l_application_pour_diploma{
                         if (minv > curr_values[currfront[u].X, currfront[u].Y])
                             minv = curr_values[currfront[u].X, currfront[u].Y];
                     }
-                    string formate = "0.##"; ;
+                    string formater = "0.##", formate = "0"; ;
                     if (numericUpDown6.Value > 2){
+                        for (int n = 2; n < numericUpDown6.Value; n++)
+                            formater += "#";
+                    }
+                    if (numericUpDown6.Value > 0) {
+                        formate += ".";
                         for (int n = 2; n < numericUpDown6.Value; n++)
                             formate += "#";
                     }
-
-                    dataGridView2.Rows[x].Cells[y].Value = own.dataGridView1.Rows[x].Cells[y].Value.ToString() +"("+ minv.ToString(formate)+")";
+                    dataGridView2.Rows[x].Cells[y].Value = Convert.ToDecimal(own.dataGridView1.Rows[x].Cells[y].Value).ToString(formate) +"("+ minv.ToString(formater)+")";
                     dataGridView2.AutoResizeColumns();
                     dataGridView2.AutoResizeRows();
                 }
 
             }
+            if (forfait != null) forfait.renew();
         }
         private List<Point> get_frontiers (List<Point> set) {
             List<Point> frontl = new(); 
@@ -633,10 +639,13 @@ namespace l_application_pour_diploma{
             bool t = true;
             int xl = Convert.ToInt32(numericUpDown3.Value);
             int yl = Convert.ToInt32(numericUpDown4.Value);
-            for (int i = 0; i < dataGridView1.RowCount; i++){
-                if (Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) == xl && Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) == yl){
-                    t = false;
-                    break;
+            if (Convert.ToDecimal(own.dataGridView1.Rows[xl-1].Cells[yl-1].Value) < 0) t = false;
+            else{
+                for (int i = 0; i < dataGridView1.RowCount; i++){
+                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) == xl && Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) == yl){
+                        t = false;
+                        break;
+                    }
                 }
             }
             if (t) {
@@ -658,6 +667,15 @@ namespace l_application_pour_diploma{
         private void radioButton2_CheckedChanged(object sender, EventArgs e) { refr(); }
         private void radioButton3_CheckedChanged(object sender, EventArgs e) { refr(); }
         private void Vran_FormClosing(object sender, FormClosingEventArgs e){ own.vran = null; }
+
+        private void lesForfaitsToolStripMenuItem_Click(object sender, EventArgs e){
+            if (forfait == null){
+                forfait = new(this);
+                if (own.lang == 1) forfait.toRusse();
+                forfait.Show();                
+            }
+            forfait.Focus();
+        }
         private void numericUpDown6_ValueChanged(object sender, EventArgs e) {
             dataGridView2.DefaultCellStyle.Format = 'N' + numericUpDown6.Value.ToString();
             //dataGridView1.DefaultCellStyle.Format = 'N' + numericUpDown6.Value.ToString();
@@ -688,6 +706,10 @@ namespace l_application_pour_diploma{
             Text = "Voronoi";
             Column1.HeaderText = "La ligne";
             Column2.HeaderText = "La colonne";
+
+            lesForfaitsToolStripMenuItem.Text = "Les forfaits";
+
+            if (forfait != null) forfait.toFrancais();
         }
         internal void toRusse(){
             groupBox1.Text = "Точки";
@@ -708,6 +730,9 @@ namespace l_application_pour_diploma{
 
             Column1.HeaderText = "Строка";
             Column2.HeaderText = "Стоблец";
+            lesForfaitsToolStripMenuItem.Text = "Упаковки";
+
+            if (forfait != null) forfait.toRusse();
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e){

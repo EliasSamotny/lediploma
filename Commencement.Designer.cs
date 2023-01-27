@@ -41,6 +41,7 @@
             this.desFenêtresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.desCalculationsDeCheminsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.diagrammeDeVoronoїToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.langueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.françaisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.russeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,7 +68,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.diagrammeDeVoronoїToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -101,7 +101,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(101, 29);
             this.numericUpDown1.TabIndex = 1;
             this.numericUpDown1.Value = new decimal(new int[] {
-            11,
+            21,
             0,
             0,
             0});
@@ -128,7 +128,7 @@
             this.numericUpDown2.Size = new System.Drawing.Size(101, 29);
             this.numericUpDown2.TabIndex = 1;
             this.numericUpDown2.Value = new decimal(new int[] {
-            17,
+            21,
             0,
             0,
             0});
@@ -228,6 +228,13 @@
             this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Calculations de cheman pour beaucoup points";
             this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Click += new System.EventHandler(this.calculationsDeChemanPourBeaucoupPointsToolStripMenuItem_Click);
             // 
+            // diagrammeDeVoronoїToolStripMenuItem
+            // 
+            this.diagrammeDeVoronoїToolStripMenuItem.Name = "diagrammeDeVoronoїToolStripMenuItem";
+            this.diagrammeDeVoronoїToolStripMenuItem.Size = new System.Drawing.Size(392, 26);
+            this.diagrammeDeVoronoїToolStripMenuItem.Text = "Diagramme de Voronoї";
+            this.diagrammeDeVoronoїToolStripMenuItem.Click += new System.EventHandler(this.diagrammeDeVoronoїToolStripMenuItem_Click);
+            // 
             // langueToolStripMenuItem
             // 
             this.langueToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -283,6 +290,7 @@
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
+            this.dataGridView1.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView1_ColumnAdded);
             this.dataGridView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyDown);
             this.dataGridView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dataGridView1_KeyPress);
             this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyUp);
@@ -586,13 +594,6 @@
             this.checkBox3.Text = "Afficher la carte";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
-            // 
-            // diagrammeDeVoronoїToolStripMenuItem
-            // 
-            this.diagrammeDeVoronoїToolStripMenuItem.Name = "diagrammeDeVoronoїToolStripMenuItem";
-            this.diagrammeDeVoronoїToolStripMenuItem.Size = new System.Drawing.Size(392, 26);
-            this.diagrammeDeVoronoїToolStripMenuItem.Text = "Diagramme de Voronoї";
-            this.diagrammeDeVoronoїToolStripMenuItem.Click += new System.EventHandler(this.diagrammeDeVoronoїToolStripMenuItem_Click);
             // 
             // Commencement
             // 
