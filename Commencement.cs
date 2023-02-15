@@ -21,6 +21,7 @@ namespace l_application_pour_diploma{
             dataGridView1.ColumnCount = (int)numericUpDown2.Value;
             lang = 0;
             refreshdata(true);
+            dataGridView1.AutoResizeColumns();
         }
         internal Trouvation? trouv;
         internal Beaucoup? beaucoup;

@@ -101,7 +101,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(101, 29);
             this.numericUpDown1.TabIndex = 1;
             this.numericUpDown1.Value = new decimal(new int[] {
-            21,
+            41,
             0,
             0,
             0});
@@ -128,7 +128,7 @@
             this.numericUpDown2.Size = new System.Drawing.Size(101, 29);
             this.numericUpDown2.TabIndex = 1;
             this.numericUpDown2.Value = new decimal(new int[] {
-            21,
+            41,
             0,
             0,
             0});
@@ -547,6 +547,11 @@
             this.numericUpDown6.ReadOnly = true;
             this.numericUpDown6.Size = new System.Drawing.Size(51, 29);
             this.numericUpDown6.TabIndex = 12;
+            this.numericUpDown6.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.numericUpDown6.ValueChanged += new System.EventHandler(this.numericUpDown6_ValueChanged);
             // 
             // label7

@@ -18,8 +18,7 @@
             x2 = (int)numericUpDown1.Value - 1;
             y2 = (int)numericUpDown2.Value - 1;
             if (own.previos[x2,y2].X!=-1) {
-                List<Point> route = new();
-                route.Add(new Point(x2, y2));
+                List<Point> route = new(){ new Point(x2, y2) };
                 while (x2 != u || y2 != v){
                     int x1 = x2, y1 = y2;
                     route.Add(new Point(own.previos[x1,y1].X, own.previos[x1, y1].Y));

@@ -125,8 +125,7 @@ namespace l_application_pour_diploma{
                                 points.Add(new Points(p.xl, p.yl, (decimal)Math.Sqrt(Math.Pow(x1 - p.xl, 2) + Math.Pow(y1 - p.yl, 2))));
 
                         if (points.Count == 1) { x1 = points[0].xl; y1 = points[0].yl; }//if it is alone to choose, equal et continue
-                        else if (points.Count > 1)
-                        { //if not, search nearest to (0,0) 
+                        else if (points.Count > 1) { //if not, search nearest to (0,0) 
                             mindest = Decimal.MaxValue;
                             foreach (var p in points)
                                 if (p.dest < mindest)
@@ -177,8 +176,7 @@ namespace l_application_pour_diploma{
                     x2 = curr[l].X;//point of destin
                     y2 = curr[l].Y;                    
                     if (previos[l][x3, y3].X != -1){
-                        List<Point> route = new();
-                        route.Add(new Point(x3, y3));
+                        List<Point> route = new(){ new Point(x3, y3) };
                         int x4 = x3, x5 = x4, y4 = y3, y5 = y4; //for searching
                         while (x2 != x5 || y2 != y5) {
                             x4 = x5; y4 = y5; //current point

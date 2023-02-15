@@ -16,15 +16,18 @@ namespace l_application_pour_diploma{
     public partial class Vran : Form{
         private Commencement own;
         private List<Color> ColeurList = new List<Color> { Color.Red, Color.OrangeRed, Color.Orange, Color.Yellow, Color.YellowGreen, 
-            Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.MediumBlue, Color.DarkBlue, Color.Cyan, Color.BlueViolet, 
+            Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.Cyan, Color.BlueViolet, //,  Color.MediumBlue, Color.DarkBlue
             Color.Violet, Color.Silver, Color.Gold, Color.SeaGreen};
         List<decimal[,]> destins;
+        internal List<decimal> minrads;
         internal List<Point[,]> previos;
         internal int x = 1, y = 1, x1 = 1, y1 = 1;
         List<Point> curr;
         internal bool[,] vis, vis1, accessible;
-        List<Point> curr_points;
+        internal List<Point> curr_points;
         internal Packs? forfait;
+        internal List<decimal[,]> wave_de_points;
+        internal List<List<Point>> owingpoints;
         public Vran(Commencement o) {
             InitializeComponent();
             own = o;
@@ -33,6 +36,7 @@ namespace l_application_pour_diploma{
         private bool availpoint(int u, int v) { return Convert.ToDecimal(own.dataGridView1.Rows[u].Cells[v].Value) >= 0; }
         private void Vran_Load(object sender, EventArgs e) {
             refr();
+            dataGridView1.AutoResizeColumns();
         }
         private void dataGridView2_CellClick(object sender, DataGridViewCellEventArgs e){
             numericUpDown3.Value = Convert.ToDecimal(dataGridView2.SelectedCells[0].RowIndex) + 1;
@@ -42,6 +46,7 @@ namespace l_application_pour_diploma{
             refr();
         }
         internal void refr() {
+            wave_de_points = new();
             dataGridView2.RowCount = own.dataGridView1.RowCount;
             dataGridView2.ColumnCount = own.dataGridView1.ColumnCount;
             for (int i = 0; i < dataGridView2.RowCount; i++)
@@ -183,7 +188,7 @@ namespace l_application_pour_diploma{
                         }
                     }
                 }
-                List<List<Point>> owingpoints = new List<List<Point>> (); //list of sets of chosen points
+                owingpoints = new List<List<Point>> (); //list of sets of chosen points
                 for (int i = 0; i < dataGridView1.RowCount; i++) {
                     Point p = new Point(Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) - 1,
                             Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) - 1);
@@ -247,6 +252,7 @@ namespace l_application_pour_diploma{
                 Cursor.Current = Cursors.Default;
 
                 //waving from current centres to determine a min radius for each
+                minrads = new();
                 for (int t = 0; t < curr_points.Count; t++) {
                     var currfront = new List<Point> (get_frontiers(owingpoints[t]));
                     decimal[,] curr_values = new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
@@ -344,6 +350,7 @@ namespace l_application_pour_diploma{
                         }
                         vis1[x1, y1] = true;
                     }
+                    wave_de_points.Add(curr_values);
                     decimal minv = curr_values[currfront[0].X, currfront[0].Y] ;
                     for (int u = 1; u < currfront.Count; u++){
                         if (minv > curr_values[currfront[u].X, currfront[u].Y])
@@ -359,6 +366,7 @@ namespace l_application_pour_diploma{
                         for (int n = 2; n < numericUpDown6.Value; n++)
                             formate += "#";
                     }
+                    minrads.Add(minv);
                     dataGridView2.Rows[x].Cells[y].Value = Convert.ToDecimal(own.dataGridView1.Rows[x].Cells[y].Value).ToString(formate) +"("+ minv.ToString(formater)+")";
                     dataGridView2.AutoResizeColumns();
                     dataGridView2.AutoResizeRows();
@@ -367,7 +375,7 @@ namespace l_application_pour_diploma{
             }
             if (forfait != null) forfait.renew();
         }
-        private List<Point> get_frontiers (List<Point> set) {
+        internal List<Point> get_frontiers (List<Point> set) {
             List<Point> frontl = new(); 
             foreach (var el in set) {
                 if (if_front(set, el)) {
@@ -376,7 +384,7 @@ namespace l_application_pour_diploma{
             }
             return frontl;
         }
-        private int calcrank(List<Point> set, Point point){
+        internal int calcrank(List<Point> set, Point point){
             int count = 0;
             if (set.Contains(new Point(point.X - 1, point.Y - 1))) count++;
             if (set.Contains(new Point(point.X - 1, point.Y    ))) count += 2;
@@ -666,7 +674,7 @@ namespace l_application_pour_diploma{
         private void radioButton1_CheckedChanged(object sender, EventArgs e) { refr(); }
         private void radioButton2_CheckedChanged(object sender, EventArgs e) { refr(); }
         private void radioButton3_CheckedChanged(object sender, EventArgs e) { refr(); }
-        private void Vran_FormClosing(object sender, FormClosingEventArgs e){ own.vran = null; }
+        private void Vran_FormClosing(object sender, FormClosingEventArgs e){ own.vran = null; if (forfait != null) forfait.Close(); }
 
         private void lesForfaitsToolStripMenuItem_Click(object sender, EventArgs e){
             if (forfait == null){
