@@ -52,34 +52,51 @@ namespace l_application_pour_diploma{
 
                 List<Point> front = new(own.get_frontiers(area));
                 Point start = new();
+                bool defed = false;
                 for (int j = 0; j < front.Count; j++){
                     if (calcrank(front,front[j]) == 2){
                         start = new(front[j].X, front[j].Y);
+                        defed = true;
                         break;
                     }
                 }
-
-                List<Point> vis = new() { start};
-                Point curr = new(start.X, start.Y);
-                while (true) {
-                    
-                    if (calcrank(front, curr) == 2){
-                        curr = choisir_proch(front, curr,vis);
-                    }
-                    else {
-                        List<Point> neibs = get_neighbors(front, curr, vis);
-                        decimal max = 0;
-                        foreach (var el in neibs){
-                            if (max < own.wave_de_points[i][el.X, el.Y]) { //  && own.wave_de_points[i][el.X, el.Y] <= own.minrads[i]
-                                max = own.wave_de_points[i][el.X, el.Y];
-                                curr = new(el.X, el.Y);
-                            }
+                if (!defed) {
+                    decimal max = 0;
+                    foreach (var el in front){
+                        if (max < own.wave_de_points[i][el.X, el.Y])
+                            max = own.wave_de_points[i][el.X, el.Y];
+                            start = new(el.X, el.Y);
                         }
                     }
-                    vis.Add(curr);
-                    if (vis.Count > 2 && if_neighbors(vis[0], vis[^1])) { break; }
-                }
+                
+                List<Point> vis = new() { start };
+                if (front.Count > 10){
 
+                    Point curr = new(start.X, start.Y);
+                    while (true) {
+                        if (calcrank(front, curr) == 2) {
+                            curr = choisir_proch(front, curr, vis);
+                        }
+                        else{
+                            List<Point> neibs = get_neighbors(front, curr, vis);
+                            decimal max = 0;
+                            foreach (var el in neibs){
+                                if (max < own.wave_de_points[i][el.X, el.Y] && !vis.Contains(el))
+                                { //  && own.wave_de_points[i][el.X, el.Y] <= own.minrads[i]
+                                    max = own.wave_de_points[i][el.X, el.Y];
+                                    curr = new(el.X, el.Y);
+                                }
+                            }
+                        }
+                        if (curr != vis[0])
+                            vis.Add(curr);
+                        else break;
+                        if (vis[^1] == vis[^2]) break;
+                        if (vis.Count > 3 && if_neighbors(vis[0], vis[^1])) { break; }
+                    }
+                }
+                else 
+                    vis = new(front);
                 foreach (var el in vis){
                     carte.FillEllipse(new SolidBrush(System.Drawing.Color.Black), new System.Drawing.Rectangle(el.Y * d + d / 5, el.X * d + d / 5, 2 * d / 5, 2 * d / 5));
                 }

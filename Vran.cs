@@ -15,8 +15,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 namespace l_application_pour_diploma{
     public partial class Vran : Form{
         private Commencement own;
-        private List<Color> ColeurList = new List<Color> { Color.Red, Color.OrangeRed, Color.Orange, Color.Yellow, Color.YellowGreen, 
-            Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.Cyan, Color.BlueViolet, //,  Color.MediumBlue, Color.DarkBlue
+        private List<Color> ColeurList = new List<Color> { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen, 
+            Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.Cyan, Color.BlueViolet, //, Color.OrangeRed, Color.MediumBlue, Color.DarkBlue
             Color.Violet, Color.Silver, Color.Gold, Color.SeaGreen};
         List<decimal[,]> destins;
         internal List<decimal> minrads;
@@ -45,6 +45,124 @@ namespace l_application_pour_diploma{
         private void button4_Click(object sender, EventArgs e){
             refr();
         }
+        private decimal calculater_sum_pour_point (List<Point> medium, Point commenc) {
+            decimal sum = 0;
+            decimal[,] destinl = new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
+            Point[,] previosl = new Point[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
+            int xl = commenc.X; int xl1 = xl;
+            int yl = commenc.Y; int yl1 = yl;
+
+            vis = new bool[dataGridView2.RowCount, dataGridView2.ColumnCount];
+            //vis1 = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
+            bool[,] accessl = new bool[dataGridView2.RowCount, dataGridView2.ColumnCount];
+            
+            for (int i = 0; i < own.dataGridView1.RowCount; i++)
+                for (int j = 0; j < own.dataGridView1.ColumnCount; j++) { 
+                    if (medium.Contains(new(i, j))) {
+                        accessl[i, j] = true;
+                        //vis1[i, j] = false;
+                        destinl[i, j] = -2;
+                        vis[i, j] = false;
+                    }
+                    else{
+                        accessl[i, j] = false;
+                        //vis1[i, j] = true;
+                        vis[i, j] = true;
+                        destinl[i, j] = -1;
+                        previosl[i, j] = new Point(-1, -1);
+                    }
+                }
+            vis[xl, yl] = true;
+            previosl[xl, yl] = new(-2, -2);
+            destinl[xl, yl] = 0;
+
+            while (!checkallvis(vis)) {
+                vis[xl1, yl1] = true;
+                //ref bool[,] access, ref bool[,] vis, ref decimal[,] dest, ref Point[,] prev, int xc, int yc
+                calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 1, yl1 - 1, xl1, yl1);
+                calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1, yl1 - 1, xl1, yl1);
+                calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 1, yl1 - 1, xl1, yl1);
+                calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 1, yl1, xl1, yl1);
+                calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 1, yl1 + 1, xl1, yl1);
+                calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1, yl1 + 1, xl1, yl1);
+                calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 1, yl1 + 1, xl1, yl1);
+                calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 1, yl1, xl1, yl1);
+                if (!radioButton1.Checked){
+                    calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 1, yl1 - 2, xl1, yl1);
+                    calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 1, yl1 - 2, xl1, yl1);
+                    calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 2, yl1 - 1, xl1, yl1);
+                    calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 2, yl1 + 1, xl1, yl1);
+                    calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 1, yl1 + 2, xl1, yl1);
+                    calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 1, yl1 + 2, xl1, yl1);
+                    calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 2, yl1 + 1, xl1, yl1);
+                    calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 2, yl1 - 1, xl1, yl1);
+                    if (!radioButton2.Checked) {
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 2, yl1 - 3, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 1, yl1 - 3, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 1, yl1 - 3, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 2, yl1 - 3, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 3, yl1 - 2, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 3, yl1 - 1, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 3, yl1 + 1, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 3, yl1 + 2, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 2, yl1 + 3, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 + 1, yl1 + 3, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 1, yl1 + 3, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 2, yl1 + 3, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 3, yl1 + 2, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 3, yl1 + 1, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 3, yl1 - 1, xl1, yl1);
+                        calculcell(ref accessl, ref vis, ref destinl, ref previosl, xl1 - 3, yl1 - 2, xl1, yl1);
+                    }
+                }
+                //transmission le point actuel a le point le plus proche et minimum
+                var frontiers = new List<Points>();
+                for (int i = 0; i < own.dataGridView1.RowCount; i++)//searching frontier points
+                    for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
+                        if (destinl[i, j] != -2 && !vis[i, j])
+                            frontiers.Add(new Points(i, j, destinl[i, j]));
+                decimal mindest = Decimal.MaxValue;
+                foreach (var p in frontiers)//searching the minimum points
+                    if (p.dest < mindest)
+                        mindest = p.dest;
+                var points = new List<Points>();
+                foreach (var p in frontiers)
+                    if (p.dest == mindest)
+                        points.Add(new Points(p.xl, p.yl, (decimal)Math.Sqrt(Math.Pow(xl1 - p.xl, 2) + Math.Pow(yl1 - p.yl, 2))));
+
+                if (points.Count == 1) { xl1 = points[0].xl; yl1 = points[0].yl; }//if it is alone to choose, equal et continue
+                else if (points.Count > 1) { //if not, search nearest to (0,0) 
+                    mindest = Decimal.MaxValue;
+                    foreach (var p in points)
+                        if (p.dest < mindest)
+                            mindest = p.dest;
+                    var points1 = new List<Points>();
+                    foreach (var p in points)
+                        if (p.dest == mindest)
+                            points1.Add(new Points(p.xl, p.yl, (decimal)Math.Sqrt(Math.Pow(p.xl, 2) + Math.Pow(p.yl, 2))));
+                    if (points1.Count == 1) { xl1 = points1[0].xl; yl1 = points1[0].yl; }//if it is alone to choose, equal et continue
+                    else if (points1.Count > 1){//if not, choosing with least x
+                        int minx = own.dataGridView1.RowCount;
+                        foreach (var p in points1)
+                            if (p.xl < minx)
+                                minx = p.xl;
+                        foreach (var p in points1)
+                            if (p.xl == minx) {
+                                xl1 = points1[0].xl;
+                                yl1 = points1[0].yl;
+                                break;
+                            }
+                    }
+                }
+            }
+
+            foreach (var el in medium) {
+                sum += destinl[el.X, el.Y];
+
+            }
+            return sum;
+        }
+
         internal void refr() {
             wave_de_points = new();
             dataGridView2.RowCount = own.dataGridView1.RowCount;
@@ -202,7 +320,7 @@ namespace l_application_pour_diploma{
                             dataGridView2.Rows[i].Cells[j].Style.BackColor = Color.Black;
                         else if (!ifacentrepoint(i, j)){
                             int h = mindest(i, j);
-                            dataGridView2.Rows[i].Cells[j].Style.BackColor = ColeurList[randcol[h % (randcol.Count)]];
+                            dataGridView2.Rows[i].Cells[j].Style.BackColor = ColeurList[randcol[h % randcol.Count]];
                             owingpoints[h].Add(new Point(i, j));
                         }
                     }
@@ -215,7 +333,23 @@ namespace l_application_pour_diploma{
                     }
                     opersets.Add(s);
                 }
+
+                foreach (var sub in owingpoints) {//chosing the centre for each
+                    var minsum = decimal.MaxValue;
+                    Point centre = new();
+                    foreach (var el in sub) {
+                        var currl = calculater_sum_pour_point(sub, el);
+                        if (currl < minsum) {
+                            minsum = currl;
+                            centre = el;
+                        }
+                    }
+                    dataGridView2.Rows[centre.X].Cells[centre.Y].Style.BackColor = Color.DarkKhaki;
+                    curr_points.Add(new(centre.X, centre.Y));
+                }
+
                 
+                /*
                 for (int i = 0; i < opersets.Count; i++){ //compress sets
                     while (opersets[i].Count > 1) { 
                         if (!if_not_a_ligne(opersets[i])){
@@ -235,7 +369,7 @@ namespace l_application_pour_diploma{
                                 foreach (var el in currfrontiers) {
                                     rank.Add(calcrank(currfrontiers, el));
                                 }
-                                int maxind = 0; int maxrank = rank[maxind]; 
+                                int maxind = 0, maxrank = rank[maxind]; 
                                 for (int j = 1; j < currfrontiers.Count; j++) {
                                     if (rank[j] > maxrank) {
                                         maxind = j;
@@ -248,7 +382,7 @@ namespace l_application_pour_diploma{
                     }
                     dataGridView2.Rows[opersets[i][0].X].Cells[opersets[i][0].Y].Style.BackColor = Color.DarkKhaki;
                     curr_points.Add(new(opersets[i][0].X, opersets[i][0].Y));
-                }                
+                }*/
                 Cursor.Current = Cursors.Default;
 
                 //waving from current centres to determine a min radius for each
@@ -271,7 +405,7 @@ namespace l_application_pour_diploma{
                     previousl[x, y] = new(-2, -2);
                     curr_values[x, y] = 0;
 
-                    while (!checkallvisl(vis1)){                        
+                    while (!checkallvis(vis1)){                        
                         calculcell(owingpoints[t], ref curr_values, ref previousl, x1 - 1, y1 - 1);
                         calculcell(owingpoints[t], ref curr_values, ref previousl, x1, y1 - 1);
                         calculcell(owingpoints[t], ref curr_values, ref previousl, x1 + 1, y1 - 1);
@@ -568,13 +702,30 @@ namespace l_application_pour_diploma{
                 }
             }
         }
+        private void calculcell(ref bool[,] access, ref bool[,] vis, ref decimal[,] dest, ref Point[,] prev, int xc, int yc, int xl, int yl) {
+            if (xc >= 0 && yc >= 0 && xc < dataGridView2.RowCount && yc < dataGridView2.ColumnCount && access[xc,yc]) {//if consists
+                decimal cur = Convert.ToDecimal(((Convert.ToDouble(own.dataGridView1.Rows[xc].Cells[yc].Value) + Convert.ToDouble(own.dataGridView1.Rows[xl].Cells[yl].Value)) / 2 * Math.Sqrt(Math.Pow(xc - xl, 2) + Math.Pow(yc - yl, 2)) + Convert.ToDouble(dest[xl, yl])));
+                if (dest[xc, yc] == -2){//if not visited at all
+                    dest[xc, yc] = cur;
+                    prev[xc, yc] = new Point(xl, yl);
+                }
+                else if (cur < dest[xc, yc]) {//if from this point is shorter than known path
+                    dest[xc, yc] = cur;
+                    prev[xc, yc] = new Point(xl, yl);
+                }
+                else if (Convert.ToDecimal(own.dataGridView1.Rows[xc].Cells[yc].Value) == -1) {  //if point unpassable
+                    dest[xc, yc] = -1;
+                    prev[xc, yc] = new Point(-1, -1);
+                }
+            }
+        }
         private bool checkallvis() {
             for (int i = 0; i < own.dataGridView1.RowCount; i++)
                 for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
                     if (!vis[i, j]) return false;
             return true;
         }
-        private bool checkallvisl(bool[,] set){
+        private bool checkallvis(bool[,] set){
             for (int i = 0; i < own.dataGridView1.RowCount; i++)
                 for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
                     if (!set[i, j]) return false;
@@ -684,6 +835,20 @@ namespace l_application_pour_diploma{
             }
             forfait.Focus();
         }
+
+        private void button1_Click(object sender, EventArgs e){
+            var cers = (int) numericUpDown1.Value;
+            var effs = (int) numericUpDown2.Value;
+            Random r = new Random();
+            for (int i = 0; i < effs; i++){
+                List<Point> genered = new();
+                for (int j = 0; j < cers; j++){
+                    genered.Add(new(r.Next(own.dataGridView1.RowCount), r.Next(own.dataGridView1.ColumnCount)));
+                }
+
+            }
+        }
+
         private void numericUpDown6_ValueChanged(object sender, EventArgs e) {
             dataGridView2.DefaultCellStyle.Format = 'N' + numericUpDown6.Value.ToString();
             //dataGridView1.DefaultCellStyle.Format = 'N' + numericUpDown6.Value.ToString();
@@ -698,13 +863,20 @@ namespace l_application_pour_diploma{
         }
         internal void toFrancais() {
             groupBox1.Text = "Les points";
+            groupBox3.Text = "Le point actuel";
             groupBox4.Text = "Reflexion de cellules";
+            groupBox5.Text = "Multistart";
+            label1.Text = "La quantité de cercles";
+            label2.Text = "La quantité d'efforts";
             label7.Text = "La taille de fonte";
             label8.Text = "La quantité de signs";
-            button4.Text = "Computer";
+            button1.Text = "Tester";
+            button4.Text = "Recomputer";
             button5.Text = "Suppremer";
             button6.Text = "Aujouter";
             groupBox2.Text = "Le destin de chercher de chemins";
+            groupBox5.Text = "Multistart";
+
             radioButton3.Text = "III rayon (32 directions)";
             radioButton2.Text = "II rayon (16 directions)";
             radioButton1.Text = "I rayon (8 directions)";
@@ -721,19 +893,26 @@ namespace l_application_pour_diploma{
         }
         internal void toRusse(){
             groupBox1.Text = "Точки";
+            groupBox2.Text = "Кол-во направлений поиска";
+            groupBox3.Text = "Текущая точка";
             groupBox4.Text = "Отображение ячеек";
+            groupBox5.Text = "Мультистарт";
+            label1.Text = "Кол-во кругов";
+            label2.Text = "Кол-во попыток";
+            label3.Text = "Столбец";
+            label4.Text = "Строка";
             label7.Text = "Размер шрифта";
             label8.Text = "Количество знаков";
-            button4.Text = "Вычислить";
+            button1.Text = "Старт";
+            button4.Text = "Пересчитать";
             button5.Text = "Удалить";
             button6.Text = "Добавить";
-            groupBox2.Text = "Кол-во направлений поиска";
             radioButton3.Text = "III радиус (32 направления)";
             radioButton2.Text = "II радиус (16 направления)";
             radioButton1.Text = "I радиус (8 направлений)";
             button2.Text = "Удалить";
-            label4.Text = "Строка";
-            label3.Text = "Столбец";
+            
+            
             Text = "Диаграмма Вороного";
 
             Column1.HeaderText = "Строка";
