@@ -136,7 +136,7 @@
             this.numericUpDown2.Size = new System.Drawing.Size(46, 28);
             this.numericUpDown2.TabIndex = 12;
             this.numericUpDown2.Value = new decimal(new int[] {
-            3,
+            2,
             0,
             0,
             0});
@@ -182,7 +182,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(46, 28);
             this.numericUpDown1.TabIndex = 12;
             this.numericUpDown1.Value = new decimal(new int[] {
-            2,
+            3,
             0,
             0,
             0});
@@ -352,7 +352,7 @@
             // 
             // button4
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.Location = new System.Drawing.Point(325, 278);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(110, 29);
@@ -366,7 +366,7 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,

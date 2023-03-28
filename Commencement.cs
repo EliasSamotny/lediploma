@@ -60,9 +60,9 @@ namespace l_application_pour_diploma{
             else clearcolors();
         }
         private decimal mountagne(int i, int j,int r, int c){
-            double icoef = 0.5*2;
-            double jcoef = 0.5*2;
-            return 40 / (decimal) (Math.Pow((i - r / 2) * icoef, 2) + Math.Pow((j - c / 2) * jcoef, 2));
+            double icoef = 0.5;
+            double jcoef = 0.5;
+            return 1 / (decimal) (Math.Pow((i - r / 2) * icoef, 2)/2 + Math.Pow((j - c / 2) * jcoef, 2)/2);
         }
         private void button1_Click(object sender, EventArgs e){ refreshdata(true); }
         private void numericUpDown1_ValueChanged(object sender, EventArgs e){ refreshdata(checkBox2.Checked); }
