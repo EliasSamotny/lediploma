@@ -5,8 +5,11 @@ namespace l_application_pour_diploma{
         internal Commencement own;
         internal Routes? r;
         internal int x = 1, y = 1, x1 = 1, y1 = 1;
-        internal bool[,] vis, vis1, accessible;
+        internal bool[,] vis, vis1;
         internal Point[,] previos;
+        internal List<List<Point>> submedia;
+        bool onemedium = true;
+        int curr_med = 0;
         public Trouvation(Commencement o){
             InitializeComponent();
             own = o;
@@ -14,7 +17,7 @@ namespace l_application_pour_diploma{
         private bool checkallvis(){
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    if (!vis[i, j]) return false;
+                    if (!vis[i, j] && submedia[0].Contains(new(x,y))) return false;
             return true;
         }
         private void calculcell(int xc, int yc){
@@ -33,33 +36,37 @@ namespace l_application_pour_diploma{
                 }
                 else if (Convert.ToDecimal(own.dataGridView1.Rows[xc].Cells[yc].Value.ToString()) == -1){  //if point unpassable
                     dataGridView1.Rows[xc].Cells[yc].Value = -1;
-                    //previos[xc, yc] = new Point(-1, -1);
                 }
             }
         }
-        internal void refresh(){
+        private int determ_submed(Point p){
+            for (int i = 0; i < submedia.Count; i++)
+                if (submedia[i].Contains(p)) return i;
+            return 0;
+        }
+        internal void refresh(bool changed_med){
             Cursor.Current = Cursors.WaitCursor;
             dataGridView1.RowCount = own.dataGridView1.RowCount;
             dataGridView1.ColumnCount = own.dataGridView1.ColumnCount;
             x = dataGridView1.SelectedCells[0].RowIndex; x1 = x;
             y = dataGridView1.SelectedCells[0].ColumnIndex; y1 = y;
+            
             numericUpDown1.Value = x + 1;
             numericUpDown2.Value = y + 1;
             previos = new Point[dataGridView1.RowCount, dataGridView1.ColumnCount];
             vis = new bool[dataGridView1.RowCount, dataGridView1.ColumnCount];
             vis1 = new bool[dataGridView1.RowCount, dataGridView1.ColumnCount];
-            accessible = new bool[dataGridView1.RowCount, dataGridView1.ColumnCount];
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++) {
-                    accessible[i, j] = false;
                     vis1[i, j] = false;
                 }
-            accessible[x, y] = true;
             vis1[x, y] = true;
-            reseachpoints(x, y);
+            if (changed_med)
+                reseachpoints(x, y);
+            curr_med = determ_submed(new(x, y));
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++) {
-                    if (availpoint(i, j) && availpoint(x1, y1) && accessible[i, j]) {
+                    if (availpoint(i, j) && availpoint(x1, y1) && submedia[curr_med].Contains(new(i, j))) {
                         dataGridView1.Rows[i].Cells[j].Value = null;
                         vis[i, j] = false;
                     }
@@ -72,42 +79,8 @@ namespace l_application_pour_diploma{
             dataGridView1.Rows[x].Cells[y].Value = 0;
             while (!checkallvis()){
                 vis[x1, y1] = true;
-                calculcell(x1 - 1, y1 - 1);
-                calculcell(x1, y1 - 1);
-                calculcell(x1 + 1, y1 - 1);
-                calculcell(x1 + 1, y1);
-                calculcell(x1 + 1, y1 + 1);
-                calculcell(x1, y1 + 1);
-                calculcell(x1 - 1, y1 + 1);
-                calculcell(x1 - 1, y1);
-                if (!radioButton1.Checked){
-                    calculcell(x1 - 1, y1 - 2);
-                    calculcell(x1 + 1, y1 - 2);
-                    calculcell(x1 + 2, y1 - 1);
-                    calculcell(x1 + 2, y1 + 1);
-                    calculcell(x1 + 1, y1 + 2);
-                    calculcell(x1 - 1, y1 + 2);
-                    calculcell(x1 - 2, y1 + 1);
-                    calculcell(x1 - 2, y1 - 1);
-                    if (!radioButton2.Checked){
-                        calculcell(x1 - 2, y1 - 3);
-                        calculcell(x1 - 1, y1 - 3);
-                        calculcell(x1 + 1, y1 - 3);
-                        calculcell(x1 + 2, y1 - 3);
-                        calculcell(x1 + 3, y1 - 2);
-                        calculcell(x1 + 3, y1 - 1);
-                        calculcell(x1 + 3, y1 + 1);
-                        calculcell(x1 + 3, y1 + 2);
-                        calculcell(x1 + 2, y1 + 3);
-                        calculcell(x1 + 1, y1 + 3);
-                        calculcell(x1 - 1, y1 + 3);
-                        calculcell(x1 - 2, y1 + 3);
-                        calculcell(x1 - 3, y1 + 2);
-                        calculcell(x1 - 3, y1 + 1);
-                        calculcell(x1 - 3, y1 - 1);
-                        calculcell(x1 - 3, y1 - 2);
-                    }
-                }
+                for (int v = 0; v < size_rayon(); v++)
+                    calculcell(x1 + voisins[v].X, y1 + voisins[v].Y);
                 //transmission le point actuel a le point le plus proche et minimum
                 var frontiers = new List<Points>();
                 for (int i = 0; i < dataGridView1.RowCount; i++)//searching frontier points
@@ -156,33 +129,132 @@ namespace l_application_pour_diploma{
             if (checkBox1.Checked) fillcolors();
             else clearcolors();
             dataGridView1.AutoResizeColumns();
-            if (r != null) r.refr();
+            r?.findroute();
         }
-        private void reseachpoints(int u,int v) { 
-            if (!chckrespoints() && Convert.ToDecimal(own.dataGridView1.Rows[u].Cells[v].Value) >= 0){
-                for (byte i = 0; i < 8; i++){
-                    if (!visiteda(u, v, i)){
-                        switch (i){
-                            case 0: { 
-                                    vis1[u - 1, v - 1] = true; 
-                                    accessible[u - 1, v - 1] = true; 
-                                    reseachpoints(u - 1, v - 1); break; }
-                            case 1: { vis1[u    , v - 1] = true; accessible[u, v -1] = true; reseachpoints(u    , v - 1); break; }
-                            case 2: { vis1[u + 1, v - 1] = true; accessible[u +1, v - 1] = true; reseachpoints(u + 1, v - 1); break; }
-                            case 3: { vis1[u + 1, v    ] = true; accessible[u +1, v    ] = true; reseachpoints(u + 1, v    ); break; }
-                            case 4: { vis1[u + 1, v + 1] = true; accessible[u +1, v + 1] = true; reseachpoints(u + 1, v + 1); break; }
-                            case 5: { vis1[u    , v + 1] = true; accessible[u, v +1] = true; reseachpoints(u    , v + 1); break; }
-                            case 6: { vis1[u - 1, v + 1] = true; accessible[u -1, v + 1] = true; reseachpoints(u - 1, v + 1); break; }
-                            case 7: { vis1[u - 1, v    ] = true; accessible[u -1, v    ] = true; reseachpoints(u - 1, v    ); break; }
+        private bool pointavailiter(int x1, int y1, int x2, int y2) { //vieux, nouveau
+            try { 
+                if (pointdest(x1, y1, x2, y2) == Math.Sqrt(2) || pointdest(x1, y1, x2, y2) == 1)
+                    return availpoint(x2, y2);
+                else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(5)){
+                    if (x1 - x2 == 2 && y1 - y2 == 1)//1
+                        return availpoint(x2 + 1, y1) && availpoint(x2 + 1, y1 + 1);
+                    if (x1 - x2 == 1 && y1 - y2 == 2)//2
+                        return availpoint(x2 + 1, y2 + 1) && availpoint(x2, y2 + 1);
+                    if (x1 - x2 == -1 && y1 - y2 == 2)//3
+                        return availpoint(x2 - 1, y2 + 1) && availpoint(x2, y2 + 1);
+                    if (x1 - x2 == -2 && y1 - y2 == 1) //4
+                        return availpoint(x2 - 1, y2) && availpoint(x2 - 1, y2 + 1);
+                    if (x1 - x2== -2 && y1 - y2 == -1)//5
+                        return availpoint(x2- 1, y2) && availpoint(x2- 1, y2 - 1);
+                    if (x1 - x2== -1 && y1 - y2 == -2)//6
+                        return availpoint(x2 - 1, y2 - 1) && availpoint(x2, y2 - 1);
+                    if (x1 - x2== 1 && y1 - y2 == -2)//7
+                        return availpoint(x2 + 1, y2 - 1) && availpoint(x2, y2 - 1);
+                    if (x1 - x2== 2 && y1 - y2 == -1)//8
+                        return availpoint(x2 + 1, y2) && availpoint(x2 + 1, y2 - 1);
+                }
+                else if (pointdest(x2 , y2) == Math.Sqrt(10)){
+                    if (x1 - x2 == 3 && y1 - y2 == 1)//1
+                        return availpoint(x2 + 1, y2) && availpoint(x2 + 2, y2) && availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 2, y2 + 1);
+                    if (x1 - x2 == 1 && y1 - y2 == 3)//2
+                        return availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 1, y2 + 2) && availpoint(x2 , y2 + 1) && availpoint(x2 , y2 + 2);
+                    if (x1 - x2 == -1 && y1 - y2 == 3)//3
+                        return availpoint(x2 - 1, y2 + 1) && availpoint(x2 - 1, y2 + 2) && availpoint(x2 , y2 + 1) && availpoint(x2 , y2 + 2);
+                    if (x1 - x2 == -3 && y1 - y2 == 1) //4
+                        return availpoint(x2 - 1, y2) && availpoint(x2 - 2, y2) && availpoint(x2 - 1, y2 + 1) && availpoint(x2 - 2, y2 + 1);
+                    if (x1 - x2 == -3 && y1 - y2 == -1)//5
+                        return availpoint(x2 - 1, y2) && availpoint(x2 - 2, y2) && availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2);
+                    if (x1 - x2 == -1 && y1 - y2 == -3)//6
+                        return availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2) && availpoint(x2 , y2 - 1) && availpoint(x2 , y2 - 2);
+                    if (x1 - x2 == 1 && y1 - y2 == -3)//7
+                        return availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 1, y2 - 2) && availpoint(x2 , y2 - 1) && availpoint(x2 , y2 - 2);
+                    if (x1 - x2 == 3 && y1 - y2 == -1)//8
+                        return availpoint(x2 + 1, y2) && availpoint(x2 + 2, y2) && availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 2, y2 - 1);
+                }
+                else if (pointdest(x2 , y2) == Math.Sqrt(13)){
+                    if (x1 - x2 == 3 && y1 - y2 == 2)//1
+                        return availpoint(x2 + 1, y2) && availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 2, y2 + 1) && availpoint(x2 + 2, y2 + 2);
+                    if (x1 - x2 == 2 && y1 - y2 == 3)//2
+                        return availpoint(x2 , y2 + 1) && availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 1, y2 + 2) && availpoint(x2 + 2, y2 + 2);
+                    if (x1 - x2 == -2 && y1 - y2 == 3)//3
+                        return availpoint(x2, y2 + 1) && availpoint(x2 - 1, y2 + 1) && availpoint(x2 - 1, y2 + 2) && availpoint(x2 - 2, y2 + 2);
+                    if (x1 - x2 == -3 && y1 - y2 == 2) //4
+                        return availpoint(x2 - 1, y2) && availpoint(x2 - 1, y2 + 1) && availpoint(x2 - 1, y2 + 2) && availpoint(x2 - 2, y2 + 2);
+                    if (x1 - x2 == -3 && y1 - y2 == -2)//5
+                        return availpoint(x2 - 1, y2) && availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2) && availpoint(x2 - 2, y2 - 2);
+                    if (x1 - x2 == -2 && y1 - y2 == -3)//6
+                        return availpoint(x2 , y2 - 1) && availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2) && availpoint(x2 - 2, y2 - 2);
+                    if (x1 - x2 == 2 && y1 - y2 == -3)//7
+                        return availpoint(x2 , y2 - 1) && availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 1, y2 - 2) && availpoint(x2 + 2, y2 - 2);
+                    if (x1 - x2 == 3 && y1 - y2 == -2)//8
+                        return availpoint(x2 + 1, y2) && availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 1, y2 - 2) && availpoint(x2 + 2, y2 - 2);
+                }
+                return false;
+            }
+            catch (Exception) { return false; }
+
+        }
+        List<Point> voisins = new List<Point>() { 
+            new(- 1, - 1), new( 0, - 1), new(1, - 1), new(1, 0),   new(1, 1),   new(0, 1),   new(- 1, 1),   new(- 1, 0),
+            new(- 1, - 2), new( 1, - 2), new(2, - 1), new(2, 1),   new(1, 2),   new(- 1, 2), new(- 2, 1),   new(- 2, - 1),
+            new(- 2, - 3), new(- 1,- 3), new(1, - 3), new(2, - 3), new(3, - 2), new(3, - 1), new(3, 1),     new(3, 2),
+            new(  2,   3), new( 1, 3  ), new(- 1, 3), new(- 2, 3), new(- 3, 2), new(- 3, 1), new(- 3, - 1), new(- 3, - 2)};
+        private int size_rayon() {
+            if (radioButton1.Checked) return 8;
+            else if (radioButton2.Checked) return 16;
+            else return 32;
+        }
+        private void reseachpoints(int u, int v) {
+            submedia = new() { new() };
+            submedia[0].Add(new(u, v));
+            bool[,] known = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
+            for (int i = 0; i < own.dataGridView1.RowCount; i++)
+                for (int j = 0; j < own.dataGridView1.ColumnCount; j++) {
+                    if (Convert.ToDecimal(own.dataGridView1.Rows[i].Cells[j].Value) > -1)
+                        known[i, j] = false;
+                    else known[i, j] = true;
+                }
+            known[u,v] = true;
+            int currx = u, curry = v;
+            
+            List<Point> curr_front = new();
+            for (int i = 0; i < 8; i++) {
+                if (pointavailiter(currx, curry, currx + voisins[i].X, curry + voisins[i].Y)) {
+                    submedia[0].Add(new(currx + voisins[i].X, curry + voisins[i].Y));
+                    curr_front.Add(new(currx + voisins[i].X, curry + voisins[i].Y));
+                    known[currx + voisins[i].X, curry + voisins[i].Y] = true;
+                }
+            }
+            while (true){
+                List<Point> curr_prev = new(curr_front);
+                curr_front = new();
+                foreach (var el in curr_prev){
+                    for (int i = 0; i < 8; i++) {
+                        Point voisepoint = new(el.X + voisins[i].X, el.Y + voisins[i].Y);
+                        if (pointavailiter(el.X, el.Y, el.X + voisins[i].X, el.Y + voisins[i].Y)){
+                            if (!curr_front.Contains(voisepoint) && !submedia[0].Contains(voisepoint))
+                                curr_front.Add(voisepoint);
+                            if (!submedia[0].Contains(voisepoint)) {
+                                submedia[0].Add(voisepoint);
+                                known[el.X + voisins[i].X, el.Y + voisins[i].Y] = true;
+                            }
                         }
                     }
                 }
+                if (curr_front.Count == 0) break;
+            }
+            if (!if_all_known(known)) {
+                onemedium = false;
+            }
+            else {
+                onemedium = true;
             }
         }
-        private bool chckrespoints(){
-            for (int i = 0; i < dataGridView1.RowCount; i++)
-                for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    if (!vis1[i, j]) return false;
+
+        private bool if_all_known(bool[,] known) {
+            for (int i = 0; i < known.GetLength(0); i++)
+                for (int j = 0; j < known.GetLength(1); j++)
+                    if (!known[i,j]) return false;
             return true;
         }
         private bool pointavailiter(int i, int j) {
@@ -254,36 +326,23 @@ namespace l_application_pour_diploma{
                     dataGridView1.Rows[i].Cells[j].Value = null;
                 }
         private double pointdest(int xc,int yc){return Math.Sqrt( Math.Pow(x1 - xc,2) + Math.Pow(y1 - yc, 2)); }
-        private bool visiteda(int xc, int yc, byte i){
-            try{                
-                switch (i){
-                    case 0: return vis1[xc - 1, yc - 1];
-                    case 1: return vis1[xc, yc - 1];
-                    case 2: return vis1[xc + 1, yc - 1];
-                    case 3: return vis1[xc + 1, yc];
-                    case 4: return vis1[xc + 1, yc + 1];
-                    case 5: return vis1[xc, yc + 1];
-                    case 6: return vis1[xc - 1, yc + 1];
-                    case 7: return vis1[xc - 1, yc];
-                }
-                return false;
-            }
-            catch (Exception) { return true; }
-        }
-        private void Trouvation_Load(object sender, EventArgs e){refresh();}
+        private double pointdest(int xc1, int yc1, int xc2, int yc2) { return Math.Sqrt(Math.Pow(xc1 - xc2, 2) + Math.Pow(yc1 - yc2, 2)); }
+        private void Trouvation_Load(object sender, EventArgs e){refresh(true);}
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e){
             if (x!= dataGridView1.SelectedCells[0].RowIndex || y!= dataGridView1.SelectedCells[0].ColumnIndex)
-                refresh();
+                refresh(false);
         }
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e){
             if (x != dataGridView1.SelectedCells[0].RowIndex || y != dataGridView1.SelectedCells[0].ColumnIndex)
-                refresh();
+                refresh(false);
         }
-        private void radioButton1_CheckedChanged(object sender, EventArgs e) { refresh(); }
-        private void radioButton2_CheckedChanged(object sender, EventArgs e) { refresh(); }
-        private void radioButton3_CheckedChanged(object sender, EventArgs e) { refresh(); }
+        private void radioButton1_CheckedChanged(object sender, EventArgs e) { refresh(false); }
+        private void radioButton2_CheckedChanged(object sender, EventArgs e) { refresh(false); }
+        private void radioButton3_CheckedChanged(object sender, EventArgs e) { refresh(false); }
         private void numericUpDown1_ValueChanged(object sender, EventArgs e){ }
-        private void Trouvation_FormClosing(object sender, FormClosingEventArgs e){own.trouv = null;if (r != null) r.Close(); }
+        private void Trouvation_FormClosing(object sender, FormClosingEventArgs e){
+            own.trouv = null; 
+            r?.Close(); }
         private void checkBox1_CheckedChanged(object sender, EventArgs e){
             if (checkBox1.Checked) fillcolors();
             else clearcolors();
