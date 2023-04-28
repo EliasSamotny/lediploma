@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using System.Linq.Expressions;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace l_application_pour_diploma
 {
@@ -16,6 +17,7 @@ namespace l_application_pour_diploma
         private ex.Range? excelcells;
         public string? Filename;
         internal byte lang; // 0 - francais, 1 - russe
+        internal decimal[,] source;
         public Commencement()
         {
             InitializeComponent();
@@ -23,8 +25,9 @@ namespace l_application_pour_diploma
             dataGridView1.RowCount = (int)numericUpDown1.Value;
             dataGridView1.ColumnCount = (int)numericUpDown2.Value;
             lang = 0;
-            refreshdata(true);
+            refreshdata();
             dataGridView1.AutoResizeColumns();
+            domains = new();
         }
         internal Trouvation? trouv;
         internal Beaucoup? beaucoup;
@@ -34,6 +37,15 @@ namespace l_application_pour_diploma
             russeToolStripMenuItem_Click(sender, e);
             dataGridView1.AutoResizeColumns();
             set_mount();
+            int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
+            source = new decimal[r, c];
+            for (int i = 0; i < r; i++)
+            {
+                for (int j = 0; j < c; j++)
+                {
+                    source[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
+                }
+            }
         }
         private void set_mount()
         {
@@ -62,43 +74,32 @@ namespace l_application_pour_diploma
             double jcoef = 0.5;
             return 1 / (decimal)(Math.Pow((i - r / 2) * icoef, 2) / 2 + Math.Pow((j - c / 2) * jcoef, 2) / 2);
         }
-        private void button1_Click(object sender, EventArgs e) { refreshdata(true); }
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e) { refreshdata(checkBox2.Checked); }
-        private void refreshdata(bool t)
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) { refreshdata(); }
+        private void refreshdata()
         {
-            if (t)
-            {
-                dataGridView1.RowCount = (int)numericUpDown1.Value;
-                dataGridView1.ColumnCount = (int)numericUpDown2.Value;
-                Random r = new();
-                for (int i = 0; i < dataGridView1.RowCount; i++)
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    {
-                        if (checkBox1.Checked && Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
-                            dataGridView1.Rows[i].Cells[j].Value = -1;
-                        else
-                            dataGridView1.Rows[i].Cells[j].Value = r.Next((int)numericUpDown3.Value, (int)numericUpDown4.Value + 1);
-                    }
-            }
-            else
-            {
-                decimal[,] data1 = new decimal[dataGridView1.RowCount, dataGridView1.ColumnCount];
-                for (int i = 0; i < dataGridView1.RowCount; i++)
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                        try
-                        {
-                            data1[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
-                        }
-                        catch (Exception) { data1[i, j] = 0; }
 
-                int i1 = Math.Min((int)numericUpDown1.Value, dataGridView1.RowCount);
-                int j1 = Math.Min((int)numericUpDown2.Value, dataGridView1.ColumnCount);
-                dataGridView1.RowCount = (int)numericUpDown1.Value;
-                dataGridView1.ColumnCount = (int)numericUpDown2.Value;
-                for (int i = 0; i < i1; i++)
-                    for (int j = 0; j < j1; j++)
-                        dataGridView1.Rows[i].Cells[j].Value = data1[i, j];
-            }
+            decimal[,] data1 = new decimal[dataGridView1.RowCount, dataGridView1.ColumnCount];
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    try
+                    {
+                        data1[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
+                    }
+                    catch (Exception) { data1[i, j] = 0; }
+
+            int i1 = Math.Min((int)numericUpDown1.Value, dataGridView1.RowCount);
+            int j1 = Math.Min((int)numericUpDown2.Value, dataGridView1.ColumnCount);
+            dataGridView1.RowCount = (int)numericUpDown1.Value;
+            dataGridView1.ColumnCount = (int)numericUpDown2.Value;
+            int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
+            source = new decimal[r, c];
+            for (int i = 0; i < i1; i++)
+                for (int j = 0; j < j1; j++)
+                {
+                    source[i, j] = data1[i, j];
+                    dataGridView1.Rows[i].Cells[j].Value = data1[i, j];
+                }
+
             trouv?.refresh(true);
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
@@ -106,7 +107,7 @@ namespace l_application_pour_diploma
             dataGridView1.AutoResizeColumns();
             dataGridView1.AutoResizeRows();
         }
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e) { refreshdata(checkBox2.Checked); }
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e) { refreshdata(); }
         private void numericUpDown1_KeyPress(object sender, KeyPressEventArgs e) { }
         private void numericUpDown1_KeyUp(object sender, KeyEventArgs e) { }
         private void numericUpDown2_KeyPress(object sender, KeyPressEventArgs e) { }
@@ -145,7 +146,7 @@ namespace l_application_pour_diploma
                             break;
                         }
                 }
-                if (curr) { refreshdata(false); }
+                if (curr) { refreshdata(); }
                 else
                 {
                     MessageBox.Show("Invalid number");
@@ -296,7 +297,7 @@ namespace l_application_pour_diploma
             {
                 label1.Text = "Quantitè de lignes";
                 label2.Text = "Quantitè de colonnes";
-                button1.Text = "Générater";
+                //button1.Text = "Générater";
                 toolStripMenuItem1.Text = "Ficher";
                 chargerToolStripMenuItem.Text = "Charger";
                 sauvegarderToolStripMenuItem.Text = "Sauvegarder";
@@ -317,8 +318,8 @@ namespace l_application_pour_diploma
                 groupBox4.Text = "Reflexion de cellules";
                 label7.Text = "La taille de fonte";
                 label8.Text = "La quantité de signs";
-                groupBox5.Text = "La carte de chaleur";
-                checkBox3.Text = "Afficher la carte";
+                groupBox5.Text = "Autres";
+                checkBox3.Text = "Afficher la carte de chaleur";
                 calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Calculations de cheman pour beaucoup points";
                 diagrammeDeVoronoїToolStripMenuItem.Text = "Diagramme de Voronoї";
                 groupBox6.Text = "Changement de milieu";
@@ -328,6 +329,24 @@ namespace l_application_pour_diploma
                 radioButton1.Text = "Inverser";
                 radioButton2.Text = "Réduire N fois par M % et revenir";
                 radioButton3.Text = "Accroître N fois par M % et revenir";
+
+                groupBox6.Text = "Changement de milieu";
+                checkBox4.Text = "Changeable";
+                checkBox5.Text = "Reflexer les changements";
+                label9.Text = "Temps de changement (ms)";
+
+                groupBox7.Text = "Conformité de changement";
+                label13.Text = "Unités";
+
+                button1.Text = "Aujouter";
+                button3.Text = "Suppremer";
+                button4.Text = "Afficher";
+                button5.Text = "Nettoyer";
+
+                groupBox8.Text = "Quantité";
+                label14.Text = "Domains";
+                label6.Text = "Cellules";
+
                 trouv?.toFrancais();
                 beaucoup?.toFrancais();
                 vran?.ToFrancais();
@@ -340,11 +359,11 @@ namespace l_application_pour_diploma
             {
                 label1.Text = "Кол-во строк";
                 label2.Text = "Кол-во стоблцов";
-                button1.Text = "Сгенерировать";
+
                 toolStripMenuItem1.Text = "Файл";
                 chargerToolStripMenuItem.Text = "Загрузить";
                 sauvegarderToolStripMenuItem.Text = "Сохранить";
-                checkBox2.Text = "Генерировать случайные числа при изменении измерений";
+                checkBox2.Text = "Использовать";
                 desFenêtresToolStripMenuItem.Text = "Окна";
                 desCalculationsDeCheminsToolStripMenuItem.Text = "Вычисление расстояний для двух точек";
                 langueToolStripMenuItem.Text = "Язык";
@@ -354,23 +373,38 @@ namespace l_application_pour_diploma
                 label4.Text = "Строка";
                 label3.Text = "Столбец";
                 button2.Text = "Сгенерировать единицы";
-                groupBox3.Text = "Генерация чисел";
+                groupBox3.Text = "Области изменения";
                 checkBox1.Text = "Сохранить препятствия";
                 this.Text = "L\'application pour le diploma: данные для исследования";
                 groupBox4.Text = "Отображение ячеек";
                 label7.Text = "Размер шрифта";
                 label8.Text = "Количество знаков";
-                groupBox5.Text = "Тепловая карта";
-                checkBox3.Text = "Показать карту";
+                groupBox5.Text = "Другое";
+                checkBox3.Text = "Показать тепловую карту";
                 calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Вычисление оптимальной точки встречи";
                 diagrammeDeVoronoїToolStripMenuItem.Text = "Диаграмма Вороного";
+
                 groupBox6.Text = "Изменяемость среды";
                 checkBox4.Text = "Изменяема";
-                label9.Text = "Время изменения (мс)";
+                checkBox5.Text = "Отображать изменения";
+                label9.Text = "Время (мс)";
 
                 radioButton1.Text = "Замена обратными числами";
                 radioButton2.Text = "Уменьшать N раз на M % и вернуть исходные значения";
                 radioButton3.Text = "Увеличивать N раз на M % и вернуть исходные значения";
+
+                groupBox7.Text = "Соответствие изменений";
+                label13.Text = "Единицы";
+
+                button1.Text = "Добавить";
+                button3.Text = "Удалить";
+                button4.Text = "Показать";
+                button5.Text = "Очистить";
+
+                groupBox8.Text = "Кол-во";
+                label14.Text = "Областей";
+                label6.Text = "Клеток";
+
                 trouv?.toRusse();
                 beaucoup?.toRusse();
                 vran?.ToRusse();
@@ -383,27 +417,22 @@ namespace l_application_pour_diploma
         }
         private void set_unites()
         {
+            int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
+            source = new decimal[r, c];
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
                     if (checkBox1.Checked && Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
                         dataGridView1.Rows[i].Cells[j].Value = -1;
                     else dataGridView1.Rows[i].Cells[j].Value = 1;
+                    source[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
+                }
             try { dataGridView1.Rows[0].Cells[0].Value = (decimal)dataGridView1.Rows[0].Cells[0].Value; }
             catch (Exception) { dataGridView1.Rows[0].Cells[0].Value = (int)dataGridView1.Rows[0].Cells[0].Value; }
             trouv?.refresh(true);
             vran?.refr(true);
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
-        }
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
-        {
-            if (numericUpDown3.Value > numericUpDown4.Value)
-                numericUpDown3.Value = numericUpDown4.Value - 1;
-        }
-        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
-        {
-            if (numericUpDown4.Value < numericUpDown3.Value)
-                numericUpDown4.Value = numericUpDown3.Value + 1;
         }
         private void sûrLauteurToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -524,7 +553,30 @@ namespace l_application_pour_diploma
             {
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
                 {
-                    if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) > -1)
+                    if (!checkBox2.Checked)
+                    {
+                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) > -1)
+                        {
+                            if (radioButton1.Checked)
+                                dataGridView1.Rows[i].Cells[j].Value = 1 / Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
+                            if (radioButton2.Checked)
+                            {
+                                if (tick < (int)numericUpDown8.Value)
+                                    dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 - (double)numericUpDown9.Value) / 100;
+                                else
+                                    dataGridView1.Rows[i].Cells[j].Value = source[i, j];
+                            }
+                            if (radioButton3.Checked)
+                            {
+                                if (tick < (int)numericUpDown8.Value)
+                                    dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 + (double)numericUpDown9.Value) / 100;
+                                else
+                                    dataGridView1.Rows[i].Cells[j].Value = source[i, j];
+                            }
+
+                        }
+                    }
+                    else if (domains.Any(list => list.Contains(new(i, j))))
                     {
                         if (radioButton1.Checked)
                             dataGridView1.Rows[i].Cells[j].Value = 1 / Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
@@ -544,6 +596,8 @@ namespace l_application_pour_diploma
                         }
 
                     }
+
+
                 }
             }
             trouv?.refresh(true);
@@ -552,9 +606,126 @@ namespace l_application_pour_diploma
             else clearcolors();
         }
 
-        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        private void checkBox4_CheckedChanged(object sender, EventArgs e){
+            if (checkBox4.Checked && checkBox5.Checked) {
+                timer1.Enabled = true;
+                timer1.Start();
+            }
+            else {
+                timer1.Enabled = false;
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                        dataGridView1.Rows[i].Cells[j].Value = source[i, j];
+            }
+        }
+
+        private void numericUpDown7_ValueChanged(object sender, EventArgs e)
         {
-            if (checkBox4.Checked)
+            timer1.Interval = (int)numericUpDown7.Value;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            tick = 0;
+
+        }
+        public List<List<Point>> domains;
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked && domains.Count == 0)
+            {
+                checkBox2.Checked = false;
+                if (lang == 0) MessageBox.Show("Vous n'avez chosis les domains.");
+                if (lang == 1) MessageBox.Show("Области изменения не выбраны.");
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                List<Point> newd = new();
+                for (int i = 0; i < dataGridView1.SelectedCells.Count; i++)
+                {
+                    var el = dataGridView1.SelectedCells[i];
+                    if (!domains.Any(list => list.Contains(new(el.RowIndex, el.ColumnIndex))) && Convert.ToDecimal(el.Value) > 0)
+                    { //check if already included
+                        newd.Add(new(el.RowIndex, el.ColumnIndex));
+                    }
+                }
+                domains.Add(newd);
+                textBox3.Text = Convert.ToString(domains.Count);
+                textBox4.Text = Convert.ToString(domains.Sum(list => list.Count));
+                dataGridView1.ClearSelection();
+                affichdom();
+            }
+            else
+            {
+                if (lang == 0)
+                {
+                    MessageBox.Show("Choisir le domain pour à ajouter");
+                }
+                else if (lang == 1)
+                    MessageBox.Show("Выберите область для добавления");
+            }
+        }
+        private List<Color> ColeurList = new List<Color> { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen,
+            Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.Cyan, Color.BlueViolet };
+        private void button4_Click(object sender, EventArgs e){ affichdom(); }
+        private void affichdom(){
+            checkBox3.Checked = false;
+            for (int i = 0; i < dataGridView1.RowCount; i++){
+                for (int j = 0; j < dataGridView1.ColumnCount; j++) {
+                    if (domains.Any(list => list.Contains(new(i, j)))){
+                        dataGridView1.Rows[i].Cells[j].Style.BackColor = ColeurList[domains.FindIndex(list => list.Contains(new(i, j))) % ColeurList.Count];
+                    }
+                    else
+                        dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.White;
+                }
+
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            domains = new();
+            textBox3.Text = "0";
+            textBox4.Text = "0";
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                for (int i = 0; i < dataGridView1.SelectedCells.Count; i++)
+                {
+                    var el = dataGridView1.SelectedCells[i];
+                    if (domains.Any(list => list.Contains(new(el.RowIndex, el.ColumnIndex))))
+                    { //check if already included
+                        int index = domains.FindIndex(l => l.Contains(new(el.RowIndex, el.ColumnIndex)));
+                        domains[index].Remove(new(el.RowIndex, el.ColumnIndex));
+                    }
+                }
+                domains.RemoveAll(l => l.Count == 0);
+                textBox3.Text = Convert.ToString(domains.Count);
+                textBox4.Text = Convert.ToString(domains.Sum(list => list.Count));
+                dataGridView1.ClearSelection();
+                affichdom();
+            }
+            else
+            {
+                if (lang == 0)
+                {
+                    MessageBox.Show("Choisir le domain pour à suppremer");
+                }
+                else if (lang == 1)
+                    MessageBox.Show("Выберите область для удаления");
+            }
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked && checkBox5.Checked)
             {
                 timer1.Enabled = true;
                 timer1.Start();
@@ -565,23 +736,9 @@ namespace l_application_pour_diploma
             }
         }
 
-        private void numericUpDown7_ValueChanged(object sender, EventArgs e)
+        private void numericUpDown11_ValueChanged(object sender, EventArgs e)
         {
-            timer1.Interval = (int)numericUpDown7.Value;
-        }
-        decimal[,] source;
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            tick = 0;
-            int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
-            source = new decimal[r, c];
-            for (int i = 0; i < r; i++)
-            {
-                for (int j = 0; j < c; j++)
-                {
-                    source[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
-                }
-            }
+            vran?.refr(true);
         }
     }
 }

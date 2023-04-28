@@ -34,7 +34,6 @@
             numericUpDown2 = new NumericUpDown();
             label1 = new Label();
             label2 = new Label();
-            button1 = new Button();
             menuStrip1 = new MenuStrip();
             toolStripMenuItem1 = new ToolStripMenuItem();
             chargerToolStripMenuItem = new ToolStripMenuItem();
@@ -55,13 +54,7 @@
             label4 = new Label();
             label3 = new Label();
             button2 = new Button();
-            groupBox3 = new GroupBox();
-            checkBox2 = new CheckBox();
             checkBox1 = new CheckBox();
-            numericUpDown4 = new NumericUpDown();
-            numericUpDown3 = new NumericUpDown();
-            label6 = new Label();
-            label5 = new Label();
             groupBox4 = new GroupBox();
             numericUpDown5 = new NumericUpDown();
             numericUpDown6 = new NumericUpDown();
@@ -71,6 +64,23 @@
             checkBox3 = new CheckBox();
             timer1 = new System.Windows.Forms.Timer(components);
             groupBox6 = new GroupBox();
+            checkBox5 = new CheckBox();
+            groupBox3 = new GroupBox();
+            button5 = new Button();
+            button4 = new Button();
+            button3 = new Button();
+            button1 = new Button();
+            groupBox8 = new GroupBox();
+            label6 = new Label();
+            textBox4 = new TextBox();
+            label14 = new Label();
+            textBox3 = new TextBox();
+            checkBox2 = new CheckBox();
+            groupBox7 = new GroupBox();
+            label13 = new Label();
+            numericUpDown11 = new NumericUpDown();
+            label9 = new Label();
+            numericUpDown7 = new NumericUpDown();
             label11 = new Label();
             label10 = new Label();
             numericUpDown9 = new NumericUpDown();
@@ -78,8 +88,6 @@
             radioButton3 = new RadioButton();
             radioButton2 = new RadioButton();
             radioButton1 = new RadioButton();
-            label9 = new Label();
-            numericUpDown7 = new NumericUpDown();
             checkBox4 = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
@@ -87,17 +95,18 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
-            groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
             groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             groupBox5.SuspendLayout();
             groupBox6.SuspendLayout();
+            groupBox3.SuspendLayout();
+            groupBox8.SuspendLayout();
+            groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown11).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown9).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown8).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown7).BeginInit();
             SuspendLayout();
             // 
             // numericUpDown1
@@ -150,16 +159,6 @@
             label2.Size = new Size(152, 22);
             label2.TabIndex = 2;
             label2.Text = "Quantitè de colonnes";
-            // 
-            // button1
-            // 
-            button1.Location = new Point(7, 51);
-            button1.Name = "button1";
-            button1.Size = new Size(133, 29);
-            button1.TabIndex = 3;
-            button1.Text = "Générater";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // menuStrip1
             // 
@@ -288,7 +287,7 @@
             // textBox2
             // 
             textBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox2.Location = new Point(114, 62);
+            textBox2.Location = new Point(114, 53);
             textBox2.Name = "textBox2";
             textBox2.ReadOnly = true;
             textBox2.Size = new Size(44, 29);
@@ -314,9 +313,9 @@
             groupBox2.Controls.Add(textBox2);
             groupBox2.Controls.Add(label4);
             groupBox2.Controls.Add(label3);
-            groupBox2.Location = new Point(1013, 155);
+            groupBox2.Location = new Point(1013, 38);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(165, 101);
+            groupBox2.Size = new Size(165, 92);
             groupBox2.TabIndex = 9;
             groupBox2.TabStop = false;
             groupBox2.Text = "Le point actuel";
@@ -336,7 +335,7 @@
             // 
             label3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label3.AutoSize = true;
-            label3.Location = new Point(7, 65);
+            label3.Location = new Point(7, 56);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new Size(84, 22);
@@ -345,7 +344,8 @@
             // 
             // button2
             // 
-            button2.Location = new Point(144, 49);
+            button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button2.Location = new Point(296, 17);
             button2.Name = "button2";
             button2.Size = new Size(191, 32);
             button2.TabIndex = 3;
@@ -353,96 +353,15 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
-            // groupBox3
-            // 
-            groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            groupBox3.Controls.Add(checkBox2);
-            groupBox3.Controls.Add(checkBox1);
-            groupBox3.Controls.Add(numericUpDown4);
-            groupBox3.Controls.Add(button1);
-            groupBox3.Controls.Add(numericUpDown3);
-            groupBox3.Controls.Add(button2);
-            groupBox3.Controls.Add(label6);
-            groupBox3.Controls.Add(label5);
-            groupBox3.Location = new Point(693, 35);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(485, 114);
-            groupBox3.TabIndex = 10;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Génération de nombres";
-            // 
-            // checkBox2
-            // 
-            checkBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(13, 82);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(465, 26);
-            checkBox2.TabIndex = 4;
-            checkBox2.Text = "Remplir de nombres aléatoires après avoir changé les dimensions";
-            checkBox2.UseVisualStyleBackColor = true;
-            // 
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(13, 22);
+            checkBox1.Location = new Point(6, 57);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(213, 26);
             checkBox1.TabIndex = 4;
             checkBox1.Text = "Sauvegarder les unités neg.";
             checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDown4
-            // 
-            numericUpDown4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericUpDown4.Location = new Point(405, 51);
-            numericUpDown4.Margin = new Padding(4);
-            numericUpDown4.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown4.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            numericUpDown4.Name = "numericUpDown4";
-            numericUpDown4.Size = new Size(74, 29);
-            numericUpDown4.TabIndex = 1;
-            numericUpDown4.Value = new decimal(new int[] { 9, 0, 0, 0 });
-            numericUpDown4.ValueChanged += numericUpDown4_ValueChanged;
-            numericUpDown4.KeyPress += numericUpDown2_KeyPress;
-            numericUpDown4.KeyUp += numericUpDown2_KeyUp;
-            // 
-            // numericUpDown3
-            // 
-            numericUpDown3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericUpDown3.Location = new Point(404, 16);
-            numericUpDown3.Margin = new Padding(4);
-            numericUpDown3.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            numericUpDown3.Name = "numericUpDown3";
-            numericUpDown3.Size = new Size(74, 29);
-            numericUpDown3.TabIndex = 1;
-            numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            numericUpDown3.ValueChanged += numericUpDown3_ValueChanged;
-            numericUpDown3.KeyPress += numericUpDown1_KeyPress;
-            numericUpDown3.KeyUp += numericUpDown1_KeyUp;
-            // 
-            // label6
-            // 
-            label6.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label6.AutoSize = true;
-            label6.Location = new Point(361, 18);
-            label6.Margin = new Padding(4, 0, 4, 0);
-            label6.Name = "label6";
-            label6.Size = new Size(38, 22);
-            label6.TabIndex = 2;
-            label6.Text = "Min";
-            // 
-            // label5
-            // 
-            label5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label5.AutoSize = true;
-            label5.Location = new Point(359, 53);
-            label5.Margin = new Padding(4, 0, 4, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(41, 22);
-            label5.TabIndex = 2;
-            label5.Text = "Max";
             // 
             // groupBox4
             // 
@@ -451,9 +370,9 @@
             groupBox4.Controls.Add(numericUpDown6);
             groupBox4.Controls.Add(label7);
             groupBox4.Controls.Add(label8);
-            groupBox4.Location = new Point(767, 155);
+            groupBox4.Location = new Point(767, 38);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(240, 101);
+            groupBox4.Size = new Size(240, 92);
             groupBox4.TabIndex = 13;
             groupBox4.TabStop = false;
             groupBox4.Text = "Reflexion de cellules";
@@ -461,7 +380,7 @@
             // numericUpDown5
             // 
             numericUpDown5.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            numericUpDown5.Location = new Point(181, 63);
+            numericUpDown5.Location = new Point(181, 54);
             numericUpDown5.Margin = new Padding(5, 6, 5, 6);
             numericUpDown5.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             numericUpDown5.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
@@ -475,7 +394,7 @@
             // numericUpDown6
             // 
             numericUpDown6.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericUpDown6.Location = new Point(181, 25);
+            numericUpDown6.Location = new Point(181, 20);
             numericUpDown6.Margin = new Padding(5, 6, 5, 6);
             numericUpDown6.Maximum = new decimal(new int[] { 5, 0, 0, 0 });
             numericUpDown6.Name = "numericUpDown6";
@@ -489,7 +408,7 @@
             // 
             label7.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             label7.AutoSize = true;
-            label7.Location = new Point(7, 65);
+            label7.Location = new Point(7, 56);
             label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
             label7.Size = new Size(122, 22);
@@ -509,12 +428,14 @@
             // groupBox5
             // 
             groupBox5.Controls.Add(checkBox3);
-            groupBox5.Location = new Point(268, 38);
+            groupBox5.Controls.Add(checkBox1);
+            groupBox5.Controls.Add(button2);
+            groupBox5.Location = new Point(268, 35);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(156, 83);
+            groupBox5.Size = new Size(493, 95);
             groupBox5.TabIndex = 14;
             groupBox5.TabStop = false;
-            groupBox5.Text = "La carte de chaleur";
+            groupBox5.Text = "Autres";
             // 
             // checkBox3
             // 
@@ -523,9 +444,9 @@
             checkBox3.CheckState = CheckState.Checked;
             checkBox3.Location = new Point(6, 28);
             checkBox3.Name = "checkBox3";
-            checkBox3.Size = new Size(136, 26);
+            checkBox3.Size = new Size(210, 26);
             checkBox3.TabIndex = 5;
-            checkBox3.Text = "Afficher la carte";
+            checkBox3.Text = "Afficher la carte de chaleur";
             checkBox3.UseVisualStyleBackColor = true;
             checkBox3.CheckedChanged += checkBox3_CheckedChanged;
             // 
@@ -536,6 +457,10 @@
             // 
             // groupBox6
             // 
+            groupBox6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox6.Controls.Add(checkBox5);
+            groupBox6.Controls.Add(groupBox3);
+            groupBox6.Controls.Add(groupBox7);
             groupBox6.Controls.Add(label11);
             groupBox6.Controls.Add(label10);
             groupBox6.Controls.Add(numericUpDown9);
@@ -543,21 +468,208 @@
             groupBox6.Controls.Add(radioButton3);
             groupBox6.Controls.Add(radioButton2);
             groupBox6.Controls.Add(radioButton1);
-            groupBox6.Controls.Add(label9);
-            groupBox6.Controls.Add(numericUpDown7);
             groupBox6.Controls.Add(checkBox4);
-            groupBox6.Location = new Point(12, 127);
+            groupBox6.Location = new Point(12, 130);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(633, 151);
+            groupBox6.Size = new Size(1166, 148);
             groupBox6.TabIndex = 15;
             groupBox6.TabStop = false;
             groupBox6.Text = "Changement de milieu";
             // 
+            // checkBox5
+            // 
+            checkBox5.AutoSize = true;
+            checkBox5.Location = new Point(141, 26);
+            checkBox5.Name = "checkBox5";
+            checkBox5.Size = new Size(198, 26);
+            checkBox5.TabIndex = 8;
+            checkBox5.Text = "Reflexer les changements";
+            checkBox5.UseVisualStyleBackColor = true;
+            checkBox5.CheckedChanged += checkBox5_CheckedChanged;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            groupBox3.Controls.Add(button5);
+            groupBox3.Controls.Add(button4);
+            groupBox3.Controls.Add(button3);
+            groupBox3.Controls.Add(button1);
+            groupBox3.Controls.Add(groupBox8);
+            groupBox3.Controls.Add(checkBox2);
+            groupBox3.Location = new Point(452, 18);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(478, 124);
+            groupBox3.TabIndex = 7;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Domains";
+            // 
+            // button5
+            // 
+            button5.Location = new Point(6, 89);
+            button5.Name = "button5";
+            button5.Size = new Size(100, 29);
+            button5.TabIndex = 11;
+            button5.Text = "Nettoyer";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(6, 52);
+            button4.Name = "button4";
+            button4.Size = new Size(100, 29);
+            button4.TabIndex = 11;
+            button4.Text = "Afficher";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // button3
+            // 
+            button3.Anchor = AnchorStyles.Top;
+            button3.Location = new Point(135, 90);
+            button3.Name = "button3";
+            button3.Size = new Size(100, 29);
+            button3.TabIndex = 10;
+            button3.Text = "Suppremer";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // button1
+            // 
+            button1.Anchor = AnchorStyles.Top;
+            button1.Location = new Point(135, 51);
+            button1.Name = "button1";
+            button1.Size = new Size(100, 30);
+            button1.TabIndex = 9;
+            button1.Text = "Aujouter";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // groupBox8
+            // 
+            groupBox8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            groupBox8.Controls.Add(label6);
+            groupBox8.Controls.Add(textBox4);
+            groupBox8.Controls.Add(label14);
+            groupBox8.Controls.Add(textBox3);
+            groupBox8.Location = new Point(336, 22);
+            groupBox8.Name = "groupBox8";
+            groupBox8.Size = new Size(136, 96);
+            groupBox8.TabIndex = 8;
+            groupBox8.TabStop = false;
+            groupBox8.Text = "Quantité";
+            // 
+            // label6
+            // 
+            label6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label6.AutoSize = true;
+            label6.Location = new Point(6, 64);
+            label6.Name = "label6";
+            label6.Size = new Size(62, 22);
+            label6.TabIndex = 2;
+            label6.Text = "Cellules";
+            // 
+            // textBox4
+            // 
+            textBox4.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            textBox4.Location = new Point(90, 61);
+            textBox4.Name = "textBox4";
+            textBox4.ReadOnly = true;
+            textBox4.Size = new Size(40, 29);
+            textBox4.TabIndex = 7;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(6, 30);
+            label14.Name = "label14";
+            label14.Size = new Size(71, 22);
+            label14.TabIndex = 2;
+            label14.Text = "Domains";
+            // 
+            // textBox3
+            // 
+            textBox3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            textBox3.Location = new Point(90, 27);
+            textBox3.Name = "textBox3";
+            textBox3.ReadOnly = true;
+            textBox3.Size = new Size(40, 29);
+            textBox3.TabIndex = 7;
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Location = new Point(6, 22);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(78, 26);
+            checkBox2.TabIndex = 0;
+            checkBox2.Text = "Utiliser";
+            checkBox2.UseVisualStyleBackColor = true;
+            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
+            // 
+            // groupBox7
+            // 
+            groupBox7.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            groupBox7.Controls.Add(label13);
+            groupBox7.Controls.Add(numericUpDown11);
+            groupBox7.Controls.Add(label9);
+            groupBox7.Controls.Add(numericUpDown7);
+            groupBox7.Location = new Point(936, 16);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Size = new Size(224, 113);
+            groupBox7.TabIndex = 6;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "Conformité de changement";
+            // 
+            // label13
+            // 
+            label13.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label13.AutoSize = true;
+            label13.Location = new Point(6, 72);
+            label13.Name = "label13";
+            label13.Size = new Size(54, 22);
+            label13.TabIndex = 0;
+            label13.Text = "Unités";
+            // 
+            // numericUpDown11
+            // 
+            numericUpDown11.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            numericUpDown11.DecimalPlaces = 2;
+            numericUpDown11.Location = new Point(141, 72);
+            numericUpDown11.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown11.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown11.Name = "numericUpDown11";
+            numericUpDown11.Size = new Size(77, 29);
+            numericUpDown11.TabIndex = 1;
+            numericUpDown11.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            numericUpDown11.ValueChanged += numericUpDown11_ValueChanged;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(6, 31);
+            label9.Name = "label9";
+            label9.Size = new Size(88, 22);
+            label9.TabIndex = 2;
+            label9.Text = "Temps (ms)";
+            // 
+            // numericUpDown7
+            // 
+            numericUpDown7.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericUpDown7.Location = new Point(141, 31);
+            numericUpDown7.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            numericUpDown7.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
+            numericUpDown7.Name = "numericUpDown7";
+            numericUpDown7.Size = new Size(77, 29);
+            numericUpDown7.TabIndex = 1;
+            numericUpDown7.Value = new decimal(new int[] { 5000, 0, 0, 0 });
+            numericUpDown7.ValueChanged += numericUpDown7_ValueChanged;
+            // 
             // label11
             // 
-            label11.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label11.Anchor = AnchorStyles.Bottom;
             label11.AutoSize = true;
-            label11.Location = new Point(529, 117);
+            label11.Location = new Point(348, 54);
             label11.Name = "label11";
             label11.Size = new Size(25, 22);
             label11.TabIndex = 5;
@@ -565,9 +677,9 @@
             // 
             // label10
             // 
-            label10.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label10.Anchor = AnchorStyles.Bottom;
             label10.AutoSize = true;
-            label10.Location = new Point(529, 85);
+            label10.Location = new Point(350, 20);
             label10.Name = "label10";
             label10.Size = new Size(23, 22);
             label10.TabIndex = 5;
@@ -575,23 +687,23 @@
             // 
             // numericUpDown9
             // 
-            numericUpDown9.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericUpDown9.Location = new Point(560, 115);
+            numericUpDown9.Anchor = AnchorStyles.Bottom;
+            numericUpDown9.Location = new Point(379, 50);
             numericUpDown9.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown9.Name = "numericUpDown9";
             numericUpDown9.Size = new Size(67, 29);
             numericUpDown9.TabIndex = 4;
-            numericUpDown9.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown9.Value = new decimal(new int[] { 20, 0, 0, 0 });
             // 
             // numericUpDown8
             // 
-            numericUpDown8.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericUpDown8.Location = new Point(560, 83);
+            numericUpDown8.Anchor = AnchorStyles.Bottom;
+            numericUpDown8.Location = new Point(379, 18);
             numericUpDown8.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown8.Name = "numericUpDown8";
             numericUpDown8.Size = new Size(67, 29);
             numericUpDown8.TabIndex = 4;
-            numericUpDown8.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown8.Value = new decimal(new int[] { 3, 0, 0, 0 });
             // 
             // radioButton3
             // 
@@ -607,7 +719,7 @@
             // radioButton2
             // 
             radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(7, 83);
+            radioButton2.Location = new Point(7, 87);
             radioButton2.Name = "radioButton2";
             radioButton2.Size = new Size(254, 26);
             radioButton2.TabIndex = 3;
@@ -626,28 +738,6 @@
             radioButton1.TabStop = true;
             radioButton1.Text = "Inverser";
             radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // label9
-            // 
-            label9.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label9.AutoSize = true;
-            label9.Location = new Point(358, 28);
-            label9.Name = "label9";
-            label9.Size = new Size(196, 22);
-            label9.TabIndex = 2;
-            label9.Text = "Temps de changement (ms)";
-            // 
-            // numericUpDown7
-            // 
-            numericUpDown7.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericUpDown7.Location = new Point(560, 26);
-            numericUpDown7.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
-            numericUpDown7.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
-            numericUpDown7.Name = "numericUpDown7";
-            numericUpDown7.Size = new Size(67, 29);
-            numericUpDown7.TabIndex = 1;
-            numericUpDown7.Value = new decimal(new int[] { 20000, 0, 0, 0 });
-            numericUpDown7.ValueChanged += numericUpDown7_ValueChanged;
             // 
             // checkBox4
             // 
@@ -668,7 +758,6 @@
             Controls.Add(groupBox6);
             Controls.Add(groupBox5);
             Controls.Add(groupBox4);
-            Controls.Add(groupBox3);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(dataGridView1);
@@ -688,10 +777,6 @@
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).EndInit();
@@ -700,9 +785,16 @@
             groupBox5.PerformLayout();
             groupBox6.ResumeLayout(false);
             groupBox6.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            groupBox8.ResumeLayout(false);
+            groupBox8.PerformLayout();
+            groupBox7.ResumeLayout(false);
+            groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown11).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown7).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown9).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown8).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown7).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -712,7 +804,6 @@
         private NumericUpDown numericUpDown2;
         private Label label1;
         private Label label2;
-        private Button button1;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem desFenêtresToolStripMenuItem;
@@ -730,14 +821,8 @@
         private ToolStripMenuItem françaisToolStripMenuItem;
         private ToolStripMenuItem russeToolStripMenuItem;
         private Button button2;
-        private GroupBox groupBox3;
-        private NumericUpDown numericUpDown4;
-        private NumericUpDown numericUpDown3;
-        private Label label6;
-        private Label label5;
         private ToolStripMenuItem sûrLauteurToolStripMenuItem;
         private CheckBox checkBox1;
-        private CheckBox checkBox2;
         private GroupBox groupBox4;
         private NumericUpDown numericUpDown5;
         private NumericUpDown numericUpDown6;
@@ -749,15 +834,30 @@
         private ToolStripMenuItem diagrammeDeVoronoїToolStripMenuItem;
         private System.Windows.Forms.Timer timer1;
         private GroupBox groupBox6;
-        private CheckBox checkBox4;
         private Label label9;
         private NumericUpDown numericUpDown7;
-        private RadioButton radioButton1;
-        private RadioButton radioButton3;
-        private RadioButton radioButton2;
-        private NumericUpDown numericUpDown8;
         private Label label11;
         private Label label10;
-        private NumericUpDown numericUpDown9;
+        private GroupBox groupBox7;
+        private Label label13;
+        private GroupBox groupBox3;
+        private GroupBox groupBox8;
+        public TextBox textBox4;
+        public TextBox textBox3;
+        private Label label14;
+        private Label label6;
+        private Button button1;
+        private Button button3;
+        private Button button5;
+        private Button button4;
+        private CheckBox checkBox5;
+        internal CheckBox checkBox4;
+        internal RadioButton radioButton1;
+        internal RadioButton radioButton3;
+        internal RadioButton radioButton2;
+        internal NumericUpDown numericUpDown8;
+        internal NumericUpDown numericUpDown9;
+        internal CheckBox checkBox2;
+        internal NumericUpDown numericUpDown11;
     }
 }
