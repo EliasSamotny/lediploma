@@ -28,398 +28,355 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.chargerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sauvegarderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.desFenêtresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.desCalculationsDeCheminsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            this.groupBox4.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
-            this.SuspendLayout();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            dataGridView1 = new DataGridView();
+            groupBox1 = new GroupBox();
+            radioButton3 = new RadioButton();
+            radioButton2 = new RadioButton();
+            radioButton1 = new RadioButton();
+            label2 = new Label();
+            label3 = new Label();
+            groupBox2 = new GroupBox();
+            numericUpDown2 = new NumericUpDown();
+            numericUpDown1 = new NumericUpDown();
+            groupBox3 = new GroupBox();
+            numericUpDown4 = new NumericUpDown();
+            numericUpDown3 = new NumericUpDown();
+            label1 = new Label();
+            label4 = new Label();
+            groupBox4 = new GroupBox();
+            checkBox1 = new CheckBox();
+            menuStrip1 = new MenuStrip();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            chargerToolStripMenuItem = new ToolStripMenuItem();
+            sauvegarderToolStripMenuItem = new ToolStripMenuItem();
+            desFenêtresToolStripMenuItem = new ToolStripMenuItem();
+            desCalculationsDeCheminsToolStripMenuItem = new ToolStripMenuItem();
+            textBox1 = new TextBox();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
+            groupBox4.SuspendLayout();
+            menuStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // dataGridView1
             // 
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.ColumnHeadersVisible = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Palatino Linotype", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridView1.AllowUserToOrderColumns = true;
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.ColumnHeadersVisible = false;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Palatino Linotype", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle1.Format = "N2";
             dataGridViewCellStyle1.NullValue = null;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 230);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(606, 310);
-            this.dataGridView1.TabIndex = 7;
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView1.Location = new Point(12, 230);
+            dataGridView1.Margin = new Padding(5, 6, 5, 6);
+            dataGridView1.MultiSelect = false;
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.RowTemplate.Height = 25;
+            dataGridView1.Size = new Size(606, 310);
+            dataGridView1.TabIndex = 7;
+            dataGridView1.CellClick += dataGridView1_CellClick;
+            dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.radioButton3);
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Location = new System.Drawing.Point(364, 33);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(254, 120);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Le destin de chercher de chemins";
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            groupBox1.Controls.Add(radioButton3);
+            groupBox1.Controls.Add(radioButton2);
+            groupBox1.Controls.Add(radioButton1);
+            groupBox1.Location = new Point(364, 33);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(254, 120);
+            groupBox1.TabIndex = 8;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Le destin de chercher de chemins";
             // 
             // radioButton3
             // 
-            this.radioButton3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(9, 88);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(186, 26);
-            this.radioButton3.TabIndex = 0;
-            this.radioButton3.Text = "III rayon (32 directions)";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
+            radioButton3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            radioButton3.AutoSize = true;
+            radioButton3.Checked = true;
+            radioButton3.Location = new Point(9, 88);
+            radioButton3.Name = "radioButton3";
+            radioButton3.Size = new Size(186, 26);
+            radioButton3.TabIndex = 0;
+            radioButton3.TabStop = true;
+            radioButton3.Text = "III rayon (32 directions)";
+            radioButton3.UseVisualStyleBackColor = true;
+            radioButton3.CheckedChanged += radioButton3_CheckedChanged;
             // 
             // radioButton2
             // 
-            this.radioButton2.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(9, 55);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(181, 26);
-            this.radioButton2.TabIndex = 0;
-            this.radioButton2.Text = "II rayon (16 directions)";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            radioButton2.Anchor = AnchorStyles.Left;
+            radioButton2.AutoSize = true;
+            radioButton2.Location = new Point(9, 55);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(181, 26);
+            radioButton2.TabIndex = 0;
+            radioButton2.Text = "II rayon (16 directions)";
+            radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.CheckedChanged += radioButton2_CheckedChanged;
             // 
             // radioButton1
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(9, 23);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(168, 26);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "I rayon (8 directions)";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            radioButton1.AutoSize = true;
+            radioButton1.Location = new Point(9, 23);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(168, 26);
+            radioButton1.TabIndex = 0;
+            radioButton1.Text = "I rayon (8 directions)";
+            radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.CheckedChanged += radioButton1_CheckedChanged;
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 56);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 22);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "La colonne";
+            label2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label2.AutoSize = true;
+            label2.Location = new Point(7, 56);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(84, 22);
+            label2.TabIndex = 10;
+            label2.Text = "La colonne";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 25);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 22);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "La ligne";
+            label3.AutoSize = true;
+            label3.Location = new Point(7, 25);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(65, 22);
+            label3.TabIndex = 11;
+            label3.Text = "La ligne";
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.numericUpDown2);
-            this.groupBox2.Controls.Add(this.numericUpDown1);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(12, 134);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(238, 87);
-            this.groupBox2.TabIndex = 12;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Cellule selectée";
+            groupBox2.Controls.Add(numericUpDown2);
+            groupBox2.Controls.Add(numericUpDown1);
+            groupBox2.Controls.Add(label2);
+            groupBox2.Controls.Add(label3);
+            groupBox2.Location = new Point(12, 134);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(238, 87);
+            groupBox2.TabIndex = 12;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Cellule selectée";
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown2.InterceptArrowKeys = false;
-            this.numericUpDown2.Location = new System.Drawing.Point(162, 54);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.ReadOnly = true;
-            this.numericUpDown2.Size = new System.Drawing.Size(70, 29);
-            this.numericUpDown2.TabIndex = 12;
-            this.numericUpDown2.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            numericUpDown2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            numericUpDown2.InterceptArrowKeys = false;
+            numericUpDown2.Location = new Point(162, 54);
+            numericUpDown2.Margin = new Padding(5, 6, 5, 6);
+            numericUpDown2.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown2.Name = "numericUpDown2";
+            numericUpDown2.ReadOnly = true;
+            numericUpDown2.Size = new Size(70, 29);
+            numericUpDown2.TabIndex = 12;
+            numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown2.ValueChanged += numericUpDown2_ValueChanged;
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown1.InterceptArrowKeys = false;
-            this.numericUpDown1.Location = new System.Drawing.Point(162, 23);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.ReadOnly = true;
-            this.numericUpDown1.Size = new System.Drawing.Size(70, 29);
-            this.numericUpDown1.TabIndex = 12;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            numericUpDown1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericUpDown1.InterceptArrowKeys = false;
+            numericUpDown1.Location = new Point(162, 23);
+            numericUpDown1.Margin = new Padding(4);
+            numericUpDown1.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.ReadOnly = true;
+            numericUpDown1.Size = new Size(70, 29);
+            numericUpDown1.TabIndex = 12;
+            numericUpDown1.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.numericUpDown4);
-            this.groupBox3.Controls.Add(this.numericUpDown3);
-            this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(12, 33);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(238, 95);
-            this.groupBox3.TabIndex = 12;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Reflexion de cellules";
+            groupBox3.Controls.Add(numericUpDown4);
+            groupBox3.Controls.Add(numericUpDown3);
+            groupBox3.Controls.Add(label1);
+            groupBox3.Controls.Add(label4);
+            groupBox3.Location = new Point(12, 33);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(238, 95);
+            groupBox3.TabIndex = 12;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Reflexion de cellules";
             // 
             // numericUpDown4
             // 
-            this.numericUpDown4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown4.Location = new System.Drawing.Point(162, 58);
-            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.numericUpDown4.Maximum = new decimal(new int[] {
-            25,
-            0,
-            0,
-            0});
-            this.numericUpDown4.Minimum = new decimal(new int[] {
-            3,
-            0,
-            0,
-            0});
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.ReadOnly = true;
-            this.numericUpDown4.Size = new System.Drawing.Size(70, 29);
-            this.numericUpDown4.TabIndex = 12;
-            this.numericUpDown4.Value = new decimal(new int[] {
-            12,
-            0,
-            0,
-            0});
-            this.numericUpDown4.ValueChanged += new System.EventHandler(this.numericUpDown4_ValueChanged);
+            numericUpDown4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericUpDown4.Location = new Point(162, 58);
+            numericUpDown4.Margin = new Padding(5, 6, 5, 6);
+            numericUpDown4.Maximum = new decimal(new int[] { 25, 0, 0, 0 });
+            numericUpDown4.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
+            numericUpDown4.Name = "numericUpDown4";
+            numericUpDown4.ReadOnly = true;
+            numericUpDown4.Size = new Size(70, 29);
+            numericUpDown4.TabIndex = 12;
+            numericUpDown4.Value = new decimal(new int[] { 12, 0, 0, 0 });
+            numericUpDown4.ValueChanged += numericUpDown4_ValueChanged;
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown3.Location = new System.Drawing.Point(162, 23);
-            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.ReadOnly = true;
-            this.numericUpDown3.Size = new System.Drawing.Size(70, 29);
-            this.numericUpDown3.TabIndex = 12;
-            this.numericUpDown3.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
+            numericUpDown3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericUpDown3.Location = new Point(162, 23);
+            numericUpDown3.Margin = new Padding(5, 6, 5, 6);
+            numericUpDown3.Maximum = new decimal(new int[] { 5, 0, 0, 0 });
+            numericUpDown3.Name = "numericUpDown3";
+            numericUpDown3.ReadOnly = true;
+            numericUpDown3.Size = new Size(70, 29);
+            numericUpDown3.TabIndex = 12;
+            numericUpDown3.Value = new decimal(new int[] { 2, 0, 0, 0 });
+            numericUpDown3.ValueChanged += numericUpDown3_ValueChanged;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 60);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(122, 22);
-            this.label1.TabIndex = 11;
-            this.label1.Text = "La taille de fonte";
+            label1.AutoSize = true;
+            label1.Location = new Point(7, 60);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(122, 22);
+            label1.TabIndex = 11;
+            label1.Text = "La taille de fonte";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 25);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(146, 22);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "La quantité de signs";
+            label4.AutoSize = true;
+            label4.Location = new Point(7, 25);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(146, 22);
+            label4.TabIndex = 11;
+            label4.Text = "La quantité de signs";
             // 
             // groupBox4
             // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.checkBox1);
-            this.groupBox4.Location = new System.Drawing.Point(364, 159);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(254, 62);
-            this.groupBox4.TabIndex = 15;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "La carte de chaleur des distances";
+            groupBox4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            groupBox4.Controls.Add(checkBox1);
+            groupBox4.Location = new Point(364, 159);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(254, 62);
+            groupBox4.TabIndex = 15;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "La carte de chaleur des distances";
             // 
             // checkBox1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(9, 26);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(136, 26);
-            this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "Afficher la carte";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            checkBox1.AutoSize = true;
+            checkBox1.Checked = true;
+            checkBox1.CheckState = CheckState.Checked;
+            checkBox1.Location = new Point(9, 26);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(136, 26);
+            checkBox1.TabIndex = 5;
+            checkBox1.Text = "Afficher la carte";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Font = new System.Drawing.Font("Palatino Linotype", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.desFenêtresToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(630, 30);
-            this.menuStrip1.TabIndex = 16;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.Font = new Font("Palatino Linotype", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, desFenêtresToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(630, 30);
+            menuStrip1.TabIndex = 16;
+            menuStrip1.Text = "menuStrip1";
             // 
             // toolStripMenuItem1
             // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.chargerToolStripMenuItem,
-            this.sauvegarderToolStripMenuItem});
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(64, 26);
-            this.toolStripMenuItem1.Text = "Ficher";
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { chargerToolStripMenuItem, sauvegarderToolStripMenuItem });
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(64, 26);
+            toolStripMenuItem1.Text = "Ficher";
             // 
             // chargerToolStripMenuItem
             // 
-            this.chargerToolStripMenuItem.Name = "chargerToolStripMenuItem";
-            this.chargerToolStripMenuItem.Size = new System.Drawing.Size(166, 26);
-            this.chargerToolStripMenuItem.Text = "Charger";
+            chargerToolStripMenuItem.Name = "chargerToolStripMenuItem";
+            chargerToolStripMenuItem.Size = new Size(166, 26);
+            chargerToolStripMenuItem.Text = "Charger";
             // 
             // sauvegarderToolStripMenuItem
             // 
-            this.sauvegarderToolStripMenuItem.Name = "sauvegarderToolStripMenuItem";
-            this.sauvegarderToolStripMenuItem.Size = new System.Drawing.Size(166, 26);
-            this.sauvegarderToolStripMenuItem.Text = "Sauvegarder";
+            sauvegarderToolStripMenuItem.Name = "sauvegarderToolStripMenuItem";
+            sauvegarderToolStripMenuItem.Size = new Size(166, 26);
+            sauvegarderToolStripMenuItem.Text = "Sauvegarder";
             // 
             // desFenêtresToolStripMenuItem
             // 
-            this.desFenêtresToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.desCalculationsDeCheminsToolStripMenuItem});
-            this.desFenêtresToolStripMenuItem.Name = "desFenêtresToolStripMenuItem";
-            this.desFenêtresToolStripMenuItem.Size = new System.Drawing.Size(78, 26);
-            this.desFenêtresToolStripMenuItem.Text = "Fenêtres";
+            desFenêtresToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desCalculationsDeCheminsToolStripMenuItem });
+            desFenêtresToolStripMenuItem.Name = "desFenêtresToolStripMenuItem";
+            desFenêtresToolStripMenuItem.Size = new Size(78, 26);
+            desFenêtresToolStripMenuItem.Text = "Fenêtres";
             // 
             // desCalculationsDeCheminsToolStripMenuItem
             // 
-            this.desCalculationsDeCheminsToolStripMenuItem.Name = "desCalculationsDeCheminsToolStripMenuItem";
-            this.desCalculationsDeCheminsToolStripMenuItem.Size = new System.Drawing.Size(314, 26);
-            this.desCalculationsDeCheminsToolStripMenuItem.Text = "Calculations de routes le plus court";
-            this.desCalculationsDeCheminsToolStripMenuItem.Click += new System.EventHandler(this.desCalculationsDeCheminsToolStripMenuItem_Click);
+            desCalculationsDeCheminsToolStripMenuItem.Name = "desCalculationsDeCheminsToolStripMenuItem";
+            desCalculationsDeCheminsToolStripMenuItem.Size = new Size(314, 26);
+            desCalculationsDeCheminsToolStripMenuItem.Text = "Calculations de routes le plus court";
+            desCalculationsDeCheminsToolStripMenuItem.Click += desCalculationsDeCheminsToolStripMenuItem_Click;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(256, 192);
+            textBox1.Name = "textBox1";
+            textBox1.ReadOnly = true;
+            textBox1.Size = new Size(100, 29);
+            textBox1.TabIndex = 17;
             // 
             // Trouvation
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 22F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(630, 555);
-            this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.dataGridView1);
-            this.Font = new System.Drawing.Font("Palatino Linotype", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "Trouvation";
-            this.Text = "Trouvation un chemin le plus court";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Trouvation_FormClosing);
-            this.Load += new System.EventHandler(this.Trouvation_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(9F, 22F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(630, 555);
+            Controls.Add(textBox1);
+            Controls.Add(menuStrip1);
+            Controls.Add(groupBox4);
+            Controls.Add(groupBox3);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
+            Controls.Add(dataGridView1);
+            Font = new Font("Palatino Linotype", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            Margin = new Padding(4);
+            Name = "Trouvation";
+            Text = "Trouvation un chemin le plus court";
+            FormClosing += Trouvation_FormClosing;
+            Load += Trouvation_Load;
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -446,5 +403,6 @@
         private ToolStripMenuItem sauvegarderToolStripMenuItem;
         private ToolStripMenuItem desFenêtresToolStripMenuItem;
         private ToolStripMenuItem desCalculationsDeCheminsToolStripMenuItem;
+        private TextBox textBox1;
     }
 }

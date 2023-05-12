@@ -327,8 +327,8 @@ namespace l_application_pour_diploma
                 label9.Text = "Temps de changement (ms)";
 
                 radioButton1.Text = "Inverser";
-                radioButton2.Text = "Réduire N fois par M % et revenir";
-                radioButton3.Text = "Accroître N fois par M % et revenir";
+                radioButton2.Text = "Changer N fois par M % et revenir";
+                label5.Text = "Etat initial";
 
                 groupBox6.Text = "Changement de milieu";
                 checkBox4.Text = "Changeable";
@@ -390,8 +390,8 @@ namespace l_application_pour_diploma
                 label9.Text = "Время (мс)";
 
                 radioButton1.Text = "Замена обратными числами";
-                radioButton2.Text = "Уменьшать N раз на M % и вернуть исходные значения";
-                radioButton3.Text = "Увеличивать N раз на M % и вернуть исходные значения";
+                radioButton2.Text = "Изменить N раз на M % и вернуть исходные значения";
+                label5.Text = "Начальное состояние";
 
                 groupBox7.Text = "Соответствие изменений";
                 label13.Text = "Единицы";
@@ -562,13 +562,6 @@ namespace l_application_pour_diploma
                             if (radioButton2.Checked)
                             {
                                 if (tick < (int)numericUpDown8.Value)
-                                    dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 - (double)numericUpDown9.Value) / 100;
-                                else
-                                    dataGridView1.Rows[i].Cells[j].Value = source[i, j];
-                            }
-                            if (radioButton3.Checked)
-                            {
-                                if (tick < (int)numericUpDown8.Value)
                                     dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 + (double)numericUpDown9.Value) / 100;
                                 else
                                     dataGridView1.Rows[i].Cells[j].Value = source[i, j];
@@ -581,13 +574,6 @@ namespace l_application_pour_diploma
                         if (radioButton1.Checked)
                             dataGridView1.Rows[i].Cells[j].Value = 1 / Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                         if (radioButton2.Checked)
-                        {
-                            if (tick < (int)numericUpDown8.Value)
-                                dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 - (double)numericUpDown9.Value) / 100;
-                            else
-                                dataGridView1.Rows[i].Cells[j].Value = source[i, j];
-                        }
-                        if (radioButton3.Checked)
                         {
                             if (tick < (int)numericUpDown8.Value)
                                 dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 + (double)numericUpDown9.Value) / 100;
@@ -606,17 +592,22 @@ namespace l_application_pour_diploma
             else clearcolors();
         }
 
-        private void checkBox4_CheckedChanged(object sender, EventArgs e){
-            if (checkBox4.Checked && checkBox5.Checked) {
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked && checkBox5.Checked)
+            {
                 timer1.Enabled = true;
                 timer1.Start();
             }
-            else {
+            else
+            {
                 timer1.Enabled = false;
                 for (int i = 0; i < dataGridView1.RowCount; i++)
                     for (int j = 0; j < dataGridView1.ColumnCount; j++)
                         dataGridView1.Rows[i].Cells[j].Value = source[i, j];
             }
+            vran?.refr(false);
+            trouv?.refresh(false);
         }
 
         private void numericUpDown7_ValueChanged(object sender, EventArgs e)
@@ -627,7 +618,8 @@ namespace l_application_pour_diploma
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             tick = 0;
-
+            trouv?.refresh(true);
+            vran?.refr(false);
         }
         public List<List<Point>> domains;
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
@@ -671,12 +663,16 @@ namespace l_application_pour_diploma
         }
         private List<Color> ColeurList = new List<Color> { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen,
             Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.Cyan, Color.BlueViolet };
-        private void button4_Click(object sender, EventArgs e){ affichdom(); }
-        private void affichdom(){
+        private void button4_Click(object sender, EventArgs e) { affichdom(); }
+        private void affichdom()
+        {
             checkBox3.Checked = false;
-            for (int i = 0; i < dataGridView1.RowCount; i++){
-                for (int j = 0; j < dataGridView1.ColumnCount; j++) {
-                    if (domains.Any(list => list.Contains(new(i, j)))){
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
+                    if (domains.Any(list => list.Contains(new(i, j))))
+                    {
                         dataGridView1.Rows[i].Cells[j].Style.BackColor = ColeurList[domains.FindIndex(list => list.Contains(new(i, j))) % ColeurList.Count];
                     }
                     else
@@ -739,6 +735,30 @@ namespace l_application_pour_diploma
         private void numericUpDown11_ValueChanged(object sender, EventArgs e)
         {
             vran?.refr(true);
+            trouv?.refresh(false);
+        }
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked)
+            {
+                trouv?.refresh(true);
+                vran?.refr(false);
+            }
+        }
+
+        private void numericUpDown9_ValueChanged(object sender, EventArgs e)
+        {
+            trouv?.refresh(true);
+            vran?.refr(false);
+        }
+
+        private void numericUpDown8_ValueChanged(object sender, EventArgs e)
+        {
+            numericUpDown3.Maximum = numericUpDown8.Value;
+            numericUpDown3.Value = 0;
+            trouv?.refresh(true);
+            vran?.refr(false);
+
         }
     }
 }

@@ -19,6 +19,18 @@ namespace l_application_pour_diploma
                 dest = d;
             }
         }
+        public class Points2{
+            public Point point;
+            public decimal dest;
+            public Points2(int x, int y, decimal d){
+                point = new Point(x, y);
+                dest = d;
+            }
+            public Points2(Point p, decimal d){
+                point = p;
+                dest = d;
+            }
+        }
 
     }
 }

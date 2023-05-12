@@ -1,6 +1,5 @@
 ﻿using static l_application_pour_diploma.Classes;
 namespace l_application_pour_diploma{
-    
     public partial class Trouvation : Form{
         internal Commencement own;
         internal Routes? r;
@@ -9,6 +8,7 @@ namespace l_application_pour_diploma{
         internal Point[,] previos;
         internal List<List<Point>> submedia;
         bool onemedium = true;
+        internal List<decimal[,]> variants;
         int curr_med = 0;
         public Trouvation(Commencement o){
             InitializeComponent();
@@ -17,40 +17,84 @@ namespace l_application_pour_diploma{
         private bool checkallvis(){
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    if (!vis[i, j] && submedia[0].Contains(new(x,y))) return false;
+                    if (!vis[i, j] && submedia[0].Contains(new(x, y))) 
+                        return false;
             return true;
+        }
+        private int currst(decimal dest, decimal chaque ) {
+            int shift = (int)own.numericUpDown3.Value;
+            int currstage = ((int)Math.Floor(dest / chaque)) % variants.Count;
+            if (currstage > 0 && dest  % chaque == 0)
+                currstage--;
+            return ((currstage + shift) % variants.Count);
         }
         private void calculcell(int xc, int yc){
             if (xc + 1 > 0 && yc + 1 > 0 && xc < dataGridView1.RowCount && yc < dataGridView1.ColumnCount && own.dataGridView1.Rows[xc].Cells[yc].Value != null && pointavailiter(xc, yc))
             {//if exists
-                decimal cur = (decimal)((Convert.ToDouble(own.dataGridView1.Rows[xc].Cells[yc].Value.ToString()) + Convert.ToDouble(own.dataGridView1.Rows[x1].Cells[y1].Value.ToString())) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dataGridView1.Rows[x1].Cells[y1].Value.ToString()));
+                decimal chaque = own.numericUpDown11.Value;
+                int currstage = currst(Convert.ToDecimal(dataGridView1.Rows[x1].Cells[y1].Value), chaque);
+                
+                decimal cur = (decimal)((Convert.ToDouble(variants[currstage][xc, yc]) + Convert.ToDouble(variants[currstage][x1, y1])) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dataGridView1.Rows[x1].Cells[y1].Value));
+               
+                if (currstage != (currst(cur, chaque)) && variants.Count > 1){
+                    int diff = (currstage + (int)Math.Abs(currstage - Math.Floor(cur / chaque))) % variants.Count;
+                    cur = (decimal)((Convert.ToDouble(variants[diff][xc, yc]) + Convert.ToDouble(variants[diff][x1, y1])) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dataGridView1.Rows[x1].Cells[y1].Value));
+                }
+
                 if (dataGridView1.Rows[xc].Cells[yc].Value == null)
                 {//if not visited at all
                     dataGridView1.Rows[xc].Cells[yc].Value = cur;
                     previos[xc, yc] = new Point(x1, y1);
                 }
-                else if (cur < Convert.ToDecimal(dataGridView1.Rows[xc].Cells[yc].Value.ToString()))
+                else if (cur < Convert.ToDecimal(dataGridView1.Rows[xc].Cells[yc].Value))
                 {//if from this point is shorter than known path
                     dataGridView1.Rows[xc].Cells[yc].Value = cur;
                     previos[xc, yc] = new Point(x1, y1);
                 }
-                else if (Convert.ToDecimal(own.dataGridView1.Rows[xc].Cells[yc].Value.ToString()) == -1){  //if point unpassable
+                else if (Convert.ToDecimal(own.dataGridView1.Rows[xc].Cells[yc].Value) == -1)
+                {  //if point unpassable
                     dataGridView1.Rows[xc].Cells[yc].Value = -1;
                 }
             }
         }
-        private int determ_submed(Point p){
+        private int determ_submed(Point p)
+        {
             for (int i = 0; i < submedia.Count; i++)
                 if (submedia[i].Contains(p)) return i;
             return 0;
         }
         internal void refresh(bool changed_med){
+            variants = new() { own.source };
+            if (own.radioButton1.Checked && own.checkBox4.Checked){
+                decimal[,] inverseMatrix = new decimal[own.source.GetLength(0), own.source.GetLength(1)];
+                for (int i = 0; i < own.source.GetLength(0); i++)
+                    for (int j = 0; j < own.source.GetLength(1); j++)
+                        if (!own.checkBox2.Checked && own.source[i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
+                            inverseMatrix[i, j] = 1 / own.source[i, j];
+
+                variants.Add(inverseMatrix);
+            }
+            else if ((own.radioButton2.Checked) && own.checkBox4.Checked){
+                decimal multi = (100 + own.numericUpDown9.Value) / 100;
+                for (int t = 0; t < (int)own.numericUpDown8.Value; t++){
+
+                    decimal[,] next = new decimal[own.source.GetLength(0), own.source.GetLength(1)];
+                    for (int i = 0; i < own.source.GetLength(0); i++)
+                        for (int j = 0; j < own.source.GetLength(1); j++)
+                            if (!own.checkBox2.Checked && own.source[i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
+                                next[i, j] = variants[^1][i, j] * multi;
+                            else next[i, j] = variants[^1][i, j];
+                    variants.Add(next);
+                }
+
+            }
+
             Cursor.Current = Cursors.WaitCursor;
             dataGridView1.RowCount = own.dataGridView1.RowCount;
             dataGridView1.ColumnCount = own.dataGridView1.ColumnCount;
             x = dataGridView1.SelectedCells[0].RowIndex; x1 = x;
             y = dataGridView1.SelectedCells[0].ColumnIndex; y1 = y;
-            
+
             numericUpDown1.Value = x + 1;
             numericUpDown2.Value = y + 1;
             previos = new Point[dataGridView1.RowCount, dataGridView1.ColumnCount];
@@ -73,7 +117,7 @@ namespace l_application_pour_diploma{
                     else{
                         vis[i, j] = true;
                         dataGridView1.Rows[i].Cells[j].Value = -1;
-                        previos[i, j] = new Point(-1,-1);
+                        previos[i, j] = new Point(-1, -1);
                     }
                 }
             dataGridView1.Rows[x].Cells[y].Value = 0;
@@ -130,9 +174,18 @@ namespace l_application_pour_diploma{
             else clearcolors();
             dataGridView1.AutoResizeColumns();
             r?.findroute();
+            decimal sumtotal = 0;
+            for (int i = 0;i < dataGridView1.RowCount; i++) {
+                for (int j = 0; j < dataGridView1.ColumnCount; j++) {
+                    decimal currv = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
+                    if (currv > 0) sumtotal += currv;
+                }
+
+            }
+            textBox1.Text = sumtotal.ToString("0.##");
         }
         private bool pointavailiter(int x1, int y1, int x2, int y2) { //vieux, nouveau
-            try { 
+            try {
                 if (pointdest(x1, y1, x2, y2) == Math.Sqrt(2) || pointdest(x1, y1, x2, y2) == 1)
                     return availpoint(x2, y2);
                 else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(5)){
@@ -144,38 +197,40 @@ namespace l_application_pour_diploma{
                         return availpoint(x2 - 1, y2 + 1) && availpoint(x2, y2 + 1);
                     if (x1 - x2 == -2 && y1 - y2 == 1) //4
                         return availpoint(x2 - 1, y2) && availpoint(x2 - 1, y2 + 1);
-                    if (x1 - x2== -2 && y1 - y2 == -1)//5
-                        return availpoint(x2- 1, y2) && availpoint(x2- 1, y2 - 1);
-                    if (x1 - x2== -1 && y1 - y2 == -2)//6
+                    if (x1 - x2 == -2 && y1 - y2 == -1)//5
+                        return availpoint(x2 - 1, y2) && availpoint(x2 - 1, y2 - 1);
+                    if (x1 - x2 == -1 && y1 - y2 == -2)//6
                         return availpoint(x2 - 1, y2 - 1) && availpoint(x2, y2 - 1);
-                    if (x1 - x2== 1 && y1 - y2 == -2)//7
+                    if (x1 - x2 == 1 && y1 - y2 == -2)//7
                         return availpoint(x2 + 1, y2 - 1) && availpoint(x2, y2 - 1);
-                    if (x1 - x2== 2 && y1 - y2 == -1)//8
+                    if (x1 - x2 == 2 && y1 - y2 == -1)//8
                         return availpoint(x2 + 1, y2) && availpoint(x2 + 1, y2 - 1);
                 }
-                else if (pointdest(x2 , y2) == Math.Sqrt(10)){
+                else if (pointdest(x2, y2) == Math.Sqrt(10))
+                {
                     if (x1 - x2 == 3 && y1 - y2 == 1)//1
                         return availpoint(x2 + 1, y2) && availpoint(x2 + 2, y2) && availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 2, y2 + 1);
                     if (x1 - x2 == 1 && y1 - y2 == 3)//2
-                        return availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 1, y2 + 2) && availpoint(x2 , y2 + 1) && availpoint(x2 , y2 + 2);
+                        return availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 1, y2 + 2) && availpoint(x2, y2 + 1) && availpoint(x2, y2 + 2);
                     if (x1 - x2 == -1 && y1 - y2 == 3)//3
-                        return availpoint(x2 - 1, y2 + 1) && availpoint(x2 - 1, y2 + 2) && availpoint(x2 , y2 + 1) && availpoint(x2 , y2 + 2);
+                        return availpoint(x2 - 1, y2 + 1) && availpoint(x2 - 1, y2 + 2) && availpoint(x2, y2 + 1) && availpoint(x2, y2 + 2);
                     if (x1 - x2 == -3 && y1 - y2 == 1) //4
                         return availpoint(x2 - 1, y2) && availpoint(x2 - 2, y2) && availpoint(x2 - 1, y2 + 1) && availpoint(x2 - 2, y2 + 1);
                     if (x1 - x2 == -3 && y1 - y2 == -1)//5
                         return availpoint(x2 - 1, y2) && availpoint(x2 - 2, y2) && availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2);
                     if (x1 - x2 == -1 && y1 - y2 == -3)//6
-                        return availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2) && availpoint(x2 , y2 - 1) && availpoint(x2 , y2 - 2);
+                        return availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2) && availpoint(x2, y2 - 1) && availpoint(x2, y2 - 2);
                     if (x1 - x2 == 1 && y1 - y2 == -3)//7
-                        return availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 1, y2 - 2) && availpoint(x2 , y2 - 1) && availpoint(x2 , y2 - 2);
+                        return availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 1, y2 - 2) && availpoint(x2, y2 - 1) && availpoint(x2, y2 - 2);
                     if (x1 - x2 == 3 && y1 - y2 == -1)//8
                         return availpoint(x2 + 1, y2) && availpoint(x2 + 2, y2) && availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 2, y2 - 1);
                 }
-                else if (pointdest(x2 , y2) == Math.Sqrt(13)){
+                else if (pointdest(x2, y2) == Math.Sqrt(13))
+                {
                     if (x1 - x2 == 3 && y1 - y2 == 2)//1
                         return availpoint(x2 + 1, y2) && availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 2, y2 + 1) && availpoint(x2 + 2, y2 + 2);
                     if (x1 - x2 == 2 && y1 - y2 == 3)//2
-                        return availpoint(x2 , y2 + 1) && availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 1, y2 + 2) && availpoint(x2 + 2, y2 + 2);
+                        return availpoint(x2, y2 + 1) && availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 1, y2 + 2) && availpoint(x2 + 2, y2 + 2);
                     if (x1 - x2 == -2 && y1 - y2 == 3)//3
                         return availpoint(x2, y2 + 1) && availpoint(x2 - 1, y2 + 1) && availpoint(x2 - 1, y2 + 2) && availpoint(x2 - 2, y2 + 2);
                     if (x1 - x2 == -3 && y1 - y2 == 2) //4
@@ -183,9 +238,9 @@ namespace l_application_pour_diploma{
                     if (x1 - x2 == -3 && y1 - y2 == -2)//5
                         return availpoint(x2 - 1, y2) && availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2) && availpoint(x2 - 2, y2 - 2);
                     if (x1 - x2 == -2 && y1 - y2 == -3)//6
-                        return availpoint(x2 , y2 - 1) && availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2) && availpoint(x2 - 2, y2 - 2);
+                        return availpoint(x2, y2 - 1) && availpoint(x2 - 1, y2 - 1) && availpoint(x2 - 1, y2 - 2) && availpoint(x2 - 2, y2 - 2);
                     if (x1 - x2 == 2 && y1 - y2 == -3)//7
-                        return availpoint(x2 , y2 - 1) && availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 1, y2 - 2) && availpoint(x2 + 2, y2 - 2);
+                        return availpoint(x2, y2 - 1) && availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 1, y2 - 2) && availpoint(x2 + 2, y2 - 2);
                     if (x1 - x2 == 3 && y1 - y2 == -2)//8
                         return availpoint(x2 + 1, y2) && availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 1, y2 - 2) && availpoint(x2 + 2, y2 - 2);
                 }
@@ -194,12 +249,13 @@ namespace l_application_pour_diploma{
             catch (Exception) { return false; }
 
         }
-        List<Point> voisins = new List<Point>() { 
+        List<Point> voisins = new List<Point>() {
             new(- 1, - 1), new( 0, - 1), new(1, - 1), new(1, 0),   new(1, 1),   new(0, 1),   new(- 1, 1),   new(- 1, 0),
             new(- 1, - 2), new( 1, - 2), new(2, - 1), new(2, 1),   new(1, 2),   new(- 1, 2), new(- 2, 1),   new(- 2, - 1),
             new(- 2, - 3), new(- 1,- 3), new(1, - 3), new(2, - 3), new(3, - 2), new(3, - 1), new(3, 1),     new(3, 2),
             new(  2,   3), new( 1, 3  ), new(- 1, 3), new(- 2, 3), new(- 3, 2), new(- 3, 1), new(- 3, - 1), new(- 3, - 2)};
-        private int size_rayon() {
+        private int size_rayon()
+        {
             if (radioButton1.Checked) return 8;
             else if (radioButton2.Checked) return 16;
             else return 32;
@@ -214,9 +270,9 @@ namespace l_application_pour_diploma{
                         known[i, j] = false;
                     else known[i, j] = true;
                 }
-            known[u,v] = true;
+            known[u, v] = true;
             int currx = u, curry = v;
-            
+
             List<Point> curr_front = new();
             for (int i = 0; i < 8; i++) {
                 if (pointavailiter(currx, curry, currx + voisins[i].X, curry + voisins[i].Y)) {
@@ -254,7 +310,7 @@ namespace l_application_pour_diploma{
         private bool if_all_known(bool[,] known) {
             for (int i = 0; i < known.GetLength(0); i++)
                 for (int j = 0; j < known.GetLength(1); j++)
-                    if (!known[i,j]) return false;
+                    if (!known[i, j]) return false;
             return true;
         }
         private bool pointavailiter(int i, int j) {
@@ -289,9 +345,9 @@ namespace l_application_pour_diploma{
                     if (x1 - i == -3 && y1 - j == 1) //4
                         return availpoint(i - 1, j) && availpoint(i - 2, j) && availpoint(i - 1, j + 1) && availpoint(i - 2, j + 1);
                     if (x1 - i == -3 && y1 - j == -1)//5
-                        return availpoint(i - 1, j) && availpoint(i - 2, j) && availpoint(i - 1, j - 1) && availpoint(i - 1, j - 2) ;
+                        return availpoint(i - 1, j) && availpoint(i - 2, j) && availpoint(i - 1, j - 1) && availpoint(i - 1, j - 2);
                     if (x1 - i == -1 && y1 - j == -3)//6
-                        return  availpoint(i - 1, j - 1) && availpoint(i - 1, j - 2) && availpoint(i, j - 1) && availpoint(i, j - 2);
+                        return availpoint(i - 1, j - 1) && availpoint(i - 1, j - 2) && availpoint(i, j - 1) && availpoint(i, j - 2);
                     if (x1 - i == 1 && y1 - j == -3)//7
                         return availpoint(i + 1, j - 1) && availpoint(i + 1, j - 2) && availpoint(i, j - 1) && availpoint(i, j - 2);
                     if (x1 - i == 3 && y1 - j == -1)//8
@@ -318,18 +374,18 @@ namespace l_application_pour_diploma{
                 return false;
             }
             catch (Exception) { return false; }
-            } 
-        private bool availpoint(int u, int v){ return Convert.ToDecimal(own.dataGridView1.Rows[u].Cells[v].Value) >= 0;}
+        }
+        private bool availpoint(int u, int v) { return Convert.ToDecimal(own.dataGridView1.Rows[u].Cells[v].Value) >= 0; }
         public void clearcells(){
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
                     dataGridView1.Rows[i].Cells[j].Value = null;
-                }
-        private double pointdest(int xc,int yc){return Math.Sqrt( Math.Pow(x1 - xc,2) + Math.Pow(y1 - yc, 2)); }
+        }
+        private double pointdest(int xc, int yc) { return Math.Sqrt(Math.Pow(x1 - xc, 2) + Math.Pow(y1 - yc, 2)); }
         private double pointdest(int xc1, int yc1, int xc2, int yc2) { return Math.Sqrt(Math.Pow(xc1 - xc2, 2) + Math.Pow(yc1 - yc2, 2)); }
-        private void Trouvation_Load(object sender, EventArgs e){refresh(true);}
+        private void Trouvation_Load(object sender, EventArgs e) { refresh(true); }
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e){
-            if (x!= dataGridView1.SelectedCells[0].RowIndex || y!= dataGridView1.SelectedCells[0].ColumnIndex)
+            if (x != dataGridView1.SelectedCells[0].RowIndex || y != dataGridView1.SelectedCells[0].ColumnIndex)
                 refresh(false);
         }
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e){
@@ -339,10 +395,11 @@ namespace l_application_pour_diploma{
         private void radioButton1_CheckedChanged(object sender, EventArgs e) { refresh(false); }
         private void radioButton2_CheckedChanged(object sender, EventArgs e) { refresh(false); }
         private void radioButton3_CheckedChanged(object sender, EventArgs e) { refresh(false); }
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e){ }
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) { }
         private void Trouvation_FormClosing(object sender, FormClosingEventArgs e){
-            own.trouv = null; 
-            r?.Close(); }
+            own.trouv = null;
+            r?.Close();
+        }
         private void checkBox1_CheckedChanged(object sender, EventArgs e){
             if (checkBox1.Checked) fillcolors();
             else clearcolors();
@@ -356,14 +413,15 @@ namespace l_application_pour_diploma{
             dataGridView1.AutoResizeColumns();
         }
         private void desCalculationsDeCheminsToolStripMenuItem_Click(object sender, EventArgs e){
-            if (r == null && checkBox1.Checked) { 
+            if (r == null && checkBox1.Checked) {
                 r = new Routes(this);
                 if (own.lang == 1) r.toRusse();
-                r.Show(); }
+                r.Show();
+            }
             else if (checkBox1.Checked) r.Focus();
             if (!checkBox1.Checked) MessageBox.Show("Il n'y a pas de carte de chaleur!");
         }
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e){ }
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e) { }
         internal void toRusse() {
             groupBox1.Text = "Количество направлений поиска";
             radioButton3.Text = "III радиус (32 направления)";
@@ -406,19 +464,22 @@ namespace l_application_pour_diploma{
             toolStripMenuItem1.Text = "Ficher";
             if (r != null) r.toFrancais();
         }
-        internal void clearcolors(){
+        internal void clearcolors()
+        {
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
                     dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.White;
         }
-        private void fillcolors(){
+        private void fillcolors()
+        {
             int r = own.dataGridView1.RowCount;
             int c = own.dataGridView1.ColumnCount;
             dataGridView1.RowCount = r;
             dataGridView1.ColumnCount = c;
             decimal maxval = 0, minval = Decimal.MaxValue;
             for (int i = 0; i < r; i++)
-                for (int j = 0; j < c; j++){
+                for (int j = 0; j < c; j++)
+                {
                     var d = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                     if (maxval < d)
                         maxval = d;
@@ -427,10 +488,12 @@ namespace l_application_pour_diploma{
                 }
             if (minval != maxval)
                 for (int i = 0; i < r; i++)
-                    for (int j = 0; j < c; j++){
-                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) != -1){
+                    for (int j = 0; j < c; j++)
+                    {
+                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) != -1)
+                        {
                             var d = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) / maxval;
-                            if (d  < (decimal)0.2)
+                            if (d < (decimal)0.2)
                                 dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.BlueViolet;
                             else if (d >= (decimal)0.2 && d! < (decimal)0.3)
                                 dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Blue;
@@ -444,18 +507,21 @@ namespace l_application_pour_diploma{
                                 dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.GreenYellow;
                             else if (d >= (decimal)0.7 && d! < (decimal)0.8)
                                 dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Yellow;
-                            else if (d  >= (decimal)0.8 && d! < (decimal)0.9)
+                            else if (d >= (decimal)0.8 && d! < (decimal)0.9)
                                 dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Orange;
-                            else if (d  >= (decimal)0.9)
+                            else if (d >= (decimal)0.9)
                                 dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Red;
                         }
                         else dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Black;
                     }
             else for (int i = 0; i < r; i++)
-                    for (int j = 0; j < c; j++){
-                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) != -1){
+                    for (int j = 0; j < c; j++)
+                    {
+                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) != -1)
+                        {
                             dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Blue;
-                        } else dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Black;
+                        }
+                        else dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Black;
                     }
             dataGridView1.Rows[x].Cells[y].Style.BackColor = Color.Violet;
             dataGridView1.AutoResizeColumns();

@@ -76,6 +76,7 @@
             label14 = new Label();
             textBox3 = new TextBox();
             checkBox2 = new CheckBox();
+            label5 = new Label();
             groupBox7 = new GroupBox();
             label13 = new Label();
             numericUpDown11 = new NumericUpDown();
@@ -84,8 +85,8 @@
             label11 = new Label();
             label10 = new Label();
             numericUpDown9 = new NumericUpDown();
+            numericUpDown3 = new NumericUpDown();
             numericUpDown8 = new NumericUpDown();
-            radioButton3 = new RadioButton();
             radioButton2 = new RadioButton();
             radioButton1 = new RadioButton();
             checkBox4 = new CheckBox();
@@ -106,6 +107,7 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown11).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown9).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown8).BeginInit();
             SuspendLayout();
             // 
@@ -460,12 +462,13 @@
             groupBox6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             groupBox6.Controls.Add(checkBox5);
             groupBox6.Controls.Add(groupBox3);
+            groupBox6.Controls.Add(label5);
             groupBox6.Controls.Add(groupBox7);
             groupBox6.Controls.Add(label11);
             groupBox6.Controls.Add(label10);
             groupBox6.Controls.Add(numericUpDown9);
+            groupBox6.Controls.Add(numericUpDown3);
             groupBox6.Controls.Add(numericUpDown8);
-            groupBox6.Controls.Add(radioButton3);
             groupBox6.Controls.Add(radioButton2);
             groupBox6.Controls.Add(radioButton1);
             groupBox6.Controls.Add(checkBox4);
@@ -607,6 +610,17 @@
             checkBox2.UseVisualStyleBackColor = true;
             checkBox2.CheckedChanged += checkBox2_CheckedChanged;
             // 
+            // label5
+            // 
+            label5.Anchor = AnchorStyles.Bottom;
+            label5.AutoSize = true;
+            label5.Location = new Point(214, 114);
+            label5.Margin = new Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(80, 22);
+            label5.TabIndex = 2;
+            label5.Text = "Etat initial";
+            // 
             // groupBox7
             // 
             groupBox7.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -637,11 +651,11 @@
             numericUpDown11.DecimalPlaces = 2;
             numericUpDown11.Location = new Point(141, 72);
             numericUpDown11.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown11.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown11.Minimum = new decimal(new int[] { 1, 0, 0, 262144 });
             numericUpDown11.Name = "numericUpDown11";
             numericUpDown11.Size = new Size(77, 29);
             numericUpDown11.TabIndex = 1;
-            numericUpDown11.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            numericUpDown11.Value = new decimal(new int[] { 5, 0, 0, 0 });
             numericUpDown11.ValueChanged += numericUpDown11_ValueChanged;
             // 
             // label9
@@ -689,11 +703,22 @@
             // 
             numericUpDown9.Anchor = AnchorStyles.Bottom;
             numericUpDown9.Location = new Point(379, 50);
-            numericUpDown9.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown9.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            numericUpDown9.Minimum = new decimal(new int[] { 99, 0, 0, int.MinValue });
             numericUpDown9.Name = "numericUpDown9";
             numericUpDown9.Size = new Size(67, 29);
             numericUpDown9.TabIndex = 4;
-            numericUpDown9.Value = new decimal(new int[] { 20, 0, 0, 0 });
+            numericUpDown9.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            numericUpDown9.ValueChanged += numericUpDown9_ValueChanged;
+            // 
+            // numericUpDown3
+            // 
+            numericUpDown3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            numericUpDown3.Location = new Point(379, 109);
+            numericUpDown3.Name = "numericUpDown3";
+            numericUpDown3.Size = new Size(67, 29);
+            numericUpDown3.TabIndex = 4;
+            numericUpDown3.ValueChanged += numericUpDown3_ValueChanged;
             // 
             // numericUpDown8
             // 
@@ -704,38 +729,28 @@
             numericUpDown8.Size = new Size(67, 29);
             numericUpDown8.TabIndex = 4;
             numericUpDown8.Value = new decimal(new int[] { 3, 0, 0, 0 });
-            // 
-            // radioButton3
-            // 
-            radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(7, 115);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(263, 26);
-            radioButton3.TabIndex = 3;
-            radioButton3.Text = "Accroître N fois par M % et revenir";
-            radioButton3.UseVisualStyleBackColor = true;
-            radioButton3.CheckedChanged += radioButton2_CheckedChanged;
+            numericUpDown8.ValueChanged += numericUpDown8_ValueChanged;
             // 
             // radioButton2
             // 
             radioButton2.AutoSize = true;
+            radioButton2.Checked = true;
             radioButton2.Location = new Point(7, 87);
             radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(254, 26);
+            radioButton2.Size = new Size(261, 26);
             radioButton2.TabIndex = 3;
-            radioButton2.Text = "Réduire N fois par M % et revenir";
+            radioButton2.TabStop = true;
+            radioButton2.Text = "Changer N fois par M % et revenir";
             radioButton2.UseVisualStyleBackColor = true;
             radioButton2.CheckedChanged += radioButton2_CheckedChanged;
             // 
             // radioButton1
             // 
             radioButton1.AutoSize = true;
-            radioButton1.Checked = true;
             radioButton1.Location = new Point(7, 56);
             radioButton1.Name = "radioButton1";
             radioButton1.Size = new Size(82, 26);
             radioButton1.TabIndex = 3;
-            radioButton1.TabStop = true;
             radioButton1.Text = "Inverser";
             radioButton1.UseVisualStyleBackColor = true;
             // 
@@ -794,6 +809,7 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown11).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown7).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown9).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown8).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -853,11 +869,12 @@
         private CheckBox checkBox5;
         internal CheckBox checkBox4;
         internal RadioButton radioButton1;
-        internal RadioButton radioButton3;
         internal RadioButton radioButton2;
         internal NumericUpDown numericUpDown8;
         internal NumericUpDown numericUpDown9;
         internal CheckBox checkBox2;
         internal NumericUpDown numericUpDown11;
+        internal NumericUpDown numericUpDown3;
+        private Label label5;
     }
 }

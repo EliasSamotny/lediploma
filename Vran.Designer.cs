@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             groupBox1 = new GroupBox();
             button1 = new Button();
             groupBox5 = new GroupBox();
@@ -46,6 +46,7 @@
             numericUpDown6 = new NumericUpDown();
             label7 = new Label();
             label8 = new Label();
+            button3 = new Button();
             button4 = new Button();
             dataGridView1 = new DataGridView();
             Column1 = new DataGridViewTextBoxColumn();
@@ -60,7 +61,6 @@
             dataGridView2 = new DataGridView();
             menuStrip1 = new MenuStrip();
             lesForfaitsToolStripMenuItem = new ToolStripMenuItem();
-            button3 = new Button();
             groupBox1.SuspendLayout();
             groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
@@ -167,7 +167,6 @@
             numericUpDown1.Size = new Size(46, 28);
             numericUpDown1.TabIndex = 12;
             numericUpDown1.Value = new decimal(new int[] { 3, 0, 0, 0 });
-            numericUpDown1.ValueChanged += numericUpDown6_ValueChanged;
             // 
             // groupBox3
             // 
@@ -286,6 +285,17 @@
             label8.Size = new Size(141, 20);
             label8.TabIndex = 11;
             label8.Text = "La quantité de signs";
+            // 
+            // button3
+            // 
+            button3.Anchor = AnchorStyles.Right;
+            button3.Location = new Point(279, 313);
+            button3.Name = "button3";
+            button3.Size = new Size(156, 29);
+            button3.TabIndex = 13;
+            button3.Text = "Finir les calculations";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button4
             // 
@@ -416,15 +426,15 @@
             dataGridView2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView2.ColumnHeadersVisible = false;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Palatino Linotype", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.NullValue = null;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dataGridView2.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Palatino Linotype", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.NullValue = null;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dataGridView2.DefaultCellStyle = dataGridViewCellStyle1;
             dataGridView2.Location = new Point(459, 33);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.RowHeadersVisible = false;
@@ -449,17 +459,6 @@
             lesForfaitsToolStripMenuItem.Size = new Size(93, 24);
             lesForfaitsToolStripMenuItem.Text = "Les forfaits";
             lesForfaitsToolStripMenuItem.Click += lesForfaitsToolStripMenuItem_Click;
-            // 
-            // button3
-            // 
-            button3.Anchor = AnchorStyles.Right;
-            button3.Location = new Point(279, 313);
-            button3.Name = "button3";
-            button3.Size = new Size(156, 29);
-            button3.TabIndex = 13;
-            button3.Text = "Finir les calculations";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
             // 
             // Vran
             // 
