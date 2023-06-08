@@ -168,7 +168,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, desFenêtresToolStripMenuItem, langueToolStripMenuItem, sûrLauteurToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1190, 30);
+            menuStrip1.Size = new Size(1128, 30);
             menuStrip1.TabIndex = 5;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -267,7 +267,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(1166, 285);
+            dataGridView1.Size = new Size(1104, 285);
             dataGridView1.TabIndex = 6;
             dataGridView1.CellClick += dataGridView1_CellClick;
             dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
@@ -315,7 +315,7 @@
             groupBox2.Controls.Add(textBox2);
             groupBox2.Controls.Add(label4);
             groupBox2.Controls.Add(label3);
-            groupBox2.Location = new Point(1013, 38);
+            groupBox2.Location = new Point(951, 38);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(165, 92);
             groupBox2.TabIndex = 9;
@@ -347,7 +347,7 @@
             // button2
             // 
             button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button2.Location = new Point(296, 17);
+            button2.Location = new Point(234, 17);
             button2.Name = "button2";
             button2.Size = new Size(191, 32);
             button2.TabIndex = 3;
@@ -372,7 +372,7 @@
             groupBox4.Controls.Add(numericUpDown6);
             groupBox4.Controls.Add(label7);
             groupBox4.Controls.Add(label8);
-            groupBox4.Location = new Point(767, 38);
+            groupBox4.Location = new Point(705, 38);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(240, 92);
             groupBox4.TabIndex = 13;
@@ -434,7 +434,7 @@
             groupBox5.Controls.Add(button2);
             groupBox5.Location = new Point(268, 35);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(493, 95);
+            groupBox5.Size = new Size(431, 95);
             groupBox5.TabIndex = 14;
             groupBox5.TabStop = false;
             groupBox5.Text = "Autres";
@@ -474,7 +474,7 @@
             groupBox6.Controls.Add(checkBox4);
             groupBox6.Location = new Point(12, 130);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(1166, 148);
+            groupBox6.Size = new Size(1104, 148);
             groupBox6.TabIndex = 15;
             groupBox6.TabStop = false;
             groupBox6.Text = "Changement de milieu";
@@ -482,7 +482,7 @@
             // checkBox5
             // 
             checkBox5.AutoSize = true;
-            checkBox5.Location = new Point(141, 26);
+            checkBox5.Location = new Point(123, 26);
             checkBox5.Name = "checkBox5";
             checkBox5.Size = new Size(198, 26);
             checkBox5.TabIndex = 8;
@@ -499,9 +499,9 @@
             groupBox3.Controls.Add(button1);
             groupBox3.Controls.Add(groupBox8);
             groupBox3.Controls.Add(checkBox2);
-            groupBox3.Location = new Point(452, 18);
+            groupBox3.Location = new Point(456, 18);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(478, 124);
+            groupBox3.Size = new Size(412, 124);
             groupBox3.TabIndex = 7;
             groupBox3.TabStop = false;
             groupBox3.Text = "Domains";
@@ -529,7 +529,7 @@
             // button3
             // 
             button3.Anchor = AnchorStyles.Top;
-            button3.Location = new Point(135, 90);
+            button3.Location = new Point(125, 90);
             button3.Name = "button3";
             button3.Size = new Size(100, 29);
             button3.TabIndex = 10;
@@ -540,7 +540,7 @@
             // button1
             // 
             button1.Anchor = AnchorStyles.Top;
-            button1.Location = new Point(135, 51);
+            button1.Location = new Point(125, 51);
             button1.Name = "button1";
             button1.Size = new Size(100, 30);
             button1.TabIndex = 9;
@@ -555,7 +555,7 @@
             groupBox8.Controls.Add(textBox4);
             groupBox8.Controls.Add(label14);
             groupBox8.Controls.Add(textBox3);
-            groupBox8.Location = new Point(336, 22);
+            groupBox8.Location = new Point(270, 22);
             groupBox8.Name = "groupBox8";
             groupBox8.Size = new Size(136, 96);
             groupBox8.TabIndex = 8;
@@ -612,9 +612,9 @@
             // 
             // label5
             // 
-            label5.Anchor = AnchorStyles.Bottom;
+            label5.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             label5.AutoSize = true;
-            label5.Location = new Point(214, 114);
+            label5.Location = new Point(202, 114);
             label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
             label5.Size = new Size(80, 22);
@@ -628,7 +628,7 @@
             groupBox7.Controls.Add(numericUpDown11);
             groupBox7.Controls.Add(label9);
             groupBox7.Controls.Add(numericUpDown7);
-            groupBox7.Location = new Point(936, 16);
+            groupBox7.Location = new Point(874, 23);
             groupBox7.Name = "groupBox7";
             groupBox7.Size = new Size(224, 113);
             groupBox7.TabIndex = 6;
@@ -683,7 +683,7 @@
             // 
             label11.Anchor = AnchorStyles.Bottom;
             label11.AutoSize = true;
-            label11.Location = new Point(348, 54);
+            label11.Location = new Point(342, 61);
             label11.Name = "label11";
             label11.Size = new Size(25, 22);
             label11.TabIndex = 5;
@@ -693,7 +693,7 @@
             // 
             label10.Anchor = AnchorStyles.Bottom;
             label10.AutoSize = true;
-            label10.Location = new Point(350, 20);
+            label10.Location = new Point(344, 27);
             label10.Name = "label10";
             label10.Size = new Size(23, 22);
             label10.TabIndex = 5;
@@ -702,7 +702,7 @@
             // numericUpDown9
             // 
             numericUpDown9.Anchor = AnchorStyles.Bottom;
-            numericUpDown9.Location = new Point(379, 50);
+            numericUpDown9.Location = new Point(373, 57);
             numericUpDown9.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDown9.Minimum = new decimal(new int[] { 99, 0, 0, int.MinValue });
             numericUpDown9.Name = "numericUpDown9";
@@ -714,7 +714,7 @@
             // numericUpDown3
             // 
             numericUpDown3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            numericUpDown3.Location = new Point(379, 109);
+            numericUpDown3.Location = new Point(373, 112);
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new Size(67, 29);
             numericUpDown3.TabIndex = 4;
@@ -723,7 +723,7 @@
             // numericUpDown8
             // 
             numericUpDown8.Anchor = AnchorStyles.Bottom;
-            numericUpDown8.Location = new Point(379, 18);
+            numericUpDown8.Location = new Point(373, 25);
             numericUpDown8.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown8.Name = "numericUpDown8";
             numericUpDown8.Size = new Size(67, 29);
@@ -769,7 +769,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 22F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1190, 581);
+            ClientSize = new Size(1128, 581);
             Controls.Add(groupBox6);
             Controls.Add(groupBox5);
             Controls.Add(groupBox4);

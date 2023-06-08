@@ -307,17 +307,18 @@
             toolStripMenuItem1.Name = "toolStripMenuItem1";
             toolStripMenuItem1.Size = new Size(64, 26);
             toolStripMenuItem1.Text = "Ficher";
+            toolStripMenuItem1.Visible = false;
             // 
             // chargerToolStripMenuItem
             // 
             chargerToolStripMenuItem.Name = "chargerToolStripMenuItem";
-            chargerToolStripMenuItem.Size = new Size(166, 26);
+            chargerToolStripMenuItem.Size = new Size(180, 26);
             chargerToolStripMenuItem.Text = "Charger";
             // 
             // sauvegarderToolStripMenuItem
             // 
             sauvegarderToolStripMenuItem.Name = "sauvegarderToolStripMenuItem";
-            sauvegarderToolStripMenuItem.Size = new Size(166, 26);
+            sauvegarderToolStripMenuItem.Size = new Size(180, 26);
             sauvegarderToolStripMenuItem.Text = "Sauvegarder";
             // 
             // desFenêtresToolStripMenuItem

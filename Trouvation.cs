@@ -1,6 +1,8 @@
 ﻿using static l_application_pour_diploma.Classes;
-namespace l_application_pour_diploma{
-    public partial class Trouvation : Form{
+namespace l_application_pour_diploma
+{
+    public partial class Trouvation : Form
+    {
         internal Commencement own;
         internal Routes? r;
         internal int x = 1, y = 1, x1 = 1, y1 = 1;
@@ -10,33 +12,38 @@ namespace l_application_pour_diploma{
         bool onemedium = true;
         internal List<decimal[,]> variants;
         int curr_med = 0;
-        public Trouvation(Commencement o){
+        public Trouvation(Commencement o)
+        {
             InitializeComponent();
             own = o;
         }
-        private bool checkallvis(){
+        private bool checkallvis()
+        {
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    if (!vis[i, j] && submedia[0].Contains(new(x, y))) 
+                    if (!vis[i, j] && submedia[0].Contains(new(x, y)))
                         return false;
             return true;
         }
-        private int currst(decimal dest, decimal chaque ) {
+        private int currst(decimal dest, decimal chaque)
+        {
             int shift = (int)own.numericUpDown3.Value;
             int currstage = ((int)Math.Floor(dest / chaque)) % variants.Count;
-            if (currstage > 0 && dest  % chaque == 0)
+            if (currstage > 0 && dest % chaque == 0)
                 currstage--;
             return ((currstage + shift) % variants.Count);
         }
-        private void calculcell(int xc, int yc){
+        private void calculcell(int xc, int yc)
+        {
             if (xc + 1 > 0 && yc + 1 > 0 && xc < dataGridView1.RowCount && yc < dataGridView1.ColumnCount && own.dataGridView1.Rows[xc].Cells[yc].Value != null && pointavailiter(xc, yc))
             {//if exists
                 decimal chaque = own.numericUpDown11.Value;
                 int currstage = currst(Convert.ToDecimal(dataGridView1.Rows[x1].Cells[y1].Value), chaque);
-                
+
                 decimal cur = (decimal)((Convert.ToDouble(variants[currstage][xc, yc]) + Convert.ToDouble(variants[currstage][x1, y1])) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dataGridView1.Rows[x1].Cells[y1].Value));
-               
-                if (currstage != (currst(cur, chaque)) && variants.Count > 1){
+
+                if (currstage != (currst(cur, chaque)) && variants.Count > 1)
+                {
                     int diff = (currstage + (int)Math.Abs(currstage - Math.Floor(cur / chaque))) % variants.Count;
                     cur = (decimal)((Convert.ToDouble(variants[diff][xc, yc]) + Convert.ToDouble(variants[diff][x1, y1])) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dataGridView1.Rows[x1].Cells[y1].Value));
                 }
@@ -63,9 +70,11 @@ namespace l_application_pour_diploma{
                 if (submedia[i].Contains(p)) return i;
             return 0;
         }
-        internal void refresh(bool changed_med){
+        internal void refresh(bool changed_med)
+        {
             variants = new() { own.source };
-            if (own.radioButton1.Checked && own.checkBox4.Checked){
+            if (own.radioButton1.Checked && own.checkBox4.Checked)
+            {
                 decimal[,] inverseMatrix = new decimal[own.source.GetLength(0), own.source.GetLength(1)];
                 for (int i = 0; i < own.source.GetLength(0); i++)
                     for (int j = 0; j < own.source.GetLength(1); j++)
@@ -74,9 +83,11 @@ namespace l_application_pour_diploma{
 
                 variants.Add(inverseMatrix);
             }
-            else if ((own.radioButton2.Checked) && own.checkBox4.Checked){
+            else if ((own.radioButton2.Checked) && own.checkBox4.Checked)
+            {
                 decimal multi = (100 + own.numericUpDown9.Value) / 100;
-                for (int t = 0; t < (int)own.numericUpDown8.Value; t++){
+                for (int t = 0; t < (int)own.numericUpDown8.Value; t++)
+                {
 
                     decimal[,] next = new decimal[own.source.GetLength(0), own.source.GetLength(1)];
                     for (int i = 0; i < own.source.GetLength(0); i++)
@@ -101,7 +112,8 @@ namespace l_application_pour_diploma{
             vis = new bool[dataGridView1.RowCount, dataGridView1.ColumnCount];
             vis1 = new bool[dataGridView1.RowCount, dataGridView1.ColumnCount];
             for (int i = 0; i < dataGridView1.RowCount; i++)
-                for (int j = 0; j < dataGridView1.ColumnCount; j++) {
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
                     vis1[i, j] = false;
                 }
             vis1[x, y] = true;
@@ -109,19 +121,23 @@ namespace l_application_pour_diploma{
                 reseachpoints(x, y);
             curr_med = determ_submed(new(x, y));
             for (int i = 0; i < dataGridView1.RowCount; i++)
-                for (int j = 0; j < dataGridView1.ColumnCount; j++) {
-                    if (availpoint(i, j) && availpoint(x1, y1) && submedia[curr_med].Contains(new(i, j))) {
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
+                    if (availpoint(i, j) && availpoint(x1, y1) && submedia[curr_med].Contains(new(i, j)))
+                    {
                         dataGridView1.Rows[i].Cells[j].Value = null;
                         vis[i, j] = false;
                     }
-                    else{
+                    else
+                    {
                         vis[i, j] = true;
                         dataGridView1.Rows[i].Cells[j].Value = -1;
                         previos[i, j] = new Point(-1, -1);
                     }
                 }
             dataGridView1.Rows[x].Cells[y].Value = 0;
-            while (!checkallvis()){
+            while (!checkallvis())
+            {
                 vis[x1, y1] = true;
                 for (int v = 0; v < size_rayon(); v++)
                     calculcell(x1 + voisins[v].X, y1 + voisins[v].Y);
@@ -141,7 +157,8 @@ namespace l_application_pour_diploma{
                         points.Add(new Points(p.xl, p.yl, (decimal)Math.Sqrt(Math.Pow(x1 - p.xl, 2) + Math.Pow(y1 - p.yl, 2))));
 
                 if (points.Count == 1) { x1 = points[0].xl; y1 = points[0].yl; }//if it is alone to choose, equal et continue
-                else if (points.Count > 1){ //if not, search nearest to (0,0) 
+                else if (points.Count > 1)
+                { //if not, search nearest to (0,0) 
                     mindest = Decimal.MaxValue;
                     foreach (var p in points)
                         if (p.dest < mindest)
@@ -151,13 +168,15 @@ namespace l_application_pour_diploma{
                         if (p.dest == mindest)
                             points1.Add(new Points(p.xl, p.yl, (decimal)Math.Sqrt(Math.Pow(p.xl, 2) + Math.Pow(p.yl, 2))));
                     if (points1.Count == 1) { x1 = points1[0].xl; y1 = points1[0].yl; }//if it is alone to choose, equal et continue
-                    else if (points1.Count > 1) {//if not, choosing with least x
+                    else if (points1.Count > 1)
+                    {//if not, choosing with least x
                         int minx = dataGridView1.RowCount;
                         foreach (var p in points1)
                             if (p.xl < minx)
                                 minx = p.xl;
                         foreach (var p in points1)
-                            if (p.xl == minx) {
+                            if (p.xl == minx)
+                            {
                                 x1 = points1[0].xl;
                                 y1 = points1[0].yl;
                                 break;
@@ -175,8 +194,10 @@ namespace l_application_pour_diploma{
             dataGridView1.AutoResizeColumns();
             r?.findroute();
             decimal sumtotal = 0;
-            for (int i = 0;i < dataGridView1.RowCount; i++) {
-                for (int j = 0; j < dataGridView1.ColumnCount; j++) {
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
                     decimal currv = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                     if (currv > 0) sumtotal += currv;
                 }
@@ -184,11 +205,14 @@ namespace l_application_pour_diploma{
             }
             textBox1.Text = sumtotal.ToString("0.##");
         }
-        private bool pointavailiter(int x1, int y1, int x2, int y2) { //vieux, nouveau
-            try {
+        private bool pointavailiter(int x1, int y1, int x2, int y2)
+        { //vieux, nouveau
+            try
+            {
                 if (pointdest(x1, y1, x2, y2) == Math.Sqrt(2) || pointdest(x1, y1, x2, y2) == 1)
                     return availpoint(x2, y2);
-                else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(5)){
+                else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(5))
+                {
                     if (x1 - x2 == 2 && y1 - y2 == 1)//1
                         return availpoint(x2 + 1, y1) && availpoint(x2 + 1, y1 + 1);
                     if (x1 - x2 == 1 && y1 - y2 == 2)//2
@@ -260,12 +284,14 @@ namespace l_application_pour_diploma{
             else if (radioButton2.Checked) return 16;
             else return 32;
         }
-        private void reseachpoints(int u, int v) {
+        private void reseachpoints(int u, int v)
+        {
             submedia = new() { new() };
             submedia[0].Add(new(u, v));
             bool[,] known = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
             for (int i = 0; i < own.dataGridView1.RowCount; i++)
-                for (int j = 0; j < own.dataGridView1.ColumnCount; j++) {
+                for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
+                {
                     if (Convert.ToDecimal(own.dataGridView1.Rows[i].Cells[j].Value) > -1)
                         known[i, j] = false;
                     else known[i, j] = true;
@@ -274,23 +300,30 @@ namespace l_application_pour_diploma{
             int currx = u, curry = v;
 
             List<Point> curr_front = new();
-            for (int i = 0; i < 8; i++) {
-                if (pointavailiter(currx, curry, currx + voisins[i].X, curry + voisins[i].Y)) {
+            for (int i = 0; i < 8; i++)
+            {
+                if (pointavailiter(currx, curry, currx + voisins[i].X, curry + voisins[i].Y))
+                {
                     submedia[0].Add(new(currx + voisins[i].X, curry + voisins[i].Y));
                     curr_front.Add(new(currx + voisins[i].X, curry + voisins[i].Y));
                     known[currx + voisins[i].X, curry + voisins[i].Y] = true;
                 }
             }
-            while (true){
+            while (true)
+            {
                 List<Point> curr_prev = new(curr_front);
                 curr_front = new();
-                foreach (var el in curr_prev){
-                    for (int i = 0; i < 8; i++) {
+                foreach (var el in curr_prev)
+                {
+                    for (int i = 0; i < 8; i++)
+                    {
                         Point voisepoint = new(el.X + voisins[i].X, el.Y + voisins[i].Y);
-                        if (pointavailiter(el.X, el.Y, el.X + voisins[i].X, el.Y + voisins[i].Y)){
+                        if (pointavailiter(el.X, el.Y, el.X + voisins[i].X, el.Y + voisins[i].Y))
+                        {
                             if (!curr_front.Contains(voisepoint) && !submedia[0].Contains(voisepoint))
                                 curr_front.Add(voisepoint);
-                            if (!submedia[0].Contains(voisepoint)) {
+                            if (!submedia[0].Contains(voisepoint))
+                            {
                                 submedia[0].Add(voisepoint);
                                 known[el.X + voisins[i].X, el.Y + voisins[i].Y] = true;
                             }
@@ -299,25 +332,31 @@ namespace l_application_pour_diploma{
                 }
                 if (curr_front.Count == 0) break;
             }
-            if (!if_all_known(known)) {
+            if (!if_all_known(known))
+            {
                 onemedium = false;
             }
-            else {
+            else
+            {
                 onemedium = true;
             }
         }
 
-        private bool if_all_known(bool[,] known) {
+        private bool if_all_known(bool[,] known)
+        {
             for (int i = 0; i < known.GetLength(0); i++)
                 for (int j = 0; j < known.GetLength(1); j++)
                     if (!known[i, j]) return false;
             return true;
         }
-        private bool pointavailiter(int i, int j) {
-            try {
+        private bool pointavailiter(int i, int j)
+        {
+            try
+            {
                 if (pointdest(i, j) == Math.Sqrt(2) || pointdest(i, j) == 1)
                     return availpoint(i, j);
-                else if (pointdest(i, j) == Math.Sqrt(5)){
+                else if (pointdest(i, j) == Math.Sqrt(5))
+                {
                     if (x1 - i == 2 && y1 - j == 1)//1
                         return availpoint(i + 1, j) && availpoint(i + 1, j + 1);
                     if (x1 - i == 1 && y1 - j == 2)//2
@@ -335,7 +374,8 @@ namespace l_application_pour_diploma{
                     if (x1 - i == 2 && y1 - j == -1)//8
                         return availpoint(i + 1, j) && availpoint(i + 1, j - 1);
                 }
-                else if (pointdest(i, j) == Math.Sqrt(10)){
+                else if (pointdest(i, j) == Math.Sqrt(10))
+                {
                     if (x1 - i == 3 && y1 - j == 1)//1
                         return availpoint(i + 1, j) && availpoint(i + 2, j) && availpoint(i + 1, j + 1) && availpoint(i + 2, j + 1);
                     if (x1 - i == 1 && y1 - j == 3)//2
@@ -353,7 +393,8 @@ namespace l_application_pour_diploma{
                     if (x1 - i == 3 && y1 - j == -1)//8
                         return availpoint(i + 1, j) && availpoint(i + 2, j) && availpoint(i + 1, j - 1) && availpoint(i + 2, j - 1);
                 }
-                else if (pointdest(i, j) == Math.Sqrt(13)){
+                else if (pointdest(i, j) == Math.Sqrt(13))
+                {
                     if (x1 - i == 3 && y1 - j == 2)//1
                         return availpoint(i + 1, j) && availpoint(i + 1, j + 1) && availpoint(i + 2, j + 1) && availpoint(i + 2, j + 2);
                     if (x1 - i == 2 && y1 - j == 3)//2
@@ -376,7 +417,8 @@ namespace l_application_pour_diploma{
             catch (Exception) { return false; }
         }
         private bool availpoint(int u, int v) { return Convert.ToDecimal(own.dataGridView1.Rows[u].Cells[v].Value) >= 0; }
-        public void clearcells(){
+        public void clearcells()
+        {
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
                     dataGridView1.Rows[i].Cells[j].Value = null;
@@ -384,11 +426,13 @@ namespace l_application_pour_diploma{
         private double pointdest(int xc, int yc) { return Math.Sqrt(Math.Pow(x1 - xc, 2) + Math.Pow(y1 - yc, 2)); }
         private double pointdest(int xc1, int yc1, int xc2, int yc2) { return Math.Sqrt(Math.Pow(xc1 - xc2, 2) + Math.Pow(yc1 - yc2, 2)); }
         private void Trouvation_Load(object sender, EventArgs e) { refresh(true); }
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e){
-            if (x != dataGridView1.SelectedCells[0].RowIndex || y != dataGridView1.SelectedCells[0].ColumnIndex)
-                refresh(false);
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //if (x != dataGridView1.SelectedCells[0].RowIndex || y != dataGridView1.SelectedCells[0].ColumnIndex)
+            //    refresh(false);
         }
-        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e){
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
             if (x != dataGridView1.SelectedCells[0].RowIndex || y != dataGridView1.SelectedCells[0].ColumnIndex)
                 refresh(false);
         }
@@ -396,24 +440,30 @@ namespace l_application_pour_diploma{
         private void radioButton2_CheckedChanged(object sender, EventArgs e) { refresh(false); }
         private void radioButton3_CheckedChanged(object sender, EventArgs e) { refresh(false); }
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) { }
-        private void Trouvation_FormClosing(object sender, FormClosingEventArgs e){
+        private void Trouvation_FormClosing(object sender, FormClosingEventArgs e)
+        {
             own.trouv = null;
             r?.Close();
         }
-        private void checkBox1_CheckedChanged(object sender, EventArgs e){
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
             if (checkBox1.Checked) fillcolors();
             else clearcolors();
         }
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e){
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
             dataGridView1.DefaultCellStyle.Format = 'N' + numericUpDown3.Value.ToString();
             dataGridView1.AutoResizeColumns();
         }
-        private void numericUpDown4_ValueChanged(object sender, EventArgs e){
+        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
+        {
             dataGridView1.DefaultCellStyle.Font = new Font("Palatino Linotype", (float)numericUpDown4.Value);
             dataGridView1.AutoResizeColumns();
         }
-        private void desCalculationsDeCheminsToolStripMenuItem_Click(object sender, EventArgs e){
-            if (r == null && checkBox1.Checked) {
+        private void desCalculationsDeCheminsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (r == null && checkBox1.Checked)
+            {
                 r = new Routes(this);
                 if (own.lang == 1) r.toRusse();
                 r.Show();
@@ -422,7 +472,8 @@ namespace l_application_pour_diploma{
             if (!checkBox1.Checked) MessageBox.Show("Il n'y a pas de carte de chaleur!");
         }
         private void numericUpDown2_ValueChanged(object sender, EventArgs e) { }
-        internal void toRusse() {
+        internal void toRusse()
+        {
             groupBox1.Text = "Количество направлений поиска";
             radioButton3.Text = "III радиус (32 направления)";
             radioButton2.Text = "II радиус (16 направлений)";
@@ -433,7 +484,7 @@ namespace l_application_pour_diploma{
             groupBox3.Text = "Отображение ячеек";
             label1.Text = "Размер шрифта";
             label4.Text = "Количество знаков";
-            Text = "Поиск короткого пути";
+            Text = "Запуск волны из точки";
             groupBox4.Text = "Тепловая карта расстояний";
             checkBox1.Text = "Показать карту";
             desCalculationsDeCheminsToolStripMenuItem.Text = "Вычисление наикратчайших путей";
@@ -441,9 +492,10 @@ namespace l_application_pour_diploma{
             sauvegarderToolStripMenuItem.Text = "Сохранить";
             chargerToolStripMenuItem.Text = "Загрузить";
             toolStripMenuItem1.Text = "Файл";
-            if (r != null) r.toRusse();
+            r?.toRusse();
         }
-        internal void toFrancais(){
+        internal void toFrancais()
+        {
             groupBox1.Text = "Le destin de chercher de chemins";
             radioButton3.Text = "III rayon (32 directions)";
             radioButton2.Text = "II rayon (16 directions)";
@@ -462,7 +514,7 @@ namespace l_application_pour_diploma{
             sauvegarderToolStripMenuItem.Text = "Sauvegarder";
             chargerToolStripMenuItem.Text = "Charger";
             toolStripMenuItem1.Text = "Ficher";
-            if (r != null) r.toFrancais();
+            r?.toFrancais();
         }
         internal void clearcolors()
         {

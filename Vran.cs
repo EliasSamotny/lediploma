@@ -5,12 +5,13 @@ using Color = System.Drawing.Color;
 using System.Windows.Forms;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.EMMA;
+using System.Diagnostics;
 
 namespace l_application_pour_diploma
 {
     public partial class Vran : Form
     {
-        private Commencement own;
+        internal Commencement own;
         private List<Color> ColeurList = new List<Color> { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen,
             Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.Cyan, Color.BlueViolet, //, Color.OrangeRed, Color.MediumBlue, Color.DarkBlue
             Color.Violet, Color.Silver, Color.Gold, Color.SeaGreen};
@@ -34,11 +35,11 @@ namespace l_application_pour_diploma
             curr_points = new();
         }
         private bool availpoint(int u, int v) { return own.source[u, v] >= 0; }
-        private void Vran_Load(object sender, EventArgs e)
-        {
+        private void Vran_Load(object sender, EventArgs e){
             refr(true);
             reseachpoints(0, 0);
             dataGridView1.AutoResizeColumns();
+            
         }
         private void dataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -240,8 +241,8 @@ namespace l_application_pour_diploma
                     return i;
             return 0;
         }
-        internal void refr(bool changed_med)
-        {
+        internal void refr(bool changed_med){
+
             wave_de_points = new();
             variants = new() { own.source };
             if (own.radioButton1.Checked && own.checkBox4.Checked)
@@ -1185,6 +1186,7 @@ namespace l_application_pour_diploma
         }
 
         private void button3_Click(object sender, EventArgs e){
+            
             List<Point> genered = new();
             List<decimal> mins = new();
             List<List<Point>> starts = new(), finis = new(), medieval;
@@ -1308,10 +1310,8 @@ namespace l_application_pour_diploma
                     }
                     opersets.Add(s);
                 }
-                minrads = new();
-                minrads.Add(new());
-                foreach (var sub in owingpoints)
-                {//chosing the centre for each
+                minrads = new(){new()};
+                foreach (var sub in owingpoints){//chosing the centre for each
                     decimal maxrad = 0; // minsum = decimal.MaxValue;
                     Point centre = new();
                     decimal[,] waves = new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount], currwave;

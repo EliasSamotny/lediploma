@@ -17,6 +17,7 @@ using System.Linq;
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace l_application_pour_diploma{
     public partial class Packs : Form{
@@ -37,8 +38,8 @@ namespace l_application_pour_diploma{
             return frontl;
         }
         public double Distance(Point p1, Point p2){
-            double dx = p1.X - p2.X;
-            double dy = p1.Y - p2.Y;
+            int dx = p1.X - p2.X;
+            int dy = p1.Y - p2.Y;
             return Math.Sqrt(dx * dx + dy * dy);
         }
         internal void renew(){
@@ -56,143 +57,57 @@ namespace l_application_pour_diploma{
             List<Point> front = new();
             for (int i = 0; i < own.curr_points.Count; i++){
                 List<Point> area = new();
-                foreach (var poi in own.owingpoints[i]){
-                    if (own.wave_de_points[i][poi.X, poi.Y] <= own.minrads[i])
+                var minrad = own.minrads[i];
+                var cent = own.curr_points[i];
+                foreach (var poi in own.owingpoints[i])
+                {
+                    if (own.wave_de_points[i][poi.X, poi.Y] <= minrad)
                         area.Add(new(poi.X, poi.Y));
                 }
-
                 front = new(get_frontiers(area));
 
-                Point last, closest;
-                //front = front.Select(el => new Point(el.X * d + d / 2, el.Y * d + d / 2)).ToList();
-                List<Point> ordered = new () { front[0] };
+                /*Point centconv = new (cent.Y * d + d / 2, cent.X * d + d / 2);
                 do {
-                    last = ordered[^1];
-                    closest = front
-                        .Where(p => !ordered.Contains(p) && if_neighbors(p, last)) // && if_neighbors(p, last)
-                        .OrderBy(p => Distance(last, p))
-                    //.OrderByDescending(p => Distance(last, own.curr_points[i]))
-                        .First();
-                    ordered.Add(closest);
-                } while (front.Where(p => !ordered.Contains(p) && if_neighbors(p, closest)).Any()); // && if_neighbors(p, closest)
-                //ordered.Add(ordered[0]);
+                    centconv = new(centconv.Y + d , centconv.X);
 
-                ordered = ordered.Select(el => new Point(el.Y * d + d / 2, el.X * d + d / 2)).ToList();
-                carte.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                carte.DrawClosedCurve(Pens.Black, ordered.ToArray());
+                } while (!front.Contains(centconv));
+
+                var pix = new List<Point> { centconv };
+                centconv = new(cent.Y * d + d / 2, cent.X * d + d / 2);
+                
+                do {
+                    //own.wave_de_points
+                    var currpoi = pix[^1];
+
+
+                } while (pix[^1] != pix[0] && pix.Count > 3);*/
+
+                if (area.All(poi => own.own.source[area[0].X, area[0].Y] == own.own.source[poi.X, poi.Y] && own.own.checkBox4.Checked || 
+                    !own.own.checkBox4.Checked && own.variants.All(vari => vari[poi.X, poi.Y] == own.variants.First()[poi.X, poi.Y]))) 
+                {
+                    
+                    carte.DrawEllipse(Pens.Black, cent.Y * d + d / 2 - (int)minrad * d, cent.X * d + d / 2 - (int)minrad * d, 2 * (int)minrad * d, 2 * (int)minrad * d);
+                }
+                else {
+                    Point last, closest;
+                    //front = front.Select(el => new Point(el.X * d + d / 2, el.Y * d + d / 2)).ToList();
+                    List<Point> ordered = new() { front[0] };
+                    do {
+                        last = ordered[^1];
+                        closest = front
+                            .Where(p => !ordered.Contains(p) && if_neighbors(p, last)) // && if_neighbors(p, last)
+                            .OrderBy(p => Distance(last, p))
+                            //.OrderByDescending(p => Distance(last, own.curr_points[i]))
+                            .First();
+                        ordered.Add(closest);
+                    } while (front.Where(p => !ordered.Contains(p) && if_neighbors(p, closest)).Any()); // && if_neighbors(p, closest)
+                                                                                                        //ordered.Add(ordered[0]);
+
+                    ordered = ordered.Select(el => new Point(el.Y * d + d / 2, el.X * d + d / 2)).ToList();
+                    carte.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    carte.DrawClosedCurve(Pens.Black, ordered.ToArray());
+                }
             }
-            
-            /*
-            for (int i = 0; i < own.curr_points.Count; i++){
-                List<Point> area = new();
-                foreach (var poi in own.owingpoints[i]) {
-                    if (own.wave_de_points[i][poi.X,poi.Y] <= own.minrads[i])
-                        area.Add(poi);
-                }
-
-                List<Point> front = new(own.get_frontiers(area));
-                Point start = new();
-                bool defed = false;
-                for (int j = 0; j < front.Count; j++){
-                    if (calcrank(front,front[j]) == 2){
-                        start = new(front[j].X, front[j].Y);
-                        defed = true;
-                        break;
-                    }
-                }
-                if (!defed) {
-                    decimal max = 0;
-                    foreach (var el in front){
-                        if (max < own.wave_de_points[i][el.X, el.Y])
-                            max = own.wave_de_points[i][el.X, el.Y];
-                            start = new(el.X, el.Y);
-                        }
-                    }
-
-                List<Point> vis = new() { start };
-                if (front.Count > 10){
-
-                    Point curr = new(start.X, start.Y);
-                    while (true) {
-                        if (calcrank(front, curr) == 2) {
-                            curr = choisir_proch(front, curr, vis);
-                        }
-                        else{
-                            List<Point> neibs = get_neighbors(front, curr, vis);
-                            decimal max = 0;
-                            foreach (var el in neibs){
-                                if (max < own.wave_de_points[i][el.X, el.Y] && !vis.Contains(el)){ //  && own.wave_de_points[i][el.X, el.Y] <= own.minrads[i]
-                                    max = own.wave_de_points[i][el.X, el.Y];
-                                    curr = new(el.X, el.Y);
-                                }
-                            }
-                        }
-                        if (curr != vis[0])
-                            vis.Add(curr);
-                        else break;
-                        if (vis[^1] == vis[^2]) break;
-                        if (vis.Count > 3 && if_neighbors(vis[0], vis[^1])) { break; }
-                    }
-                }
-                else 
-                    vis = new(front);
-                foreach (var el in vis){
-                    carte.FillEllipse(new SolidBrush(System.Drawing.Color.Black), new System.Drawing.Rectangle(el.Y * d + d / 5, el.X * d + d / 5, 2 * d / 5, 2 * d / 5));
-                }
-
-                Point[] p1i = new Point[] {
-                        new (vis[0].Y * d + d / 2 - 1, vis[0].X * d + d / 2),
-                        new (vis[0].Y * d + d / 2 - 1, vis[0].X * d + 1 + d / 2),
-                        new (vis[0].Y * d + d / 2 - 1, vis[0].X * d + 2 + d / 2),
-                        new (vis[0].Y * d + d / 2, vis[0].X * d + d / 2),
-                        new (vis[0].Y * d + d / 2, vis[0].X * d + 1 + d / 2),
-                        new (vis[0].Y * d + d / 2, vis[0].X * d + 2 + d / 2),
-                        new (vis[0].Y * d + d / 2 + 1, vis[0].X * d + d / 2),
-                        new (vis[0].Y * d + d / 2 + 1, vis[0].X * d + 1 + d / 2),
-                        new (vis[0].Y * d + d / 2 + 1, vis[0].X * d + 2 + d / 2)
-                    };
-                Point[] p2i = new Point[] {
-                        new(vis[^1].Y * d + d/2 - 1, vis[^ 1].X * d + d / 2),
-                        new(vis[^1].Y * d + d/2 - 1, vis[^ 1].X * d + 1 + d / 2),
-                        new(vis[^ 1].Y * d + d/2 - 1, vis[^ 1].X * d + 2 + d / 2),
-                        new(vis[^ 1].Y * d + d/2, vis[^ 1].X * d + d / 2),
-                        new(vis[^ 1].Y * d + d/2, vis[^ 1].X * d + 1 + d / 2),
-                        new(vis[^ 1].Y * d + d/2, vis[^ 1].X * d + 2 + d / 2),
-                        new(vis[^ 1].Y * d + d/2 + 1, vis[^ 1].X * d + d / 2),
-                        new(vis[^ 1].Y * d + d/2 + 1, vis[^ 1].X * d + 1 + d / 2),
-                        new(vis[^ 1].Y * d + d/2 + 1, vis[^ 1].X * d + 2 + d / 2)
-                    };
-                for (int k = 0; k < p1i.Length; k++){
-                    carte.DrawLine(new Pen(System.Drawing.Color.Black), p1i[k], p2i[k]);
-                }
-                for (int j = 1; j < vis.Count; j++){
-                    p1i = new Point[] {
-                        new (vis[j].Y * d + d / 2 - 1, vis[j].X * d + d / 2),
-                        new (vis[j].Y * d + d / 2 - 1, vis[j].X * d + 1 + d / 2),
-                        new (vis[j].Y * d + d / 2 - 1, vis[j].X * d + 2 + d / 2),
-                        new (vis[j].Y * d + d / 2, vis[j].X * d + d / 2),
-                        new (vis[j].Y * d + d / 2, vis[j].X * d + 1 + d / 2),
-                        new (vis[j].Y * d + d / 2, vis[j].X * d + 2 + d / 2),
-                        new (vis[j].Y * d + d / 2 + 1, vis[j].X * d + d / 2),
-                        new (vis[j].Y * d + d / 2 + 1, vis[j].X * d + 1 + d / 2),
-                        new (vis[j].Y * d + d / 2 + 1, vis[j].X * d + 2 + d / 2)
-                    };
-                    p2i = new Point[] {
-                        new(vis[j - 1].Y * d + d/2 - 1, vis[j - 1].X * d + d / 2),
-                        new(vis[j - 1].Y * d + d/2 - 1, vis[j - 1].X * d + 1 + d / 2),
-                        new(vis[j - 1].Y * d + d/2 - 1, vis[j - 1].X * d + 2 + d / 2),
-                        new(vis[j - 1].Y * d + d/2, vis[j - 1].X * d + d / 2),
-                        new(vis[j - 1].Y * d + d/2, vis[j - 1].X * d + 1 + d / 2),
-                        new(vis[j - 1].Y * d + d/2, vis[j - 1].X * d + 2 + d / 2),
-                        new(vis[j - 1].Y * d + d/2 + 1, vis[j - 1].X * d + d / 2),
-                        new(vis[j - 1].Y * d + d/2 + 1, vis[j - 1].X * d + 1 + d / 2),
-                        new(vis[j - 1].Y * d + d/2 + 1, vis[j - 1].X * d + 2 + d / 2)
-                    };
-                    for (int k = 0; k < p1i.Length; k++) {
-                        carte.DrawLine(new Pen(System.Drawing.Color.Black), p1i[k], p2i[k]);
-                    }
-                }
-            }*/
 
             pictureBox1.Image = bmp;
         }

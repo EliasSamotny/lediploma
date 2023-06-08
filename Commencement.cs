@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using System.Linq.Expressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 namespace l_application_pour_diploma
 {
@@ -25,6 +26,7 @@ namespace l_application_pour_diploma
             dataGridView1.RowCount = (int)numericUpDown1.Value;
             dataGridView1.ColumnCount = (int)numericUpDown2.Value;
             lang = 0;
+
             refreshdata();
             dataGridView1.AutoResizeColumns();
             domains = new();
@@ -46,6 +48,9 @@ namespace l_application_pour_diploma
                     source[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                 }
             }
+            Process process = Process.GetCurrentProcess();
+            // установить приоритет процесса
+            process.PriorityClass = ProcessPriorityClass.RealTime;
         }
         private void set_mount()
         {
@@ -229,7 +234,7 @@ namespace l_application_pour_diploma
                     try
                     {
                         Cursor.Current = Cursors.WaitCursor;
-                        ex.Application xlApp = new ex.Application();
+                        ex.Application xlApp = new();
                         ex.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
                         ex._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                         ex.Range xlRange = xlWorksheet.UsedRange;
@@ -248,7 +253,9 @@ namespace l_application_pour_diploma
                         for (int i = 0; i < a - 1; i++)
                             for (int j = 0; j < b - 1; j++)
                             {
-                                dataGridView1.Rows[i].Cells[j].Value = Convert.ToDecimal(xlWorksheet.Cells[i + 2, j + 2].Value);
+                                var currval = Convert.ToDecimal(xlWorksheet.Cells[i + 2, j + 2].Value);
+                                source[i, j] = currval;
+                                dataGridView1.Rows[i].Cells[j].Value = currval;
                             }
 
                         //cleanup
@@ -283,6 +290,7 @@ namespace l_application_pour_diploma
                 }
             }
             dataGridView1.AutoResizeColumns();
+                     
         }
         private void showCurrCoord()
         {
@@ -291,126 +299,7 @@ namespace l_application_pour_diploma
         }
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e) { showCurrCoord(); }
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e) { showCurrCoord(); }
-        private void françaisToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (lang != 0)
-            {
-                label1.Text = "Quantitè de lignes";
-                label2.Text = "Quantitè de colonnes";
-                //button1.Text = "Générater";
-                toolStripMenuItem1.Text = "Ficher";
-                chargerToolStripMenuItem.Text = "Charger";
-                sauvegarderToolStripMenuItem.Text = "Sauvegarder";
-                checkBox2.Text = "Remplir de nombres aléatoires après avoir changé les dimensions";
-                desFenêtresToolStripMenuItem.Text = "Fenêtres";
-                desCalculationsDeCheminsToolStripMenuItem.Text = "Calculations de chemins pour deux points";
-                langueToolStripMenuItem.Text = "Langue";
-                sûrLauteurToolStripMenuItem.Text = "Sûr l\'auteur";
-                groupBox1.Text = "Dimensions";
-                groupBox2.Text = "Le point actuel";
-                label4.Text = "La ligne";
-                label3.Text = "La colonne";
-                button2.Text = "Remplir toutes les unités";
-                groupBox3.Text = "Génération de nombres ";
-                checkBox1.Text = "Sauvegarder les unités neg.";
-                this.Name = "Commencement";
-                this.Text = "L\'application pour le diploma: donnes pour commencement";
-                groupBox4.Text = "Reflexion de cellules";
-                label7.Text = "La taille de fonte";
-                label8.Text = "La quantité de signs";
-                groupBox5.Text = "Autres";
-                checkBox3.Text = "Afficher la carte de chaleur";
-                calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Calculations de cheman pour beaucoup points";
-                diagrammeDeVoronoїToolStripMenuItem.Text = "Diagramme de Voronoї";
-                groupBox6.Text = "Changement de milieu";
-                checkBox4.Text = "Changeable";
-                label9.Text = "Temps de changement (ms)";
 
-                radioButton1.Text = "Inverser";
-                radioButton2.Text = "Changer N fois par M % et revenir";
-                label5.Text = "Etat initial";
-
-                groupBox6.Text = "Changement de milieu";
-                checkBox4.Text = "Changeable";
-                checkBox5.Text = "Reflexer les changements";
-                label9.Text = "Temps de changement (ms)";
-
-                groupBox7.Text = "Conformité de changement";
-                label13.Text = "Unités";
-
-                button1.Text = "Aujouter";
-                button3.Text = "Suppremer";
-                button4.Text = "Afficher";
-                button5.Text = "Nettoyer";
-
-                groupBox8.Text = "Quantité";
-                label14.Text = "Domains";
-                label6.Text = "Cellules";
-
-                trouv?.toFrancais();
-                beaucoup?.toFrancais();
-                vran?.ToFrancais();
-                lang = 0;
-            }
-        }
-        private void russeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (lang != 1)
-            {
-                label1.Text = "Кол-во строк";
-                label2.Text = "Кол-во стоблцов";
-
-                toolStripMenuItem1.Text = "Файл";
-                chargerToolStripMenuItem.Text = "Загрузить";
-                sauvegarderToolStripMenuItem.Text = "Сохранить";
-                checkBox2.Text = "Использовать";
-                desFenêtresToolStripMenuItem.Text = "Окна";
-                desCalculationsDeCheminsToolStripMenuItem.Text = "Вычисление расстояний для двух точек";
-                langueToolStripMenuItem.Text = "Язык";
-                sûrLauteurToolStripMenuItem.Text = "Об авторе";
-                groupBox1.Text = "Измерения";
-                groupBox2.Text = "Исследуемая точка";
-                label4.Text = "Строка";
-                label3.Text = "Столбец";
-                button2.Text = "Сгенерировать единицы";
-                groupBox3.Text = "Области изменения";
-                checkBox1.Text = "Сохранить препятствия";
-                this.Text = "L\'application pour le diploma: данные для исследования";
-                groupBox4.Text = "Отображение ячеек";
-                label7.Text = "Размер шрифта";
-                label8.Text = "Количество знаков";
-                groupBox5.Text = "Другое";
-                checkBox3.Text = "Показать тепловую карту";
-                calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Вычисление оптимальной точки встречи";
-                diagrammeDeVoronoїToolStripMenuItem.Text = "Диаграмма Вороного";
-
-                groupBox6.Text = "Изменяемость среды";
-                checkBox4.Text = "Изменяема";
-                checkBox5.Text = "Отображать изменения";
-                label9.Text = "Время (мс)";
-
-                radioButton1.Text = "Замена обратными числами";
-                radioButton2.Text = "Изменить N раз на M % и вернуть исходные значения";
-                label5.Text = "Начальное состояние";
-
-                groupBox7.Text = "Соответствие изменений";
-                label13.Text = "Единицы";
-
-                button1.Text = "Добавить";
-                button3.Text = "Удалить";
-                button4.Text = "Показать";
-                button5.Text = "Очистить";
-
-                groupBox8.Text = "Кол-во";
-                label14.Text = "Областей";
-                label6.Text = "Клеток";
-
-                trouv?.toRusse();
-                beaucoup?.toRusse();
-                vran?.ToRusse();
-                lang = 1;
-            }
-        }
         private void button2_Click(object sender, EventArgs e)
         {
             set_unites();
@@ -759,6 +648,126 @@ namespace l_application_pour_diploma
             trouv?.refresh(true);
             vran?.refr(false);
 
+        }
+        private void françaisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lang != 0)
+            {
+                label1.Text = "Quantitè de lignes";
+                label2.Text = "Quantitè de colonnes";
+                //button1.Text = "Générater";
+                toolStripMenuItem1.Text = "Ficher";
+                chargerToolStripMenuItem.Text = "Charger";
+                sauvegarderToolStripMenuItem.Text = "Sauvegarder";
+                checkBox2.Text = "Remplir de nombres aléatoires après avoir changé les dimensions";
+                desFenêtresToolStripMenuItem.Text = "Fenêtres";
+                desCalculationsDeCheminsToolStripMenuItem.Text = "Calculations de chemins pour deux points";
+                langueToolStripMenuItem.Text = "Langue";
+                sûrLauteurToolStripMenuItem.Text = "Sûr l\'auteur";
+                groupBox1.Text = "Dimensions";
+                groupBox2.Text = "Le point actuel";
+                label4.Text = "La ligne";
+                label3.Text = "La colonne";
+                button2.Text = "Remplir toutes les unités";
+                groupBox3.Text = "Génération de nombres ";
+                checkBox1.Text = "Sauvegarder les unités neg.";
+                this.Name = "Commencement";
+                this.Text = "L\'application pour le diploma: donnes pour commencement";
+                groupBox4.Text = "Reflexion de cellules";
+                label7.Text = "La taille de fonte";
+                label8.Text = "La quantité de signs";
+                groupBox5.Text = "Autres";
+                checkBox3.Text = "Afficher la carte de chaleur";
+                calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Calculations de cheman pour beaucoup points";
+                diagrammeDeVoronoїToolStripMenuItem.Text = "Diagramme de Voronoї";
+                groupBox6.Text = "Changement de milieu";
+                checkBox4.Text = "Changeable";
+                label9.Text = "Temps de changement (ms)";
+
+                radioButton1.Text = "Inverser";
+                radioButton2.Text = "Changer N fois par M % et revenir";
+                label5.Text = "Etat initial";
+
+                groupBox6.Text = "Changement de milieu";
+                checkBox4.Text = "Changeable";
+                checkBox5.Text = "Reflexer les changements";
+                label9.Text = "Temps de changement (ms)";
+
+                groupBox7.Text = "Conformité de changement";
+                label13.Text = "Unités";
+
+                button1.Text = "Aujouter";
+                button3.Text = "Suppremer";
+                button4.Text = "Afficher";
+                button5.Text = "Nettoyer";
+
+                groupBox8.Text = "Quantité";
+                label14.Text = "Domains";
+                label6.Text = "Cellules";
+
+                trouv?.toFrancais();
+                beaucoup?.toFrancais();
+                vran?.ToFrancais();
+                lang = 0;
+            }
+        }
+        private void russeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lang != 1)
+            {
+                label1.Text = "Кол-во строк";
+                label2.Text = "Кол-во стоблцов";
+
+                toolStripMenuItem1.Text = "Файл";
+                chargerToolStripMenuItem.Text = "Загрузить";
+                sauvegarderToolStripMenuItem.Text = "Сохранить";
+                checkBox2.Text = "Использовать";
+                desFenêtresToolStripMenuItem.Text = "Окна";
+                desCalculationsDeCheminsToolStripMenuItem.Text = "Запуск волны из точки";
+                langueToolStripMenuItem.Text = "Язык";
+                sûrLauteurToolStripMenuItem.Text = "Об авторе";
+                groupBox1.Text = "Измерения";
+                groupBox2.Text = "Исследуемая точка";
+                label4.Text = "Строка";
+                label3.Text = "Столбец";
+                button2.Text = "Сгенерировать единицы";
+                groupBox3.Text = "Области изменения";
+                checkBox1.Text = "Сохранить препятствия";
+                this.Text = "L\'application pour le diploma: данные для исследования";
+                groupBox4.Text = "Отображение ячеек";
+                label7.Text = "Размер шрифта";
+                label8.Text = "Количество знаков";
+                groupBox5.Text = "Другое";
+                checkBox3.Text = "Показать тепловую карту";
+                calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Вычисление оптимальной точки встречи";
+                diagrammeDeVoronoїToolStripMenuItem.Text = "Диаграмма Вороного";
+
+                groupBox6.Text = "Изменяемость среды";
+                checkBox4.Text = "Изменяема";
+                checkBox5.Text = "Отображать изменения";
+                label9.Text = "Время (мс)";
+
+                radioButton1.Text = "Замена обратными числами";
+                radioButton2.Text = "Изменить N раз на M % и вернуть исходные значения";
+                label5.Text = "Начальное состояние";
+
+                groupBox7.Text = "Настройки изменений";
+                label13.Text = "Единицы";
+
+                button1.Text = "Добавить";
+                button3.Text = "Удалить";
+                button4.Text = "Показать";
+                button5.Text = "Очистить";
+
+                groupBox8.Text = "Кол-во";
+                label14.Text = "Областей";
+                label6.Text = "Клеток";
+
+                trouv?.toRusse();
+                beaucoup?.toRusse();
+                vran?.ToRusse();
+                lang = 1;
+            }
         }
     }
 }
