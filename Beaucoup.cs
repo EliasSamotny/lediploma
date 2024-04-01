@@ -32,12 +32,15 @@ namespace l_application_pour_diploma{
             pictureBox1.Image = bmp;
         }
         internal void refr(){
+
             if (dataGridView1.Rows.Count > 1){
+                own.insert_log("Refreshing the nearest point...");
                 destins = new ();
                 previos = new ();
 
                 Cursor.Current = Cursors.WaitCursor;
                 for (int l = 0; l < dataGridView1.RowCount; l++){
+                    //own.insert_log("Checking " + l.ToString() + " point...");
                     destins.Add(new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount]);
                     previos.Add(new Point[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount]);
                     
@@ -165,7 +168,7 @@ namespace l_application_pour_diploma{
                             x3 = i;
                             y3 = j;
                     }
-
+                //own.insert_log("The nearest point calculated. Refreshing the image...");
                 curr = new List<Point>();
                 for (int i = 0; i < dataGridView1.RowCount; i++)
                     curr.Add(new(Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) - 1, Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) - 1));
@@ -227,6 +230,7 @@ namespace l_application_pour_diploma{
                 Cursor.Current = Cursors.Default;
 
             }
+            own.insert_log("The nearest point refreshed.");
         }
         private decimal maxval(int xk,int yk){
             decimal s = 0;

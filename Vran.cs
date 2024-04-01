@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.EMMA;
 using System.Diagnostics;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace l_application_pour_diploma
 {
@@ -242,35 +243,34 @@ namespace l_application_pour_diploma
             return 0;
         }
         internal void refr(bool changed_med){
-
+            own.insert_log("Refreshing the diagram...");
             wave_de_points = new();
+            own.insert_log("Determining the pages of the media...");
             variants = new() { own.source };
-            if (own.radioButton1.Checked && own.checkBox4.Checked)
-            {
+            if (own.radioButton1.Checked && own.checkBox4.Checked){ //if inversion
                 decimal[,] inverseMatrix = new decimal[own.source.GetLength(0), own.source.GetLength(1)];
                 for (int i = 0; i < own.source.GetLength(0); i++)
                     for (int j = 0; j < own.source.GetLength(1); j++)
-                        if (!own.checkBox2.Checked && own.source[i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
+                        if (!own.checkBox2.Checked && own.source[i, j] > 0 //if domains not used and the first value is greater than 0
+                            || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j)))) // or  domains used and the point is in
                             inverseMatrix[i, j] = 1 / own.source[i, j];
 
                 variants.Add(inverseMatrix);
             }
-            else if (own.radioButton2.Checked && own.checkBox4.Checked)
-            {
+            else if (own.radioButton2.Checked && own.checkBox4.Checked){ //if regular changing set by main form
                 decimal multi = (100 + own.numericUpDown9.Value) / 100;
-                for (int t = 0; t < (int)own.numericUpDown8.Value; t++)
-                {
-
+                for (int t = 0; t < (int)own.numericUpDown8.Value; t++){
                     decimal[,] next = new decimal[own.source.GetLength(0), own.source.GetLength(1)];
                     for (int i = 0; i < own.source.GetLength(0); i++)
                         for (int j = 0; j < own.source.GetLength(1); j++)
-                            if (!own.checkBox2.Checked && own.source[i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
+                            if (!own.checkBox2.Checked && own.source[i, j] > 0 //if domains not used and the first value is greater than 0
+                                || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j)))) //or domains used and the point is in
                                 next[i, j] = variants[^1][i, j] * multi;
                             else next[i, j] = variants[^1][i, j];
                     variants.Add(next);
                 }
             }
-
+            own.insert_log("The pages of the media determined...");
             dataGridView2.RowCount = own.dataGridView1.RowCount;
             dataGridView2.ColumnCount = own.dataGridView1.ColumnCount;
             for (int i = 0; i < dataGridView2.RowCount; i++)
@@ -280,18 +280,20 @@ namespace l_application_pour_diploma
                     dataGridView2.Rows[i].Cells[j].Style.BackColor = Color.White;
                 }
             dataGridView2.AutoResizeColumns();
-            if (changed_med)
+            if (changed_med){
+                own.insert_log("The media changed! Checking if it is still unified...");
                 reseachpoints(0, 0);
-            if (dataGridView1.RowCount > 0)
-            {
-                if (curr_points.Count > 0 && curr_points.Count == dataGridView1.RowCount)
-                {
+            }
+            own.insert_log("Proceeding current points...");
+            if (dataGridView1.RowCount > 0){
+                if (curr_points.Count > 0 && curr_points.Count == dataGridView1.RowCount){
                     dataGridView1.RowCount = 0;
                     foreach (var el in curr_points)
                         dataGridView1.Rows.Add(new object[] { (el.X + 1), (el.Y + 1) });
                 }
                 curr_points = new();
                 List<int> randcol = new List<int>();
+                own.insert_log("Choosing colours...");
                 for (int i = 0; i < dataGridView1.RowCount; i++)
                 { //choosing les coleurs
                     Random r = new Random();
@@ -306,14 +308,15 @@ namespace l_application_pour_diploma
                 previos = new();
 
                 Cursor.Current = Cursors.WaitCursor;
-                for (int l = 0; l < dataGridView1.RowCount; l++)
-                {
+
+                for (int l = 0; l < dataGridView1.RowCount; l++){
+                    
                     destins.Add(new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount]);
                     previos.Add(new Point[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount]);
 
                     x = Convert.ToInt32(dataGridView1.Rows[l].Cells[0].Value) - 1; x1 = x;
                     y = Convert.ToInt32(dataGridView1.Rows[l].Cells[1].Value) - 1; y1 = y;
-
+                    own.insert_log("Launching wave from " + l.ToString() + "/" + dataGridView1.RowCount.ToString() + " ({$x},{$y} (raw)) point...");
                     vis = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
                     vis1 = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
                     for (int i = 0; i < own.dataGridView1.RowCount; i++)
@@ -340,8 +343,7 @@ namespace l_application_pour_diploma
                             }
                         }
                     destins[l][x, y] = 0;
-                    while (!checkallvis())
-                    {
+                    while (!checkallvis()){
                         vis[x1, y1] = true;
                         for (int i = 0; i < size_rayon(); i++)
                             calculcell(l, x1 + voisins[i].X, y1 + voisins[i].Y);
@@ -389,11 +391,13 @@ namespace l_application_pour_diploma
                             }
                         }
                     }
+                    own.insert_log("Wave launched.");
                 }
+                own.insert_log("Claiming points to domains...");
                 owingpoints = new List<List<Point>>(); //list of sets of chosen points
                 for (int i = 0; i < dataGridView1.RowCount; i++)
                 {
-                    Point p = new Point(Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) - 1,
+                    Point p = new(Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) - 1,
                             Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) - 1);
                     List<Point> lp = new() { p };
                     owingpoints.Add(lp);
@@ -475,6 +479,7 @@ namespace l_application_pour_diploma
             dataGridView2.AutoResizeColumns();
             dataGridView2.AutoResizeRows();
             Focus();
+            own.insert_log("Points claimed to domains. Diagram refreshed.");
             forfait?.renew();
         }
         internal List<Point> get_frontiers(List<Point> set)
@@ -570,10 +575,12 @@ namespace l_application_pour_diploma
             if (!if_all_known(known))
             {
                 onemedium = false;
+                own.insert_log("The media checked. It is not unified.");
             }
             else
             {
-                onemedium = true;
+                onemedium = true; 
+                own.insert_log("The media checked. It is unified.");
             }
         }
         private double pointdest(int xc1, int yc1, int xc2, int yc2) { return Math.Sqrt(Math.Pow(xc1 - xc2, 2) + Math.Pow(yc1 - yc2, 2)); }
@@ -892,17 +899,21 @@ namespace l_application_pour_diploma
             forfait.Focus();
         }
 
-        private void button1_Click(object sender, EventArgs e){
+        private void button1_Click(object sender, EventArgs e){            
             var cers = (int)numericUpDown1.Value;
             var effs = (int)numericUpDown2.Value;
+            own.insert_log("Starting multistart with {$eff} efforts for {$cers} circles...");
             dataGridView1.RowCount = 0;
             Random r = new Random();
             List<List<Point>> starts = new(), finis = new(), medieval;
             List<List<decimal>> minrads = new();
+            own.insert_log("Cheking if media unified...");
             reseachpoints(0, 0);
             for (int k = 0; k < effs; k++){
+                own.insert_log("    Starting the {$eff} effort...");
                 List<Point> genered = new();
                 List<decimal> mins = new();
+                own.insert_log("    Generating starting points...");
                 for (int j = 0; j < cers; j++) { // generating new start points
                     Point cu;
                     do{
@@ -913,9 +924,10 @@ namespace l_application_pour_diploma
                     genered.Add(cu);
                 }
                 starts.Add(genered);
-
+                own.insert_log("    Starting points: " + genered.ToString());
                 Cursor.Current = Cursors.WaitCursor;
                 medieval = new() { genered };
+                own.insert_log("    Searching the optimum...");
                 do {
                     curr_points = new();
 
@@ -923,13 +935,13 @@ namespace l_application_pour_diploma
                     previos = new();
 
                     for (int l = 0; l < cers; l++) {
-
+                        
                         destins.Add(new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount]);
                         previos.Add(new Point[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount]);
 
                         x = Convert.ToInt32(medieval[^1][l].X); x1 = x;
                         y = Convert.ToInt32(medieval[^1][l].Y); y1 = y;
-
+                        own.insert_log("        Launching wave from {$l} point ({$x},{$y} (raw))...");
                         vis = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
                         vis1 = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
                         for (int i = 0; i < own.dataGridView1.RowCount; i++)
@@ -1001,8 +1013,9 @@ namespace l_application_pour_diploma
                                 }
                             }
                         }
-                    }
 
+                    }
+                    own.insert_log("        Wave from points launched. Claiming the domains...");
                     owingpoints = new List<List<Point>>(); //list of sets of chosen points
                     foreach (var po in medieval[^1])
                     {
@@ -1032,8 +1045,8 @@ namespace l_application_pour_diploma
                     }
                     curr_points = new();
                     mins = new();
-                    foreach (var sub in owingpoints)
-                    {//chosing the centre for each
+                    own.insert_log("        Domains established. Determining centres...");
+                    foreach (var sub in owingpoints){//chosing the centre for each
                         decimal maxrad = 0; //decimal.MaxValue;
                         Point centre = new();
 
@@ -1051,12 +1064,15 @@ namespace l_application_pour_diploma
                         wave_de_points.Add(waves);
                         curr_points.Add(centre);
                     }
+                    own.insert_log("        Centres determined.");
                     medieval.Add(curr_points);
                 }
                 while (!compararer_sets(medieval[^1], medieval[^2]) || (medieval.Count > 2 && !compararer_sets(medieval[^1], medieval[^3])));
                 minrads.Add(mins);
                 finis.Add(medieval[^1]);
+                own.insert_log("    Optimun found.");
             }
+            own.insert_log("Efforts ceased.");
             decimal maxsum = 0;
             int indmax = 0;
             for (int i = 0; i < minrads.Count; i++)
