@@ -21,14 +21,14 @@ namespace l_application_pour_diploma
         internal decimal[,] source;
         private bool global_log_allowed = true;
         string logFilePath = "C:\\Users\\Elias\\Desktop\\lediploma\\log.log";
-        public void insert_log(string log_mess) {
+        public void insert_log(string log_mess, Form caller) {
             if (global_log_allowed) {
                 using (StreamWriter sw = new StreamWriter(logFilePath, true)){
                     // Get the current timestamp
                     string timestamp = DateTime.Now.ToString();
 
                     // Add the log string with the timestamp to the file
-                    string logString = timestamp + ", " + this.Text + ": " + log_mess;
+                    string logString = timestamp + $", {caller.Text}: { log_mess}";
                     sw.WriteLine(logString);
                 }
             }
@@ -51,7 +51,7 @@ namespace l_application_pour_diploma
         internal Vran? vran;
         private void Form1_Load(object sender, EventArgs e)
         {
-            insert_log("Loading form...");
+            insert_log("Loading form...", this);
             russeToolStripMenuItem_Click(sender, e);
             dataGridView1.AutoResizeColumns();
             set_mount();
@@ -64,7 +64,7 @@ namespace l_application_pour_diploma
                     source[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                 }
             }
-            insert_log("Form loaded.");
+            insert_log("Form loaded.", this);
         }
         private void set_mount()
         {
@@ -96,7 +96,7 @@ namespace l_application_pour_diploma
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) { refreshdata(); }
         private void refreshdata()
         {
-            insert_log("Refreshing forms...");
+            insert_log("Refreshing forms...", this);
             decimal[,] data1 = new decimal[dataGridView1.RowCount, dataGridView1.ColumnCount];
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
@@ -125,7 +125,7 @@ namespace l_application_pour_diploma
             vran?.refr(true);
             dataGridView1.AutoResizeColumns();
             dataGridView1.AutoResizeRows();
-            insert_log("Forms refreshed...");
+            insert_log("Forms refreshed...", this);
         }
         private void numericUpDown2_ValueChanged(object sender, EventArgs e) { refreshdata(); }
         private void numericUpDown1_KeyPress(object sender, KeyPressEventArgs e) { }
@@ -183,14 +183,14 @@ namespace l_application_pour_diploma
         }
         private void sauvegarderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            insert_log("Choosing file for saving media...");
+            insert_log("Choosing file for saving media...", this);
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "Tableur | *.xlsx| Tableur | *.xls| All files | *.*";
             saveFileDialog1.Title = "Sauvegarder la table";
             saveFileDialog1.ShowDialog();
             if (saveFileDialog1.FileName != "")
             {
-                insert_log("Saving media...");
+                insert_log("Saving media...", this);
                 Filename = saveFileDialog1.FileName;
                 decimal[,] data = new decimal[dataGridView1.RowCount, dataGridView1.ColumnCount];
                 for (int i = 0; i < dataGridView1.RowCount; i++)
@@ -220,7 +220,7 @@ namespace l_application_pour_diploma
                Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
                 excelappworkbook.Close();
                 MessageBox.Show("Le tableur est sauvegardé");
-                insert_log("Media saved.");
+                insert_log("Media saved.", this);
             }
         }
         private string numColu(int f)
@@ -238,7 +238,7 @@ namespace l_application_pour_diploma
         }
         private void chargerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            insert_log("Choosing file for loading media...");
+            insert_log("Choosing file for loading media...", this);
             OpenFileDialog file = new OpenFileDialog(); //open dialog to choose file
             file.Filter = "Tableur | *.xlsx| Tableur | *.xls| All files | *.*";
             file.Title = "Charger la table";
@@ -246,7 +246,7 @@ namespace l_application_pour_diploma
             string fileExt = string.Empty;
             if (file.ShowDialog() == DialogResult.OK)
             {
-                insert_log("Loading media...");
+                insert_log("Loading media...", this);
                 filePath = file.FileName; //get the path of the file
                 fileExt = Path.GetExtension(filePath); //get the file extension
                 if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0)
@@ -303,7 +303,7 @@ namespace l_application_pour_diploma
                     trouv?.refresh(true);
                     beaucoup?.refr();
                     vran?.refr(true);
-                    insert_log("Media loaded.");
+                    insert_log("Media loaded.", this);
                 }
                 else
                 {

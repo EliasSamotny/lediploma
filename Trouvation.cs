@@ -71,7 +71,7 @@ namespace l_application_pour_diploma
             return 0;
         }
         internal void refresh(bool changed_med){
-            own.insert_log("Refreshing the shortest path...");
+            own.insert_log("Refreshing the shortest path...", this);
             variants = new() { own.source };
             if (own.radioButton1.Checked && own.checkBox4.Checked)
             {
@@ -204,7 +204,7 @@ namespace l_application_pour_diploma
 
             }
             textBox1.Text = sumtotal.ToString("0.##");
-            own.insert_log("The shortest path refreshed.");
+            own.insert_log("The shortest path refreshed.", this);
         }
         private bool pointavailiter(int x1, int y1, int x2, int y2)
         { //vieux, nouveau

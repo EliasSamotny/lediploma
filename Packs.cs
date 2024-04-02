@@ -43,11 +43,11 @@ namespace l_application_pour_diploma{
             return Math.Sqrt(dx * dx + dy * dy);
         }
         internal void renew(){
-            own.own.insert_log("Refreshing the packs...");
+            own.own.insert_log("Refreshing the packs...", this);
             Bitmap bmp = new(pictureBox1.Width, pictureBox1.Height);
             Graphics carte = Graphics.FromImage(bmp);
             d = Math.Min(pictureBox1.Width, pictureBox1.Height) / Math.Max(own.dataGridView2.RowCount, own.dataGridView2.ColumnCount);
-            own.own.insert_log("Drawing the table...");
+            own.own.insert_log("Drawing the table...", this);
             for (int i = 0; i < own.dataGridView2.RowCount; i++){
                 for (int j = 0; j < own.dataGridView2.Columns.Count; j++) {
                     carte.DrawRectangle(new Pen(System.Drawing.Color.White), j * d, i * d, d, d);
@@ -86,11 +86,11 @@ namespace l_application_pour_diploma{
                 
                 if (area.All(poi => own.own.source[area[0].X, area[0].Y] == own.own.source[poi.X, poi.Y] && own.own.checkBox4.Checked || 
                     !own.own.checkBox4.Checked && own.variants.All(vari => vari[poi.X, poi.Y] == own.variants.First()[poi.X, poi.Y]))) {
-                    own.own.insert_log("Drawing the circle...");
+                    own.own.insert_log("Drawing the circle...", this);
                     carte.DrawEllipse(Pens.Black, cent.Y * d + d / 2 - (int)minrad * d, cent.X * d + d / 2 - (int)minrad * d, 2 * (int)minrad * d, 2 * (int)minrad * d);
                 }
                 else {
-                    own.own.insert_log("Drawing the \"circle\"...");
+                    own.own.insert_log("Drawing the \"circle\"...", this);
                     Point last, closest;
                     //front = front.Select(el => new Point(el.X * d + d / 2, el.Y * d + d / 2)).ToList();
                     List<Point> ordered = new() { front[0] };
@@ -112,7 +112,7 @@ namespace l_application_pour_diploma{
             }
 
             pictureBox1.Image = bmp;
-            own.own.insert_log("The packs refreshed.");
+            own.own.insert_log("The packs refreshed.", this);
         }
         private bool if_neighbors(Point p1, Point p2) {
             return Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2) <= 2;
