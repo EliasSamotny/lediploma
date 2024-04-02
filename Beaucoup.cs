@@ -34,7 +34,7 @@ namespace l_application_pour_diploma{
         internal void refr(){
 
             if (dataGridView1.Rows.Count > 1){
-                own.insert_log("Refreshing the nearest point...");
+                own.insert_log("Refreshing the nearest point...", this);
                 destins = new ();
                 previos = new ();
 
@@ -230,7 +230,7 @@ namespace l_application_pour_diploma{
                 Cursor.Current = Cursors.Default;
 
             }
-            own.insert_log("The nearest point refreshed.");
+            own.insert_log("The nearest point refreshed.",this);
         }
         private decimal maxval(int xk,int yk){
             decimal s = 0;

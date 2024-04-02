@@ -20,19 +20,21 @@ namespace l_application_pour_diploma
         internal byte lang; // 0 - francais, 1 - russe
         internal decimal[,] source;
         private bool global_log_allowed = true;
+        private static readonly object log_locker = new object();
         string logFilePath = "C:\\Users\\Elias\\Desktop\\lediploma\\log.log";
         public void insert_log(string log_mess, Form caller) {
-            if (global_log_allowed) {
-                using (StreamWriter sw = new StreamWriter(logFilePath, true)){
-                    // Get the current timestamp
-                    string timestamp = DateTime.Now.ToString();
+            if (global_log_allowed){
+                lock (log_locker){
+                    using (StreamWriter sw = new StreamWriter(logFilePath, true)){
+                        // Get the current timestamp
+                        string timestamp = DateTime.Now.ToString();
 
-                    // Add the log string with the timestamp to the file
-                    string logString = timestamp + $", {caller.Text}: { log_mess}";
-                    sw.WriteLine(logString);
+                        // Add the log string with the timestamp to the file
+                        string logString = timestamp + $", {caller.Text}: {log_mess}";
+                        sw.WriteLine(logString);
+                    }
                 }
             }
-            
         }
         public Commencement()
         {
