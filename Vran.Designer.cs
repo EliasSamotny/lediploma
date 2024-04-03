@@ -160,7 +160,7 @@
             numericUpDown1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             numericUpDown1.Location = new Point(166, 22);
             numericUpDown1.Margin = new Padding(5, 6, 5, 6);
-            numericUpDown1.Maximum = new decimal(new int[] { 11, 0, 0, 0 });
+            numericUpDown1.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
             numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.ReadOnly = true;
@@ -249,7 +249,7 @@
             numericUpDown5.ReadOnly = true;
             numericUpDown5.Size = new Size(46, 28);
             numericUpDown5.TabIndex = 12;
-            numericUpDown5.Value = new decimal(new int[] { 12, 0, 0, 0 });
+            numericUpDown5.Value = new decimal(new int[] { 9, 0, 0, 0 });
             numericUpDown5.ValueChanged += numericUpDown5_ValueChanged;
             // 
             // numericUpDown6

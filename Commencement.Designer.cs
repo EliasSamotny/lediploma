@@ -26,7 +26,8 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             numericUpDown1 = new NumericUpDown();
@@ -121,7 +122,7 @@
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(80, 29);
             numericUpDown1.TabIndex = 1;
-            numericUpDown1.Value = new decimal(new int[] { 21, 0, 0, 0 });
+            numericUpDown1.Value = new decimal(new int[] { 41, 0, 0, 0 });
             numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
             numericUpDown1.KeyPress += numericUpDown1_KeyPress;
             numericUpDown1.KeyUp += numericUpDown1_KeyUp;
@@ -136,7 +137,7 @@
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new Size(80, 29);
             numericUpDown2.TabIndex = 1;
-            numericUpDown2.Value = new decimal(new int[] { 21, 0, 0, 0 });
+            numericUpDown2.Value = new decimal(new int[] { 41, 0, 0, 0 });
             numericUpDown2.ValueChanged += numericUpDown2_ValueChanged;
             numericUpDown2.KeyPress += numericUpDown2_KeyPress;
             numericUpDown2.KeyUp += numericUpDown2_KeyUp;
@@ -390,7 +391,7 @@
             numericUpDown5.ReadOnly = true;
             numericUpDown5.Size = new Size(51, 29);
             numericUpDown5.TabIndex = 12;
-            numericUpDown5.Value = new decimal(new int[] { 12, 0, 0, 0 });
+            numericUpDown5.Value = new decimal(new int[] { 9, 0, 0, 0 });
             numericUpDown5.ValueChanged += numericUpDown5_ValueChanged;
             // 
             // numericUpDown6

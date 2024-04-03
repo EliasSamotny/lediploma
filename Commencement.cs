@@ -36,8 +36,7 @@ namespace l_application_pour_diploma
                 }
             }
         }
-        public Commencement()
-        {
+        public Commencement(){
             InitializeComponent();
             trouv = null;
             dataGridView1.RowCount = (int)numericUpDown1.Value;
