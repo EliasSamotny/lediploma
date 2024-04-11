@@ -61,6 +61,7 @@
             dataGridView2 = new DataGridView();
             menuStrip1 = new MenuStrip();
             lesForfaitsToolStripMenuItem = new ToolStripMenuItem();
+            label5 = new Label();
             groupBox1.SuspendLayout();
             groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
@@ -80,6 +81,7 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(button1);
             groupBox1.Controls.Add(groupBox5);
             groupBox1.Controls.Add(groupBox3);
@@ -321,6 +323,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowTemplate.Height = 25;
+            dataGridView1.RowTemplate.ReadOnly = true;
             dataGridView1.ShowEditingIcon = false;
             dataGridView1.Size = new Size(266, 160);
             dataGridView1.TabIndex = 0;
@@ -460,6 +463,15 @@
             lesForfaitsToolStripMenuItem.Text = "Les forfaits";
             lesForfaitsToolStripMenuItem.Click += lesForfaitsToolStripMenuItem_Click;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(269, 120);
+            label5.Name = "label5";
+            label5.Size = new Size(119, 20);
+            label5.TabIndex = 19;
+            label5.Text = "Sum de radii = 0";
+            // 
             // Vran
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
@@ -476,6 +488,7 @@
             FormClosing += Vran_FormClosing;
             Load += Vran_Load;
             groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
@@ -531,5 +544,6 @@
         private Label label2;
         private NumericUpDown numericUpDown1;
         private Button button3;
+        private Label label5;
     }
 }

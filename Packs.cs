@@ -61,8 +61,7 @@ namespace l_application_pour_diploma{
                 List<Point> area = new();
                 var minrad = own.minrads[i];
                 var cent = own.curr_points[i];
-                foreach (var poi in own.owingpoints[i])
-                {
+                foreach (var poi in own.owingpoints[i]){
                     if (own.wave_de_points[i][poi.X, poi.Y] <= minrad)
                         area.Add(new(poi.X, poi.Y));
                 }
