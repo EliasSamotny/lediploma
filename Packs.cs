@@ -83,7 +83,7 @@ namespace l_application_pour_diploma{
 
                 } while (pix[^1] != pix[0] && pix.Count > 3);*/
                 
-                if (area.All(poi => own.own.source[area[0].X, area[0].Y] == own.own.source[poi.X, poi.Y] && own.own.checkBox4.Checked || 
+                if (area.All(poi => own.own.source[0][area[0].X, area[0].Y] == own.own.source[0][poi.X, poi.Y] && own.own.checkBox4.Checked || 
                     !own.own.checkBox4.Checked && own.variants.All(vari => vari[poi.X, poi.Y] == own.variants.First()[poi.X, poi.Y]))) {
                     own.own.insert_log("Drawing the circle...", this);
                     carte.DrawEllipse(Pens.Black, cent.Y * d + d / 2 - (int)minrad * d, cent.X * d + d / 2 - (int)minrad * d, 2 * (int)minrad * d, 2 * (int)minrad * d);

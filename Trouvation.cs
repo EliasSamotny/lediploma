@@ -72,14 +72,14 @@ namespace l_application_pour_diploma
         }
         internal void refresh(bool changed_med){
             own.insert_log("Refreshing the shortest path...", this);
-            variants = new() { own.source };
+            variants = new() { own.source[0] };
             if (own.radioButton1.Checked && own.checkBox4.Checked)
             {
-                decimal[,] inverseMatrix = new decimal[own.source.GetLength(0), own.source.GetLength(1)];
-                for (int i = 0; i < own.source.GetLength(0); i++)
-                    for (int j = 0; j < own.source.GetLength(1); j++)
-                        if (!own.checkBox2.Checked && own.source[i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
-                            inverseMatrix[i, j] = 1 / own.source[i, j];
+                decimal[,] inverseMatrix = new decimal[own.source[0].GetLength(0), own.source[0].GetLength(1)];
+                for (int i = 0; i < own.source[0].GetLength(0); i++)
+                    for (int j = 0; j < own.source[0].GetLength(1); j++)
+                        if (!own.checkBox2.Checked && own.source[0][i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
+                            inverseMatrix[i, j] = 1 / own.source[0][i, j];
 
                 variants.Add(inverseMatrix);
             }
@@ -89,10 +89,10 @@ namespace l_application_pour_diploma
                 for (int t = 0; t < (int)own.numericUpDown8.Value; t++)
                 {
 
-                    decimal[,] next = new decimal[own.source.GetLength(0), own.source.GetLength(1)];
-                    for (int i = 0; i < own.source.GetLength(0); i++)
-                        for (int j = 0; j < own.source.GetLength(1); j++)
-                            if (!own.checkBox2.Checked && own.source[i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
+                    decimal[,] next = new decimal[own.source[0].GetLength(0), own.source[0].GetLength(1)];
+                    for (int i = 0; i < own.source[0].GetLength(0); i++)
+                        for (int j = 0; j < own.source[0].GetLength(1); j++)
+                            if (!own.checkBox2.Checked && own.source[0][i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
                                 next[i, j] = variants[^1][i, j] * multi;
                             else next[i, j] = variants[^1][i, j];
                     variants.Add(next);

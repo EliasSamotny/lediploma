@@ -6,10 +6,8 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Diagnostics;
 
-namespace l_application_pour_diploma
-{
-    public partial class Commencement : Form
-    {
+namespace l_application_pour_diploma{
+    public partial class Commencement : Form{
         private ex.Application? excelapp;
         private ex.Workbooks? excelappworkbooks;
         private ex.Workbook? excelappworkbook;
@@ -18,7 +16,7 @@ namespace l_application_pour_diploma
         private ex.Range? excelcells;
         public string? Filename;
         internal byte lang; // 0 - francais, 1 - russe
-        internal decimal[,] source;
+        internal List<decimal[,]> source;
         private bool global_log_allowed = true;
         private static readonly object log_locker = new object();
         string logFilePath = "C:\\Users\\Elias\\Desktop\\lediploma\\log.log";
@@ -27,10 +25,10 @@ namespace l_application_pour_diploma
                 lock (log_locker){
                     using (StreamWriter sw = new StreamWriter(logFilePath, true)){
                         // Get the current timestamp
-                        string timestamp = DateTime.Now.ToString();
+                        string timestamp = DateTime.Now.ToString("HH:mm:ss:ff");
 
                         // Add the log string with the timestamp to the file
-                        string logString = timestamp + $", {caller.Text}: {log_mess}";
+                        string logString = $"{timestamp}: {caller.Text}: {log_mess}";
                         sw.WriteLine(logString);
                     }
                 }
@@ -57,12 +55,12 @@ namespace l_application_pour_diploma
             dataGridView1.AutoResizeColumns();
             set_mount();
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
-            source = new decimal[r, c];
+            source = new() { new decimal[r, c] };
             for (int i = 0; i < r; i++)
             {
                 for (int j = 0; j < c; j++)
                 {
-                    source[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
+                    source[0][i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                 }
             }
             insert_log("Form loaded.", this);
@@ -95,8 +93,7 @@ namespace l_application_pour_diploma
             return 1 / (decimal)(Math.Pow((i - r / 2) * icoef, 2) / 2 + Math.Pow((j - c / 2) * jcoef, 2) / 2);
         }
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) { refreshdata(); }
-        private void refreshdata()
-        {
+        private void refreshdata(){
             insert_log("Refreshing forms...", this);
             decimal[,] data1 = new decimal[dataGridView1.RowCount, dataGridView1.ColumnCount];
             for (int i = 0; i < dataGridView1.RowCount; i++)
@@ -112,11 +109,11 @@ namespace l_application_pour_diploma
             dataGridView1.RowCount = (int)numericUpDown1.Value;
             dataGridView1.ColumnCount = (int)numericUpDown2.Value;
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
-            source = new decimal[r, c];
+            source = new() { new decimal[r, c] };
             for (int i = 0; i < i1; i++)
                 for (int j = 0; j < j1; j++)
                 {
-                    source[i, j] = data1[i, j];
+                    source[0][i, j] = data1[i, j];
                     dataGridView1.Rows[i].Cells[j].Value = data1[i, j];
                 }
 
@@ -275,7 +272,7 @@ namespace l_application_pour_diploma
                             for (int j = 0; j < b - 1; j++)
                             {
                                 var currval = Convert.ToDecimal(xlWorksheet.Cells[i + 2, j + 2].Value);
-                                source[i, j] = currval;
+                                source[0][i, j] = currval;
                                 dataGridView1.Rows[i].Cells[j].Value = currval;
                             }
 
@@ -322,21 +319,16 @@ namespace l_application_pour_diploma
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e) { showCurrCoord(); }
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e) { showCurrCoord(); }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            set_unites();
-        }
-        private void set_unites()
-        {
+        private void button2_Click(object sender, EventArgs e){ set_unites(); }
+        private void set_unites(){
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
-            source = new decimal[r, c];
+            source = new() { new decimal[r, c] };
             for (int i = 0; i < dataGridView1.RowCount; i++)
-                for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                {
+                for (int j = 0; j < dataGridView1.ColumnCount; j++){
                     if (checkBox1.Checked && Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
                         dataGridView1.Rows[i].Cells[j].Value = -1;
                     else dataGridView1.Rows[i].Cells[j].Value = 1;
-                    source[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
+                    source[0][i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                 }
             try { dataGridView1.Rows[0].Cells[0].Value = (decimal)dataGridView1.Rows[0].Cells[0].Value; }
             catch (Exception) { dataGridView1.Rows[0].Cells[0].Value = (int)dataGridView1.Rows[0].Cells[0].Value; }
@@ -475,7 +467,7 @@ namespace l_application_pour_diploma
                                 if (tick < (int)numericUpDown8.Value)
                                     dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 + (double)numericUpDown9.Value) / 100;
                                 else
-                                    dataGridView1.Rows[i].Cells[j].Value = source[i, j];
+                                    dataGridView1.Rows[i].Cells[j].Value = source[0][i, j];
                             }
 
                         }
@@ -489,7 +481,7 @@ namespace l_application_pour_diploma
                             if (tick < (int)numericUpDown8.Value)
                                 dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 + (double)numericUpDown9.Value) / 100;
                             else
-                                dataGridView1.Rows[i].Cells[j].Value = source[i, j];
+                                dataGridView1.Rows[i].Cells[j].Value = source[0][i, j];
                         }
 
                     }
@@ -515,7 +507,7 @@ namespace l_application_pour_diploma
                 timer1.Enabled = false;
                 for (int i = 0; i < dataGridView1.RowCount; i++)
                     for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                        dataGridView1.Rows[i].Cells[j].Value = source[i, j];
+                        dataGridView1.Rows[i].Cells[j].Value = source[0][i, j];
             }
             vran?.refr(false);
             trouv?.refresh(false);
@@ -575,15 +567,11 @@ namespace l_application_pour_diploma
         private List<Color> ColeurList = new List<Color> { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen,
             Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.Cyan, Color.BlueViolet };
         private void button4_Click(object sender, EventArgs e) { affichdom(); }
-        private void affichdom()
-        {
+        private void affichdom(){
             checkBox3.Checked = false;
-            for (int i = 0; i < dataGridView1.RowCount; i++)
-            {
-                for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                {
-                    if (domains.Any(list => list.Contains(new(i, j))))
-                    {
+            for (int i = 0; i < dataGridView1.RowCount; i++){
+                for (int j = 0; j < dataGridView1.ColumnCount; j++){
+                    if (domains.Any(list => list.Contains(new(i, j)))){
                         dataGridView1.Rows[i].Cells[j].Style.BackColor = ColeurList[domains.FindIndex(list => list.Contains(new(i, j))) % ColeurList.Count];
                     }
                     else
