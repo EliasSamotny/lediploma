@@ -117,63 +117,6 @@ namespace l_application_pour_diploma{
             return Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2) <= 2;
             
         }
-        private List<Point> get_neighbors(List<Point> set, Point curr, List<Point> vis){
-            List<Point> neighbors = new List<Point>();
-            Point c = new(curr.X - 1, curr.Y - 1);
-            if (set.Contains(c) && !vis.Contains(c)) neighbors.Add(c);
-            c = new(curr.X - 1, curr.Y);
-            if (set.Contains(c) && !vis.Contains(c)) neighbors.Add(c);
-            c = new(curr.X - 1, curr.Y + 1);
-            if (set.Contains(c) && !vis.Contains(c)) neighbors.Add(c);
-            c = new(curr.X, curr.Y + 1);
-            if (set.Contains(c) && !vis.Contains(c)) neighbors.Add(c);
-            c = new(curr.X + 1, curr.Y + 1);
-            if (set.Contains(c) && !vis.Contains(c)) neighbors.Add(c);
-            c = new(curr.X + 1, curr.Y);
-            if (set.Contains(c) && !vis.Contains(c)) neighbors.Add(c);
-            c = new(curr.X + 1, curr.Y - 1);
-            if (set.Contains(c) && !vis.Contains(c)) neighbors.Add(c);
-            c = new(curr.X    , curr.Y - 1);
-            if (set.Contains(c) && !vis.Contains(c)) neighbors.Add(c);
-            return neighbors;
-        }
-        private List<Point> get_neighbors(List<Point> set, Point curr){
-            List<Point> neighbors = new List<Point>();
-            Point c = new(curr.X - 1, curr.Y - 1);
-            if (set.Contains(c)) neighbors.Add(c);
-            c = new(curr.X - 1, curr.Y);
-            if (set.Contains(c)) neighbors.Add(c);
-            c = new(curr.X - 1, curr.Y + 1);
-            if (set.Contains(c)) neighbors.Add(c);
-            c = new(curr.X, curr.Y + 1);
-            if (set.Contains(c)) neighbors.Add(c);
-            c = new(curr.X + 1, curr.Y + 1);
-            if (set.Contains(c)) neighbors.Add(c);
-            c = new(curr.X + 1, curr.Y);
-            if (set.Contains(c)) neighbors.Add(c);
-            c = new(curr.X + 1, curr.Y - 1);
-            if (set.Contains(c)) neighbors.Add(c);
-            c = new(curr.X, curr.Y - 1);
-            if (set.Contains(c)) neighbors.Add(c);
-            return neighbors;
-        }
-        private Point choisir_proch(List<Point> set, Point curr, List<Point> vis){
-            Point c = new(curr.X - 1, curr.Y - 1);
-            if (set.Contains(c) && !vis.Contains(c)) return c;
-            c = new(curr.X - 1, curr.Y);
-            if (set.Contains(c) && !vis.Contains(c)) return c;
-            c = new(curr.X - 1, curr.Y + 1);
-            if (set.Contains(c) && !vis.Contains(c)) return c;
-            c = new(curr.X, curr.Y + 1);
-            if (set.Contains(c) && !vis.Contains(c)) return c;
-            c = new(curr.X + 1, curr.Y + 1);
-            if (set.Contains(c) && !vis.Contains(c)) return c;
-            c = new(curr.X + 1, curr.Y);
-            if (set.Contains(c) && !vis.Contains(c)) return c;
-            c = new(curr.X + 1, curr.Y - 1);
-            if (set.Contains(c) && !vis.Contains(c)) return c;
-            return new Point(curr.X, curr.Y - 1);
-        }
         internal void toFrancais(){
             Text = "Les forfaits";
         }

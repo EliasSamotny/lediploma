@@ -30,6 +30,7 @@
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             groupBox1 = new GroupBox();
+            label5 = new Label();
             button1 = new Button();
             groupBox5 = new GroupBox();
             numericUpDown2 = new NumericUpDown();
@@ -39,8 +40,6 @@
             groupBox3 = new GroupBox();
             numericUpDown3 = new NumericUpDown();
             numericUpDown4 = new NumericUpDown();
-            label3 = new Label();
-            label4 = new Label();
             groupBox4 = new GroupBox();
             numericUpDown5 = new NumericUpDown();
             numericUpDown6 = new NumericUpDown();
@@ -53,15 +52,14 @@
             Column2 = new DataGridViewTextBoxColumn();
             button5 = new Button();
             button6 = new Button();
+            groupBox6 = new GroupBox();
+            comboBox2 = new ComboBox();
             groupBox2 = new GroupBox();
-            radioButton3 = new RadioButton();
-            radioButton2 = new RadioButton();
-            radioButton1 = new RadioButton();
+            comboBox1 = new ComboBox();
             button2 = new Button();
             dataGridView2 = new DataGridView();
             menuStrip1 = new MenuStrip();
             lesForfaitsToolStripMenuItem = new ToolStripMenuItem();
-            label5 = new Label();
             groupBox1.SuspendLayout();
             groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
@@ -73,6 +71,7 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            groupBox6.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             menuStrip1.SuspendLayout();
@@ -91,6 +90,7 @@
             groupBox1.Controls.Add(dataGridView1);
             groupBox1.Controls.Add(button5);
             groupBox1.Controls.Add(button6);
+            groupBox1.Controls.Add(groupBox6);
             groupBox1.Controls.Add(groupBox2);
             groupBox1.Controls.Add(button2);
             groupBox1.Location = new Point(12, 33);
@@ -99,6 +99,15 @@
             groupBox1.TabIndex = 13;
             groupBox1.TabStop = false;
             groupBox1.Text = "Les points";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(303, 84);
+            label5.Name = "label5";
+            label5.Size = new Size(119, 20);
+            label5.TabIndex = 19;
+            label5.Text = "Sum de radii = 0";
             // 
             // button1
             // 
@@ -168,24 +177,22 @@
             numericUpDown1.ReadOnly = true;
             numericUpDown1.Size = new Size(46, 28);
             numericUpDown1.TabIndex = 12;
-            numericUpDown1.Value = new decimal(new int[] { 3, 0, 0, 0 });
+            numericUpDown1.Value = new decimal(new int[] { 5, 0, 0, 0 });
             // 
             // groupBox3
             // 
             groupBox3.Controls.Add(numericUpDown3);
             groupBox3.Controls.Add(numericUpDown4);
-            groupBox3.Controls.Add(label3);
-            groupBox3.Controls.Add(label4);
             groupBox3.Location = new Point(269, 22);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(153, 95);
+            groupBox3.Size = new Size(153, 56);
             groupBox3.TabIndex = 16;
             groupBox3.TabStop = false;
             groupBox3.Text = "Le point actuel";
             // 
             // numericUpDown3
             // 
-            numericUpDown3.Location = new Point(5, 62);
+            numericUpDown3.Location = new Point(10, 21);
             numericUpDown3.Margin = new Padding(8, 13, 8, 13);
             numericUpDown3.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -197,7 +204,7 @@
             // 
             // numericUpDown4
             // 
-            numericUpDown4.Location = new Point(87, 62);
+            numericUpDown4.Location = new Point(81, 22);
             numericUpDown4.Margin = new Padding(8, 13, 8, 13);
             numericUpDown4.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDown4.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -206,26 +213,6 @@
             numericUpDown4.Size = new Size(61, 28);
             numericUpDown4.TabIndex = 1;
             numericUpDown4.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(71, 29);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(81, 20);
-            label3.TabIndex = 4;
-            label3.Text = "La colonne";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(7, 29);
-            label4.Margin = new Padding(4, 0, 4, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(61, 20);
-            label4.TabIndex = 3;
-            label4.Text = "La ligne";
             // 
             // groupBox4
             // 
@@ -364,55 +351,46 @@
             button6.UseVisualStyleBackColor = true;
             button6.Click += button6_Click;
             // 
+            // groupBox6
+            // 
+            groupBox6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox6.Controls.Add(comboBox2);
+            groupBox6.Location = new Point(7, 84);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Size = new Size(276, 56);
+            groupBox6.TabIndex = 9;
+            groupBox6.TabStop = false;
+            groupBox6.Text = "La manière de rechercher des centres";
+            // 
+            // comboBox2
+            // 
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Items.AddRange(new object[] { "Выпуск волн с границ", "Поиск макс. радиуса среди мин." });
+            comboBox2.Location = new Point(6, 21);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(264, 28);
+            comboBox2.TabIndex = 0;
+            // 
             // groupBox2
             // 
             groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox2.Controls.Add(radioButton3);
-            groupBox2.Controls.Add(radioButton2);
-            groupBox2.Controls.Add(radioButton1);
+            groupBox2.Controls.Add(comboBox1);
             groupBox2.Location = new Point(6, 22);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(251, 112);
+            groupBox2.Size = new Size(251, 56);
             groupBox2.TabIndex = 9;
             groupBox2.TabStop = false;
             groupBox2.Text = "Le destin de chercher de chemins";
             // 
-            // radioButton3
+            // comboBox1
             // 
-            radioButton3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            radioButton3.AutoSize = true;
-            radioButton3.Checked = true;
-            radioButton3.Location = new Point(9, 82);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(183, 24);
-            radioButton3.TabIndex = 0;
-            radioButton3.TabStop = true;
-            radioButton3.Text = "III rayon (32 directions)";
-            radioButton3.UseVisualStyleBackColor = true;
-            radioButton3.CheckedChanged += radioButton3_CheckedChanged;
-            // 
-            // radioButton2
-            // 
-            radioButton2.Anchor = AnchorStyles.Left;
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(9, 52);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(178, 24);
-            radioButton2.TabIndex = 0;
-            radioButton2.Text = "II rayon (16 directions)";
-            radioButton2.UseVisualStyleBackColor = true;
-            radioButton2.CheckedChanged += radioButton2_CheckedChanged;
-            // 
-            // radioButton1
-            // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(9, 23);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(165, 24);
-            radioButton1.TabIndex = 0;
-            radioButton1.Text = "I rayon (8 directions)";
-            radioButton1.UseVisualStyleBackColor = true;
-            radioButton1.CheckedChanged += radioButton1_CheckedChanged;
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "I Rayon (8 directions)", "II Rayon (16 directions)", "III Rayon (32 directions)" });
+            comboBox1.Location = new Point(6, 21);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(239, 28);
+            comboBox1.TabIndex = 0;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // button2
             // 
@@ -463,15 +441,6 @@
             lesForfaitsToolStripMenuItem.Text = "Les forfaits";
             lesForfaitsToolStripMenuItem.Click += lesForfaitsToolStripMenuItem_Click;
             // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(269, 120);
-            label5.Name = "label5";
-            label5.Size = new Size(119, 20);
-            label5.TabIndex = 19;
-            label5.Text = "Sum de radii = 0";
-            // 
             // Vran
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
@@ -494,7 +463,6 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
             groupBox4.ResumeLayout(false);
@@ -502,8 +470,8 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            groupBox6.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
@@ -514,13 +482,8 @@
         #endregion
         private GroupBox groupBox1;
         private GroupBox groupBox2;
-        internal RadioButton radioButton3;
-        internal RadioButton radioButton2;
-        internal RadioButton radioButton1;
         private Button button2;
         private DataGridView dataGridView1;
-        private Label label4;
-        private Label label3;
         private NumericUpDown numericUpDown4;
         private NumericUpDown numericUpDown3;
         internal DataGridView dataGridView2;
@@ -545,5 +508,8 @@
         private NumericUpDown numericUpDown1;
         private Button button3;
         private Label label5;
+        private ComboBox comboBox1;
+        private GroupBox groupBox6;
+        private ComboBox comboBox2;
     }
 }
