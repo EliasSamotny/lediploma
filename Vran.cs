@@ -48,7 +48,7 @@ namespace l_application_pour_diploma{
             reseachpoints(0, 0);
             comboBox1.SelectedIndex = 2;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox2.SelectedIndex = 1;
+            comboBox2.SelectedIndex = 0;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             dataGridView1.AutoResizeColumns();
 
@@ -195,11 +195,9 @@ namespace l_application_pour_diploma{
 
                 variants.Add(inverseMatrix);
             }
-            else if (own.radioButton2.Checked && own.checkBox4.Checked)
-            { //if regular changing set by main form
+            else if (own.radioButton2.Checked && own.checkBox4.Checked) { //if regular changing set by main form
                 decimal multi = (100 + own.numericUpDown9.Value) / 100;
-                for (int t = 0; t < (int)own.numericUpDown8.Value; t++)
-                {
+                for (int t = 0; t < (int)own.numericUpDown8.Value; t++) {
                     decimal[,] next = new decimal[own.source[0].GetLength(0), own.source[0].GetLength(1)];
                     for (int i = 0; i < own.source[0].GetLength(0); i++)
                         for (int j = 0; j < own.source[0].GetLength(1); j++)
@@ -214,22 +212,18 @@ namespace l_application_pour_diploma{
             dataGridView2.RowCount = own.dataGridView1.RowCount;
             dataGridView2.ColumnCount = own.dataGridView1.ColumnCount;
             for (int i = 0; i < dataGridView2.RowCount; i++)
-                for (int j = 0; j < dataGridView2.ColumnCount; j++)
-                {
+                for (int j = 0; j < dataGridView2.ColumnCount; j++) {
                     dataGridView2.Rows[i].Cells[j].Value = own.source[0][i, j];
                     dataGridView2.Rows[i].Cells[j].Style.BackColor = Color.White;
                 }
             dataGridView2.AutoResizeColumns();
-            if (changed_med)
-            {
+            if (changed_med) {
                 own.insert_log("The media changed! Checking if it is still unified...", this);
                 reseachpoints(0, 0);
             }
             own.insert_log("Proceeding current points...", this);
-            if (dataGridView1.RowCount > 0)
-            {
-                if (curr_points.Count > 0 && curr_points.Count == dataGridView1.RowCount)
-                {
+            if (dataGridView1.RowCount > 0) {
+                if (curr_points.Count > 0 && curr_points.Count == dataGridView1.RowCount) {
                     dataGridView1.RowCount = 0;
                     foreach (var el in curr_points)
                         dataGridView1.Rows.Add(new object[] { (el.X + 1), (el.Y + 1) });
@@ -237,12 +231,10 @@ namespace l_application_pour_diploma{
                 curr_points = new();
                 List<int> randcol = new List<int>();
                 own.insert_log("Choosing colours...", this);
-                for (int i = 0; i < dataGridView1.RowCount; i++)
-                { //choosing les coleurs
+                for (int i = 0; i < dataGridView1.RowCount; i++) { //choosing les coleurs
                     Random r = new Random();
                     int cur = r.Next(ColeurList.Count);
-                    while (randcol.Contains(cur))
-                    {
+                    while (randcol.Contains(cur)) {
                         cur = r.Next(ColeurList.Count);
                     }
                     randcol.Add(cur);
@@ -252,8 +244,7 @@ namespace l_application_pour_diploma{
 
                 Cursor.Current = Cursors.WaitCursor;
 
-                for (int l = 0; l < dataGridView1.RowCount; l++)
-                { //l - for point
+                for (int l = 0; l < dataGridView1.RowCount; l++) { //l - for point
 
                     destins.Add(new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount]);
                     previos.Add(new Point[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount]);
@@ -274,18 +265,14 @@ namespace l_application_pour_diploma{
                     vis1[xlc, ylc] = true;
                     curr_med = determ_submed(new(xlc, ylc));
                     previos[l][xlc, ylc] = new(-2, -2);
-                    Parallel.For(0, own.dataGridView1.RowCount, i =>
-                    {
+                    Parallel.For(0, own.dataGridView1.RowCount, i => {
                         //for (int i = 0; i < own.dataGridView1.RowCount; i++)
-                        for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
-                        {
-                            if (availpoint(i, j) && availpoint(xlc1, ylc1) && submedia[curr_med].Contains(new(i, j)))
-                            {
+                        for (int j = 0; j < own.dataGridView1.ColumnCount; j++) {
+                            if (availpoint(i, j) && availpoint(xlc1, ylc1) && submedia[curr_med].Contains(new(i, j))) {
                                 destins[l][i, j] = -2;
                                 vis[i, j] = false;
                             }
-                            else
-                            {
+                            else {
                                 vis[i, j] = true;
                                 destins[l][i, j] = -1;
                                 previos[l][i, j] = new Point(-1, -1);
@@ -293,8 +280,7 @@ namespace l_application_pour_diploma{
                         }
                     });
                     destins[l][xlc, ylc] = 0;
-                    while (!checkallvis(vis))
-                    {
+                    while (!checkallvis(vis)){
                         vis[xlc1, ylc1] = true;
                         Parallel.For(0, size_rayon, i => { calculcell(l, xlc1 + voisins[i].X, ylc1 + voisins[i].Y, ref destins, ref previos, xlc1, ylc1); });
 
@@ -308,21 +294,18 @@ namespace l_application_pour_diploma{
                         object lock_mindest = new();
                         foreach (var p in frontiers)//searching the minimum points
                             if (p.dest < mindest)
-                                lock (lock_mindest)
-                                {
+                                lock (lock_mindest) {
                                     mindest = p.dest;
                                 }
                         var points = new List<Points>();
                         object lock_frontiers = new();
-                        Parallel.ForEach(frontiers, p =>
-                        {
+                        Parallel.ForEach(frontiers, p => {
                             if (p.dest == mindest)
                                 lock (frontiers)
                                     points.Add(new Points(p.xl, p.yl, (decimal)Math.Sqrt(Math.Pow(xlc1 - p.xl, 2) + Math.Pow(ylc1 - p.yl, 2))));
                         });
                         if (points.Count == 1) { xlc1 = points[0].xl; ylc1 = points[0].yl; }//if it is alone to choose, equal et continue
-                        else if (points.Count > 1)
-                        { //if not, search nearest to (0,0) 
+                        else if (points.Count > 1) { //if not, search nearest to (0,0) 
                             mindest = decimal.MaxValue;
                             foreach (var p in points)
                                 if (p.dest < mindest)
@@ -332,15 +315,13 @@ namespace l_application_pour_diploma{
                                 if (p.dest == mindest)
                                     points1.Add(new Points(p.xl, p.yl, (decimal)Math.Sqrt(Math.Pow(p.xl, 2) + Math.Pow(p.yl, 2))));
                             if (points1.Count == 1) { xlc1 = points1[0].xl; ylc1 = points1[0].yl; }//if it is alone to choose, equal et continue
-                            else if (points1.Count > 1)
-                            {//if not, choosing with least x
+                            else if (points1.Count > 1) {//if not, choosing with least x
                                 int minx = own.dataGridView1.RowCount;
                                 foreach (var p in points1)
                                     if (p.xl < minx)
                                         minx = p.xl;
                                 foreach (var p in points1)
-                                    if (p.xl == minx)
-                                    {
+                                    if (p.xl == minx) {
                                         xlc1 = points1[0].xl;
                                         ylc1 = points1[0].yl;
                                         break;
@@ -352,23 +333,19 @@ namespace l_application_pour_diploma{
                 }
                 own.insert_log("Claiming points to domains...", this);
                 owingpoints = new(); //list of sets of chosen points
-                for (int i = 0; i < dataGridView1.RowCount; i++)
-                {
+                for (int i = 0; i < dataGridView1.RowCount; i++){
                     Point p = new(Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) - 1,
                             Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) - 1);
                     List<Point> lp = new() { p };
                     owingpoints.Add(lp);
                 }
                 //filling with a coleurs
-                Parallel.For(0, dataGridView2.RowCount, i =>
-                {
+                Parallel.For(0, dataGridView2.RowCount, i =>{
                     //for (int i = 0; i < dataGridView2.RowCount; i++)
-                    for (int j = 0; j < dataGridView2.ColumnCount; j++)
-                    {
+                    for (int j = 0; j < dataGridView2.ColumnCount; j++){
                         if (own.source[0][i, j] <= 0)
                             dataGridView2.Rows[i].Cells[j].Style.BackColor = Color.Black;
-                        else if (!ifacentrepoint(i, j))
-                        {
+                        else if (!ifacentrepoint(i, j)){
                             int h = mindest(i, j, destins);
                             dataGridView2.Rows[i].Cells[j].Style.BackColor = ColeurList[randcol[h % randcol.Count]];
                             owingpoints[h].Add(new Point(i, j));
@@ -378,11 +355,9 @@ namespace l_application_pour_diploma{
                 //var opersets = new List<List<Point>> (owingpoints);
                 var opersets = new List<List<Point>>();
                 //foreach (var sub in owingpoints)
-                Parallel.ForEach(owingpoints, sub =>
-                {
+                Parallel.ForEach(owingpoints, sub =>{
                     List<Point> s = new();
-                    foreach (var el in sub)
-                    {
+                    foreach (var el in sub) {
                         s.Add(el);
                     }
                     opersets.Add(s);
@@ -390,39 +365,28 @@ namespace l_application_pour_diploma{
                 minrads = new();
                 own.insert_log($"        Domains established. Determining centres...", this);
                 object locker_waves = new();
-                foreach (var subset in owingpoints)
-                {//chosing the centre for each
+                foreach (var subset in owingpoints) {//chosing the centre for each
                     Point centre = new();
-                    if (comboBox2.SelectedIndex == 0)
-                    {
-
-                        //decimal[,] currwave = new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
+                    if (comboBox2.SelectedIndex == 0) {
+                                                //decimal[,] currwave = new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
                         decimal[,] waves = new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
                         var subset_front = get_frontiers(subset);
                         //launching waves from frontiers
-                        Parallel.ForEach(subset_front, el =>
-                        {
+                        Parallel.ForEach(subset_front, el => {
                             decimal[,] wavesl = waving_in_domain_from_point(subset, el);
-                            lock (locker_waves)
-                            {
-                                for (int i = 0; i < wavesl.GetLength(0); i++)
-                                {
-                                    for (int j = 0; j < wavesl.GetLength(1); j++)
-                                    {
+                            lock (locker_waves){
+                                for (int i = 0; i < wavesl.GetLength(0); i++) {
+                                    for (int j = 0; j < wavesl.GetLength(1); j++){
                                         waves[i, j] += wavesl[i, j];
                                     }
                                 }
                             }
                         });
                         decimal minl = decimal.MaxValue;
-                        for (int i = 0; i < waves.GetLength(0); i++)
-                        {
-                            for (int j = 0; j < waves.GetLength(1); j++)
-                            {
-                                if (minl > waves[i, j] && waves[i, j] > 0)
-                                {
-                                    lock (waves)
-                                    {
+                        for (int i = 0; i < waves.GetLength(0); i++) {
+                            for (int j = 0; j < waves.GetLength(1); j++)  {
+                                if (minl > waves[i, j] && waves[i, j] > 0) {
+                                    lock (waves) {
                                         minl = waves[i, j];
                                         centre = new(i, j);
                                     }
@@ -430,11 +394,9 @@ namespace l_application_pour_diploma{
                             }
                         }
                     }
-                    else if (comboBox2.SelectedIndex == 1)
-                    {
+                    else if (comboBox2.SelectedIndex == 1){
                         List<Points2> poiEtRadii = new();
-                        Parallel.ForEach(subset, el =>
-                        {
+                        Parallel.ForEach(subset, el => {
                             poiEtRadii.Add(new(el, trouv_radius(subset, el)));
                         });
                         centre = poiEtRadii.OrderByDescending(poi => poi.dest).First().point;
@@ -446,13 +408,11 @@ namespace l_application_pour_diploma{
                     curr_points.Add(new(centre.X, centre.Y));
 
                     string formater = "0.##", formate = "0"; ;
-                    if (numericUpDown6.Value > 2)
-                    {
+                    if (numericUpDown6.Value > 2) {
                         for (int n = 2; n < numericUpDown6.Value; n++)
                             formater += "#";
                     }
-                    if (numericUpDown6.Value > 0)
-                    {
+                    if (numericUpDown6.Value > 0) {
                         formate += ".";
                         for (int n = 2; n < numericUpDown6.Value; n++)
                             formate += "#";
@@ -485,38 +445,31 @@ namespace l_application_pour_diploma{
             });
             return frontl;
         }
-        private bool if_front(List<Point> set, Point point)
-        {
+        private bool if_front(List<Point> set, Point point){
             for (int i = 0; i < 8; i++)
                 if (!set.Contains(new(point.X + voisins[i].X, point.Y + voisins[i].Y)))
                     return true;
             return false;
         }
-        private bool ifacentrepoint(int x, int y)
-        {
-            for (int i = 0; i < dataGridView1.RowCount; i++)
-            {
+        private bool ifacentrepoint(int x, int y){
+            for (int i = 0; i < dataGridView1.RowCount; i++){
                 if (Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) == x + 1 && Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) == y + 1)
                     return true;
             }
             return false;
         }
-        private int mindest(int x, int y, List<decimal[,]> curr_destins)
-        {
+        private int mindest(int x, int y, List<decimal[,]> curr_destins){
             decimal minv = curr_destins[0][x, y];
             int ind = 0;
-            for (int i = 1; i < curr_destins.Count; i++)
-            {
-                if (minv > curr_destins[i][x, y])
-                {
+            for (int i = 1; i < curr_destins.Count; i++){
+                if (minv > curr_destins[i][x, y]){
                     minv = curr_destins[i][x, y];
                     ind = i;
                 }
             }
             return ind;
         }
-        private void reseachpoints(int u, int v)
-        {
+        private void reseachpoints(int u, int v){
             submedia = new() { new() };
             submedia[0].Add(new(u, v));
             bool[,] known = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
@@ -531,30 +484,23 @@ namespace l_application_pour_diploma{
             int currx = u, curry = v;
 
             List<Point> curr_front = new();
-            for (int i = 0; i < 8; i++)
-            {
-                if (pointavailiter(currx, curry, currx + voisins[i].X, curry + voisins[i].Y))
-                {
+            for (int i = 0; i < 8; i++){
+                if (pointavailiter(currx, curry, currx + voisins[i].X, curry + voisins[i].Y)) {
                     submedia[0].Add(new(currx + voisins[i].X, curry + voisins[i].Y));
                     curr_front.Add(new(currx + voisins[i].X, curry + voisins[i].Y));
                     known[currx + voisins[i].X, curry + voisins[i].Y] = true;
                 }
             }
-            while (true)
-            {
+            while (true){
                 List<Point> curr_prev = new(curr_front);
                 curr_front = new();
-                foreach (var el in curr_prev)
-                {
-                    for (int i = 0; i < 8; i++)
-                    {
+                foreach (var el in curr_prev){
+                    for (int i = 0; i < 8; i++){
                         Point voisepoint = new(el.X + voisins[i].X, el.Y + voisins[i].Y);
-                        if (pointavailiter(el.X, el.Y, el.X + voisins[i].X, el.Y + voisins[i].Y))
-                        {
+                        if (pointavailiter(el.X, el.Y, el.X + voisins[i].X, el.Y + voisins[i].Y)) {
                             if (!curr_front.Contains(voisepoint) && !submedia[0].Contains(voisepoint))
                                 curr_front.Add(voisepoint);
-                            if (!submedia[0].Contains(voisepoint))
-                            {
+                            if (!submedia[0].Contains(voisepoint)) {
                                 submedia[0].Add(voisepoint);
                                 known[el.X + voisins[i].X, el.Y + voisins[i].Y] = true;
                             }
@@ -563,8 +509,7 @@ namespace l_application_pour_diploma{
                 }
                 if (curr_front.Count == 0) break;
             }
-            if (!if_all_known(known))
-            {
+            if (!if_all_known(known)){
                 onemedium = false;
                 own.insert_log("    The media checked. It is not unified.", this);
             }
@@ -575,14 +520,11 @@ namespace l_application_pour_diploma{
             }
         }
         //private double pointdest(int xc1, int yc1, int xc2, int yc2) { return Math.Sqrt(Math.Pow(xc1 - xc2, 2) + Math.Pow(yc1 - yc2, 2)); }
-        private bool pointavailiter(int x1, int y1, int x2, int y2)
-        { //vieux, nouveau
-            try
-            {
+        private bool pointavailiter(int x1, int y1, int x2, int y2) { //vieux, nouveau
+            try{
                 if (pointdest(x1, y1, x2, y2) == Math.Sqrt(2) || pointdest(x1, y1, x2, y2) == 1)
                     return availpoint(x2, y2);
-                else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(5))
-                {
+                else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(5)) {
                     if (x1 - x2 == 2 && y1 - y2 == 1)//1
                         return availpoint(x2 + 1, y1) && availpoint(x2 + 1, y1 + 1);
                     if (x1 - x2 == 1 && y1 - y2 == 2)//2
@@ -600,8 +542,7 @@ namespace l_application_pour_diploma{
                     if (x1 - x2 == 2 && y1 - y2 == -1)//8
                         return availpoint(x2 + 1, y2) && availpoint(x2 + 1, y2 - 1);
                 }
-                else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(10))
-                {
+                else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(10)){
                     if (x1 - x2 == 3 && y1 - y2 == 1)//1
                         return availpoint(x2 + 1, y2) && availpoint(x2 + 2, y2) && availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 2, y2 + 1);
                     if (x1 - x2 == 1 && y1 - y2 == 3)//2
@@ -619,8 +560,7 @@ namespace l_application_pour_diploma{
                     if (x1 - x2 == 3 && y1 - y2 == -1)//8
                         return availpoint(x2 + 1, y2) && availpoint(x2 + 2, y2) && availpoint(x2 + 1, y2 - 1) && availpoint(x2 + 2, y2 - 1);
                 }
-                else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(13))
-                {
+                else if (pointdest(x1, y1, x2, y2) == Math.Sqrt(13)) {
                     if (x1 - x2 == 3 && y1 - y2 == 2)//1
                         return availpoint(x2 + 1, y2) && availpoint(x2 + 1, y2 + 1) && availpoint(x2 + 2, y2 + 1) && availpoint(x2 + 2, y2 + 2);
                     if (x1 - x2 == 2 && y1 - y2 == 3)//2
@@ -754,29 +694,26 @@ namespace l_application_pour_diploma{
                 }
 
             }
-            dataGridView1.SelectedCells.Clear();
+            //dataGridView2.SelectedCells.Clear();
             refr(false);
         }
-        private void button5_Click(object sender, EventArgs e)
-        {
+        private void button5_Click(object sender, EventArgs e){
             var poiForDel = new List<Point>();
-            foreach (DataGridViewCell sel_cell in dataGridView2.SelectedCells)
-            {
+            foreach (DataGridViewCell sel_cell in dataGridView2.SelectedCells){
                 poiForDel.Add(new(sel_cell.RowIndex, sel_cell.ColumnIndex));
             }
-            for (int i = 0; i < dataGridView1.RowCount; i++)
-            {
-                if (poiForDel.Count > 0)
-                {
-                    if (Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) == poiForDel[0].X && Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) == poiForDel[0].Y)
-                    {
-                        dataGridView1.Rows.RemoveAt(i);
-                        poiForDel.RemoveAt(i);
+            for (int i = 0; i < dataGridView1.RowCount; i++){
+                if (poiForDel.Count > 0){
+                    for (int j = 0; j < poiForDel.Count; j++)
+                        if (Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) == poiForDel[j].X + 1 && Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) == poiForDel[j].Y + 1){
+                            poiForDel.RemoveAt(j);
+                            j--;
+                            dataGridView1.Rows.RemoveAt(i);
                     }
                 }
                 else break;
             }
-            dataGridView1.SelectedCells.Clear();
+            //dataGridView2.SelectedCells.Clear();            
             refr(false);
         }
         private void radioButton1_CheckedChanged(object sender, EventArgs e) { refr(false); }
@@ -794,8 +731,7 @@ namespace l_application_pour_diploma{
             }
             forfait.Focus();
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
+        private void button1_Click(object sender, EventArgs e){
             var cers = (int)numericUpDown1.Value;
             var effs = (int)numericUpDown2.Value;
             DateTime start_stamp = DateTime.Now;
@@ -806,8 +742,7 @@ namespace l_application_pour_diploma{
             List<List<decimal>> minrads = new();
             //own.insert_log("    Checking if media unified...", this);
             //reseachpoints(0, 0);
-            for (int k = 0; k < effs; k++)
-            {
+            for (int k = 0; k < effs; k++){
                 DateTime start_effort_stamp = DateTime.Now;
                 List<List<Point>> starts = new(), medieval;
                 List<decimal> medieval_sums = new() { 0 };
