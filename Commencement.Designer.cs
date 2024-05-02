@@ -91,6 +91,7 @@
             radioButton2 = new RadioButton();
             radioButton1 = new RadioButton();
             checkBox4 = new CheckBox();
+            arbreCouvrantToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             menuStrip1.SuspendLayout();
@@ -196,7 +197,7 @@
             // 
             // desFenêtresToolStripMenuItem
             // 
-            desFenêtresToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desCalculationsDeCheminsToolStripMenuItem, calculationsDeChemanPourBeaucoupPointsToolStripMenuItem, diagrammeDeVoronoїToolStripMenuItem });
+            desFenêtresToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desCalculationsDeCheminsToolStripMenuItem, calculationsDeChemanPourBeaucoupPointsToolStripMenuItem, diagrammeDeVoronoїToolStripMenuItem, arbreCouvrantToolStripMenuItem });
             desFenêtresToolStripMenuItem.Name = "desFenêtresToolStripMenuItem";
             desFenêtresToolStripMenuItem.Size = new Size(78, 26);
             desFenêtresToolStripMenuItem.Text = "Fenêtres";
@@ -778,6 +779,13 @@
             checkBox4.UseVisualStyleBackColor = true;
             checkBox4.CheckedChanged += checkBox4_CheckedChanged;
             // 
+            // arbreCouvrantToolStripMenuItem
+            // 
+            arbreCouvrantToolStripMenuItem.Name = "arbreCouvrantToolStripMenuItem";
+            arbreCouvrantToolStripMenuItem.Size = new Size(392, 26);
+            arbreCouvrantToolStripMenuItem.Text = "Arbre couvrant";
+            arbreCouvrantToolStripMenuItem.Click += arbreCouvrantToolStripMenuItem_Click;
+            // 
             // Commencement
             // 
             AutoScaleDimensions = new SizeF(9F, 22F);
@@ -890,5 +898,6 @@
         internal NumericUpDown numericUpDown3;
         private Label label5;
         internal RadioButton radioButton3;
+        private ToolStripMenuItem arbreCouvrantToolStripMenuItem;
     }
 }

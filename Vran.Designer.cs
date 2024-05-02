@@ -95,7 +95,7 @@
             groupBox1.Controls.Add(button2);
             groupBox1.Location = new Point(12, 33);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(441, 419);
+            groupBox1.Size = new Size(441, 418);
             groupBox1.TabIndex = 13;
             groupBox1.TabStop = false;
             groupBox1.Text = "Les points";
@@ -278,7 +278,7 @@
             // button3
             // 
             button3.Anchor = AnchorStyles.Right;
-            button3.Location = new Point(279, 313);
+            button3.Location = new Point(279, 312);
             button3.Name = "button3";
             button3.Size = new Size(156, 29);
             button3.TabIndex = 13;
@@ -312,7 +312,7 @@
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.RowTemplate.ReadOnly = true;
             dataGridView1.ShowEditingIcon = false;
-            dataGridView1.Size = new Size(266, 160);
+            dataGridView1.Size = new Size(266, 159);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
@@ -332,7 +332,7 @@
             // button5
             // 
             button5.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button5.Location = new Point(279, 384);
+            button5.Location = new Point(279, 383);
             button5.Name = "button5";
             button5.Size = new Size(156, 29);
             button5.TabIndex = 12;
@@ -343,7 +343,7 @@
             // button6
             // 
             button6.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button6.Location = new Point(279, 349);
+            button6.Location = new Point(279, 348);
             button6.Name = "button6";
             button6.Size = new Size(156, 29);
             button6.TabIndex = 11;
@@ -420,7 +420,7 @@
             dataGridView2.Name = "dataGridView2";
             dataGridView2.RowHeadersVisible = false;
             dataGridView2.RowTemplate.Height = 25;
-            dataGridView2.Size = new Size(612, 419);
+            dataGridView2.Size = new Size(612, 418);
             dataGridView2.TabIndex = 14;
             dataGridView2.CellClick += dataGridView2_CellClick;
             // 
@@ -445,7 +445,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1083, 464);
+            ClientSize = new Size(1083, 463);
             Controls.Add(dataGridView2);
             Controls.Add(groupBox1);
             Controls.Add(menuStrip1);

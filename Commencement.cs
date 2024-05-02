@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Diagnostics;
+using System;
 
 namespace l_application_pour_diploma{
     public partial class Commencement : Form{
@@ -20,7 +21,7 @@ namespace l_application_pour_diploma{
         private bool global_log_allowed = true;
         private static readonly object log_locker = new object();
         string logFilePath = "C:\\Users\\Elias\\Desktop\\lediploma\\log.log";
-        public void insert_log(string log_mess, Form caller) {
+        public void insert_log(string log_mess, Form caller){
             if (global_log_allowed){
                 lock (log_locker){
                     using (StreamWriter sw = new StreamWriter(logFilePath, true)){
@@ -48,29 +49,38 @@ namespace l_application_pour_diploma{
         internal Trouvation? trouv;
         internal Beaucoup? beaucoup;
         internal Vran? vran;
-        private void Form1_Load(object sender, EventArgs e){
+        internal Spann? span;
+        private void Form1_Load(object sender, EventArgs e)
+        {
             insert_log("Loading form...", this);
             russeToolStripMenuItem_Click(sender, e);
             dataGridView1.AutoResizeColumns();
             set_mount();
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
             source = new() { new decimal[r, c] };
-            for (int i = 0; i < r; i++){
-                for (int j = 0; j < c; j++){
+            for (int i = 0; i < r; i++)
+            {
+                for (int j = 0; j < c; j++)
+                {
                     source[0][i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                 }
             }
             insert_log("Form loaded.", this);
         }
-        private void set_mount(){
+        private void set_mount()
+        {
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
 
-            for (int i = 0; i < r; i++){
-                for (int j = 0; j < c; j++){
-                    try{
+            for (int i = 0; i < r; i++)
+            {
+                for (int j = 0; j < c; j++)
+                {
+                    try
+                    {
                         dataGridView1.Rows[i].Cells[j].Value = mountagne(i, j, r, c);
                     }
-                    catch (Exception){
+                    catch (Exception)
+                    {
                         dataGridView1.Rows[i].Cells[j].Value = -1;
                     }
                 }
@@ -78,18 +88,21 @@ namespace l_application_pour_diploma{
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
         }
-        private decimal mountagne(int i, int j, int r, int c){
+        private decimal mountagne(int i, int j, int r, int c)
+        {
             double icoef = 0.5;
             double jcoef = 0.5;
             return 1 / (decimal)(Math.Pow((i - r / 2) * icoef, 2) / 2 + Math.Pow((j - c / 2) * jcoef, 2) / 2);
         }
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) { refreshdata(); }
-        private void refreshdata(){
+        private void refreshdata()
+        {
             insert_log("Refreshing forms...", this);
             decimal[,] data1 = new decimal[dataGridView1.RowCount, dataGridView1.ColumnCount];
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    try {
+                    try
+                    {
                         data1[i, j] = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                     }
                     catch (Exception) { data1[i, j] = 0; }
@@ -101,7 +114,8 @@ namespace l_application_pour_diploma{
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
             source = new() { new decimal[r, c] };
             for (int i = 0; i < i1; i++)
-                for (int j = 0; j < j1; j++) {
+                for (int j = 0; j < j1; j++)
+                {
                     source[0][i, j] = data1[i, j];
                     dataGridView1.Rows[i].Cells[j].Value = data1[i, j];
                 }
@@ -110,6 +124,7 @@ namespace l_application_pour_diploma{
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
             vran?.refr(true);
+            span?.refr(true);
             dataGridView1.AutoResizeColumns();
             dataGridView1.AutoResizeRows();
             insert_log("Forms refreshed...", this);
@@ -119,14 +134,17 @@ namespace l_application_pour_diploma{
         private void numericUpDown1_KeyUp(object sender, KeyEventArgs e) { }
         private void numericUpDown2_KeyPress(object sender, KeyPressEventArgs e) { }
         private void numericUpDown2_KeyUp(object sender, KeyEventArgs e) { }
-        private void desCalculationsDeCheminsToolStripMenuItem_Click(object sender, EventArgs e){
-            if (trouv == null) {
+        private void desCalculationsDeCheminsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (trouv == null)
+            {
                 trouv = new Trouvation(this);
                 trouv.Show();
                 if (lang == 1)
                     trouv.toRusse();
             }
-            else {
+            else
+            {
                 if (lang == 0)
                     MessageBox.Show("La fenêtre avec les calculations est déjà ouvertée.");
                 else if (lang == 1)
@@ -134,38 +152,46 @@ namespace l_application_pour_diploma{
             }
             trouv.Focus();
         }
-        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e) {
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
             bool curr = false;
-            if (dataGridView1.SelectedCells[0].Value != null) {
+            if (dataGridView1.SelectedCells[0].Value != null)
+            {
                 string str = dataGridView1.SelectedCells[0].Value.ToString();
-                if ((str[0] >= '0' && str[0] <= '9' || str[0] == '-') && str.Length > 0) {
+                if ((str[0] >= '0' && str[0] <= '9' || str[0] == '-') && str.Length > 0)
+                {
                     curr = true;
                     for (int i = 1; i < str.Length; i++)
-                        if ((str[i] < '0' || str[i] > '9') && str[i] != ',') {
+                        if ((str[i] < '0' || str[i] > '9') && str[i] != ',')
+                        {
                             curr = false;
                             break;
                         }
                 }
                 if (curr) { refreshdata(); }
-                else {
+                else
+                {
                     MessageBox.Show("Invalid number");
                     if (trouv != null) trouv.clearcells();
                     dataGridView1.SelectedCells[0].Value = -1;
                 }
             }
-            else {
+            else
+            {
                 MessageBox.Show("Invalid number");
                 if (trouv != null) trouv.clearcells();
                 dataGridView1.SelectedCells[0].Value = -1;
             }
         }
-        private void sauvegarderToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void sauvegarderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             insert_log("Choosing file for saving media...", this);
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "Tableur | *.xlsx| Tableur | *.xls| All files | *.*";
             saveFileDialog1.Title = "Sauvegarder la table";
             saveFileDialog1.ShowDialog();
-            if (saveFileDialog1.FileName != "") {
+            if (saveFileDialog1.FileName != "")
+            {
                 insert_log("Saving media...", this);
                 Filename = saveFileDialog1.FileName;
                 decimal[,] data = new decimal[dataGridView1.RowCount, dataGridView1.ColumnCount];
@@ -182,8 +208,10 @@ namespace l_application_pour_diploma{
                 excelsheets = excelappworkbook.Sheets;
                 excelworksheet = excelsheets[1];
                 excelworksheet.Name = "Les donnes";
-                for (int i = 0; i < dataGridView1.RowCount; i++) {
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++)  {
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
                         excelcells = excelworksheet.get_Range(numColu(j + 2) + Convert.ToString(i + 2), Type.Missing);
                         excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString(data[i, j])));
                     }
@@ -197,37 +225,44 @@ namespace l_application_pour_diploma{
                 insert_log("Media saved.", this);
             }
         }
-        private string numColu(int f) {
+        private string numColu(int f)
+        {
             int div = f;
             string colLetter = String.Empty;
             int mod;
-            while (div > 0) {
+            while (div > 0)
+            {
                 mod = (div - 1) % 26;
                 colLetter = (char)(65 + mod) + colLetter;
                 div = ((div - mod) / 26);
             }
             return colLetter;
         }
-        private void chargerToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void chargerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             insert_log("Choosing file for loading media...", this);
             OpenFileDialog file = new OpenFileDialog(); //open dialog to choose file
             file.Filter = "Tableur | *.xlsx| Tableur | *.xls| All files | *.*";
             file.Title = "Charger la table";
             string filePath = string.Empty;
             string fileExt = string.Empty;
-            if (file.ShowDialog() == DialogResult.OK) {
+            if (file.ShowDialog() == DialogResult.OK)
+            {
                 insert_log("Loading media...", this);
                 filePath = file.FileName; //get the path of the file
                 fileExt = Path.GetExtension(filePath); //get the file extension
-                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0) {
-                    try {
+                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0)
+                {
+                    try
+                    {
                         Cursor.Current = Cursors.WaitCursor;
                         ex.Application xlApp = new();
                         ex.Workbook xlWorkbook = xlApp.Workbooks.Open(filePath);
                         ex._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                         ex.Range xlRange = xlWorksheet.UsedRange;
                         int a = 1, b = 1;
-                        while (true) {
+                        while (true)
+                        {
                             if (xlWorksheet.Cells[a + 1, b + 1].Value != null) { a++; b++; }
                             else if (xlWorksheet.Cells[a + 1, b].Value != null) a++;
                             else if (xlWorksheet.Cells[a, b + 1].Value != null) b++;
@@ -238,7 +273,8 @@ namespace l_application_pour_diploma{
                         numericUpDown1.Value = a - 1;
                         numericUpDown2.Value = b - 1;
                         for (int i = 0; i < a - 1; i++)
-                            for (int j = 0; j < b - 1; j++) {
+                            for (int j = 0; j < b - 1; j++)
+                            {
                                 var currval = Convert.ToDecimal(xlWorksheet.Cells[i + 2, j + 2].Value);
                                 source[0][i, j] = currval;
                                 dataGridView1.Rows[i].Cells[j].Value = currval;
@@ -259,7 +295,8 @@ namespace l_application_pour_diploma{
                         // Set cursor as default arrow
                         Cursor.Current = Cursors.Default;
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         MessageBox.Show(ex.Message.ToString());
                     }
                     dataGridView1.AutoResizeColumns();
@@ -270,26 +307,30 @@ namespace l_application_pour_diploma{
                     vran?.refr(true);
                     insert_log("Media loaded.", this);
                 }
-                else {
+                else
+                {
                     MessageBox.Show("Please choose .xls or .xlsx file only.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             dataGridView1.AutoResizeColumns();
-                     
+
         }
-        private void showCurrCoord() {
+        private void showCurrCoord()
+        {
             textBox1.Text = (dataGridView1.SelectedCells[0].RowIndex + 1).ToString();
             textBox2.Text = (dataGridView1.SelectedCells[0].ColumnIndex + 1).ToString();
         }
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e) { showCurrCoord(); }
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e) { showCurrCoord(); }
 
-        private void button2_Click(object sender, EventArgs e){ set_unites(); }
-        private void set_unites(){
+        private void button2_Click(object sender, EventArgs e) { set_unites(); }
+        private void set_unites()
+        {
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
             source = new() { new decimal[r, c] };
             for (int i = 0; i < dataGridView1.RowCount; i++)
-                for (int j = 0; j < dataGridView1.ColumnCount; j++){
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
                     if (checkBox1.Checked && Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
                         dataGridView1.Rows[i].Cells[j].Value = -1;
                     else dataGridView1.Rows[i].Cells[j].Value = 1;
@@ -302,7 +343,8 @@ namespace l_application_pour_diploma{
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
         }
-        private void sûrLauteurToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void sûrLauteurToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             if (lang == 0)
                 MessageBox.Show("Cette application est faite par Ilia Madayëv.");
             else if (lang == 1)
@@ -311,23 +353,28 @@ namespace l_application_pour_diploma{
         private void dataGridView1_KeyPress(object sender, KeyPressEventArgs e) { }
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e) { }
         private void dataGridView1_KeyUp(object sender, KeyEventArgs e) { }
-        internal void clearcolors() {
+        internal void clearcolors()
+        {
             for (int i = 0; i < dataGridView1.RowCount; i++)
                 for (int j = 0; j < dataGridView1.ColumnCount; j++)
                     dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.White;
         }
-        internal void fillcolors() {
+        internal void fillcolors()
+        {
             decimal maxval = 0, minval = Decimal.MaxValue;
             for (int i = 0; i < dataGridView1.RowCount; i++)
-                for (int j = 0; j < dataGridView1.ColumnCount; j++) {
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
                     var d = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
                     if (maxval < d) maxval = d;
                     if (minval > d && d > -1) minval = d;
                 }
             if (minval != maxval)
                 for (int i = 0; i < dataGridView1.RowCount; i++)
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++) {
-                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) != -1) {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) != -1)
+                        {
                             var d = Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) / maxval;
                             if (d < (decimal)0.2)
                                 dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.BlueViolet;
@@ -351,35 +398,44 @@ namespace l_application_pour_diploma{
                         else dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Black;
                     }
             else for (int i = 0; i < dataGridView1.RowCount; i++)
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++) {
-                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) != -1) {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) != -1)
+                        {
                             dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Blue;
                         }
                         else dataGridView1.Rows[i].Cells[j].Style.BackColor = Color.Black;
                     }
         }
-        private void numericUpDown6_ValueChanged(object sender, EventArgs e) {
+        private void numericUpDown6_ValueChanged(object sender, EventArgs e)
+        {
             dataGridView1.DefaultCellStyle.Format = 'N' + numericUpDown6.Value.ToString();
             dataGridView1.AutoResizeColumns();
         }
-        private void numericUpDown5_ValueChanged(object sender, EventArgs e) {
+        private void numericUpDown5_ValueChanged(object sender, EventArgs e)
+        {
             dataGridView1.DefaultCellStyle.Font = new Font("Palatino Linotype", (float)numericUpDown5.Value);
             dataGridView1.AutoResizeColumns();
         }
-        private void checkBox3_CheckedChanged(object sender, EventArgs e) {
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
         }
-        private void calculationsDeChemanPourBeaucoupPointsToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (beaucoup == null) {
+        private void calculationsDeChemanPourBeaucoupPointsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (beaucoup == null)
+            {
                 beaucoup = new Beaucoup(this);
                 if (lang == 1) beaucoup.toRusse();
                 beaucoup.Show();
             }
             beaucoup.Focus();
         }
-        private void diagrammeDeVoronoїToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (vran == null)  {
+        private void diagrammeDeVoronoїToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (vran == null)
+            {
                 vran = new Vran(this);
                 if (lang == 1) vran.ToRusse();
                 vran.Show();
@@ -387,25 +443,33 @@ namespace l_application_pour_diploma{
             vran.Focus();
         }
         int tick = 0;
-        private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e) {
+        private void dataGridView1_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
             int col = dataGridView1.ColumnCount - 1;
-            for (int i = 0; i < dataGridView1.RowCount; i++) {
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
                 dataGridView1.Rows[i].Cells[col].Value = dataGridView1.Rows[i].Cells[col - 1].Value;
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e) {
+        private void timer1_Tick(object sender, EventArgs e)
+        {
             if (tick < (int)numericUpDown8.Value + 1)
                 tick++;
             else
                 tick = 0;
-            for (int i = 0; i < dataGridView1.RowCount; i++) {
-                for (int j = 0; j < dataGridView1.ColumnCount; j++)  {
-                    if (!checkBox2.Checked) {
-                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) > -1) {
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
+                    if (!checkBox2.Checked)
+                    {
+                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) > -1)
+                        {
                             if (radioButton1.Checked)
                                 dataGridView1.Rows[i].Cells[j].Value = 1 / Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
-                            if (radioButton2.Checked) {
+                            if (radioButton2.Checked)
+                            {
                                 if (tick < (int)numericUpDown8.Value)
                                     dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 + (double)numericUpDown9.Value) / 100;
                                 else
@@ -414,10 +478,12 @@ namespace l_application_pour_diploma{
 
                         }
                     }
-                    else if (domains.Any(list => list.Contains(new(i, j))))  {
+                    else if (domains.Any(list => list.Contains(new(i, j))))
+                    {
                         if (radioButton1.Checked)
                             dataGridView1.Rows[i].Cells[j].Value = 1 / Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value);
-                        if (radioButton2.Checked) {
+                        if (radioButton2.Checked)
+                        {
                             if (tick < (int)numericUpDown8.Value)
                                 dataGridView1.Rows[i].Cells[j].Value = Convert.ToDouble(dataGridView1.Rows[i].Cells[j].Value) * (100 + (double)numericUpDown9.Value) / 100;
                             else
@@ -435,12 +501,15 @@ namespace l_application_pour_diploma{
             else clearcolors();
         }
 
-        private void checkBox4_CheckedChanged(object sender, EventArgs e) {
-            if (checkBox4.Checked && checkBox5.Checked) {
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked && checkBox5.Checked)
+            {
                 timer1.Enabled = true;
                 timer1.Start();
             }
-            else {
+            else
+            {
                 timer1.Enabled = false;
                 for (int i = 0; i < dataGridView1.RowCount; i++)
                     for (int j = 0; j < dataGridView1.ColumnCount; j++)
@@ -450,28 +519,35 @@ namespace l_application_pour_diploma{
             trouv?.refresh(false);
         }
 
-        private void numericUpDown7_ValueChanged(object sender, EventArgs e) {
+        private void numericUpDown7_ValueChanged(object sender, EventArgs e)
+        {
             timer1.Interval = (int)numericUpDown7.Value;
         }
 
-        private void radioButton2_CheckedChanged(object sender, EventArgs e) {
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
             tick = 0;
             trouv?.refresh(true);
             vran?.refr(false);
         }
         public List<List<Point>> domains;
-        private void checkBox2_CheckedChanged(object sender, EventArgs e) {
-            if (checkBox2.Checked && domains.Count == 0) {
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked && domains.Count == 0)
+            {
                 checkBox2.Checked = false;
                 if (lang == 0) MessageBox.Show("Vous n'avez chosis les domains.");
                 if (lang == 1) MessageBox.Show("Области изменения не выбраны.");
             }
         }
 
-        private void button1_Click(object sender, EventArgs e) {
-            if (dataGridView1.SelectedCells.Count > 0)  {
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
                 List<Point> newd = new();
-                for (int i = 0; i < dataGridView1.SelectedCells.Count; i++) {
+                for (int i = 0; i < dataGridView1.SelectedCells.Count; i++)
+                {
                     var el = dataGridView1.SelectedCells[i];
                     if (!domains.Any(list => list.Contains(new(el.RowIndex, el.ColumnIndex))) && Convert.ToDecimal(el.Value) > 0)
                     { //check if already included
@@ -484,8 +560,10 @@ namespace l_application_pour_diploma{
                 dataGridView1.ClearSelection();
                 affichdom();
             }
-            else {
-                if (lang == 0)  {
+            else
+            {
+                if (lang == 0)
+                {
                     MessageBox.Show("Choisir le domain pour à ajouter");
                 }
                 else if (lang == 1)
@@ -495,11 +573,15 @@ namespace l_application_pour_diploma{
         private List<Color> ColeurList = new List<Color> { Color.Red, Color.Orange, Color.Yellow, Color.YellowGreen,
             Color.GreenYellow, Color.Green, Color.DarkGreen, Color.SkyBlue, Color.Cyan, Color.BlueViolet };
         private void button4_Click(object sender, EventArgs e) { affichdom(); }
-        private void affichdom(){
+        private void affichdom()
+        {
             checkBox3.Checked = false;
-            for (int i = 0; i < dataGridView1.RowCount; i++){
-                for (int j = 0; j < dataGridView1.ColumnCount; j++){
-                    if (domains.Any(list => list.Contains(new(i, j)))){
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+            {
+                for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                {
+                    if (domains.Any(list => list.Contains(new(i, j))))
+                    {
                         dataGridView1.Rows[i].Cells[j].Style.BackColor = ColeurList[domains.FindIndex(list => list.Contains(new(i, j))) % ColeurList.Count];
                     }
                     else
@@ -509,17 +591,22 @@ namespace l_application_pour_diploma{
             }
         }
 
-        private void button5_Click(object sender, EventArgs e) {
+        private void button5_Click(object sender, EventArgs e)
+        {
             domains = new();
             textBox3.Text = "0";
             textBox4.Text = "0";
         }
 
-        private void button3_Click(object sender, EventArgs e) {
-            if (dataGridView1.SelectedCells.Count > 0) {
-                for (int i = 0; i < dataGridView1.SelectedCells.Count; i++) {
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                for (int i = 0; i < dataGridView1.SelectedCells.Count; i++)
+                {
                     var el = dataGridView1.SelectedCells[i];
-                    if (domains.Any(list => list.Contains(new(el.RowIndex, el.ColumnIndex)))) { //check if already included
+                    if (domains.Any(list => list.Contains(new(el.RowIndex, el.ColumnIndex))))
+                    { //check if already included
                         int index = domains.FindIndex(l => l.Contains(new(el.RowIndex, el.ColumnIndex)));
                         domains[index].Remove(new(el.RowIndex, el.ColumnIndex));
                     }
@@ -530,8 +617,10 @@ namespace l_application_pour_diploma{
                 dataGridView1.ClearSelection();
                 affichdom();
             }
-            else {
-                if (lang == 0) {
+            else
+            {
+                if (lang == 0)
+                {
                     MessageBox.Show("Choisir le domain pour à suppremer");
                 }
                 else if (lang == 1)
@@ -539,33 +628,41 @@ namespace l_application_pour_diploma{
             }
         }
 
-        private void checkBox5_CheckedChanged(object sender, EventArgs e) {
-            if (checkBox4.Checked && checkBox5.Checked) {
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked && checkBox5.Checked)
+            {
                 timer1.Enabled = true;
                 timer1.Start();
             }
-            else {
+            else
+            {
                 timer1.Enabled = false;
             }
         }
 
-        private void numericUpDown11_ValueChanged(object sender, EventArgs e) {
+        private void numericUpDown11_ValueChanged(object sender, EventArgs e)
+        {
             vran?.refr(true);
             trouv?.refresh(false);
         }
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e) {
-            if (checkBox4.Checked) {
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            if (checkBox4.Checked)
+            {
                 trouv?.refresh(true);
                 vran?.refr(false);
             }
         }
 
-        private void numericUpDown9_ValueChanged(object sender, EventArgs e) {
+        private void numericUpDown9_ValueChanged(object sender, EventArgs e)
+        {
             trouv?.refresh(true);
             vran?.refr(false);
         }
 
-        private void numericUpDown8_ValueChanged(object sender, EventArgs e)  {
+        private void numericUpDown8_ValueChanged(object sender, EventArgs e)
+        {
             numericUpDown3.Maximum = numericUpDown8.Value;
             numericUpDown3.Value = 0;
             trouv?.refresh(true);
@@ -625,6 +722,7 @@ namespace l_application_pour_diploma{
                 label14.Text = "Domains";
                 label6.Text = "Cellules";
 
+                arbreCouvrantToolStripMenuItem.Text = "Un arbre couvrant";
                 trouv?.toFrancais();
                 beaucoup?.toFrancais();
                 vran?.ToFrancais();
@@ -651,7 +749,7 @@ namespace l_application_pour_diploma{
                 button2.Text = "Сгенерировать единицы";
                 groupBox3.Text = "Области изменения";
                 checkBox1.Text = "Сохранить препятствия";
-                this.Text = "L\'application pour le diploma: данные для исследования";
+                this.Text = "Среда для исследования";
                 groupBox4.Text = "Отображение ячеек";
                 label7.Text = "Размер шрифта";
                 label8.Text = "Количество знаков";
@@ -659,7 +757,7 @@ namespace l_application_pour_diploma{
                 checkBox3.Text = "Показать тепловую карту";
                 calculationsDeChemanPourBeaucoupPointsToolStripMenuItem.Text = "Вычисление оптимальной точки встречи";
                 diagrammeDeVoronoїToolStripMenuItem.Text = "Диаграмма Вороного";
-
+                arbreCouvrantToolStripMenuItem.Text = "Остовное дерево";
                 groupBox6.Text = "Изменяемость среды";
                 checkBox4.Text = "Изменяема";
                 checkBox5.Text = "Отображать изменения";
@@ -686,6 +784,16 @@ namespace l_application_pour_diploma{
                 vran?.ToRusse();
                 lang = 1;
             }
+        }
+
+        private void arbreCouvrantToolStripMenuItem_Click(object sender, EventArgs e){
+            if (span == null)
+            {
+                span = new Spann(this);
+                if (lang == 1) span.ToRusse();
+                span.Show();
+            }
+            span.Focus();
         }
     }
 }

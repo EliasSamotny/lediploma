@@ -1,18 +1,13 @@
-﻿namespace l_application_pour_diploma
-{
-    public partial class Routes : Form
-    {
+﻿namespace l_application_pour_diploma{
+    public partial class Routes : Form{
         internal Trouvation own;
-        int d;
-        int x, y, x2, y2, u, v;
-        public Routes(Trouvation t)
-        {
+        int d, x, y, x2, y2, u, v;
+        public Routes(Trouvation t){
             own = t;
             InitializeComponent();
         }
         private void Routes_Load(object sender, EventArgs e) { refr(); }
-        public void findroute()
-        {
+        public void findroute(){
             textBox1.Text = "";
             x = own.dataGridView1.RowCount - 1;
             y = own.dataGridView1.ColumnCount - 1;
@@ -21,11 +16,9 @@
 
             x2 = (int)numericUpDown1.Value - 1;
             y2 = (int)numericUpDown2.Value - 1;
-            if (own.previos[x2, y2].X != -1)
-            {
+            if (own.previos[x2, y2].X != -1){
                 List<Point> route = new() { new Point(x2, y2) };
-                while (x2 != u || y2 != v)
-                {
+                while (x2 != u || y2 != v){
                     int x1 = x2, y1 = y2;
                     route.Add(new Point(own.previos[x1, y1].X, own.previos[x1, y1].Y));
                     x2 = own.previos[x1, y1].X;
@@ -35,8 +28,7 @@
                 Bitmap bmp = new(pictureBox1.Image);
                 Graphics carte = Graphics.FromImage(bmp);
 
-                for (int i = route.Count - 1; i > 0; i--)
-                {
+                for (int i = route.Count - 1; i > 0; i--){
                     textBox1.AppendText("(" + (route[i].X + 1) + " , " + (route[i].Y + 1) + ") --> (" + (route[i - 1].X + 1) + " , " + (route[i - 1].Y + 1) + ")\r\n");
                     Point[] p1i = new Point[] {
                         new (route[i].Y * d + d / 2 - 1, route[i].X * d + d / 2),
@@ -71,14 +63,12 @@
                 else if (own.own.lang == 1)
                     textBox1.AppendText("Расстояние равняется " + own.dataGridView1.Rows[(int)numericUpDown1.Value - 1].Cells[(int)numericUpDown2.Value - 1].Value.ToString());
             }
-            else
-            {
+            else{
                 textBox1.Text = "Il n'y a une route du point (" + textBox2.Text + " , " + textBox3.Text + ") au point (" + (x + 1) + " , " + (y + 1) + ")!";
                 MessageBox.Show("Le point final est inaccessible!");
             }
         }
-        internal void refr()
-        {
+        internal void refr(){
             Bitmap bmp = new(pictureBox1.Width, pictureBox1.Height);
             Graphics carte = Graphics.FromImage(bmp);
             d = Math.Min(pictureBox1.Width, pictureBox1.Height) / Math.Max(own.dataGridView1.RowCount, own.dataGridView1.ColumnCount);
