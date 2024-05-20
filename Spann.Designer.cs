@@ -51,7 +51,7 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox1.Location = new Point(298, 12);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(740, 624);
@@ -101,7 +101,7 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AllowUserToOrderColumns = true;
-            dataGridView1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridView1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2 });
             dataGridView1.Location = new Point(12, 340);
@@ -128,7 +128,7 @@
             // 
             // button5
             // 
-            button5.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            button5.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             button5.Location = new Point(152, 305);
             button5.Name = "button5";
             button5.Size = new Size(140, 29);
@@ -170,7 +170,7 @@
             // 
             // button3
             // 
-            button3.Anchor = AnchorStyles.Right;
+            button3.Anchor = AnchorStyles.Left;
             button3.Location = new Point(130, 270);
             button3.Name = "button3";
             button3.Size = new Size(162, 29);

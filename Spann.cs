@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -148,16 +149,14 @@ namespace l_application_pour_diploma{
                 if (waved.Count == 0) {
                     Point point = new(Convert.ToInt32(dataGridView1.Rows[0].Cells[0].Value)-1, Convert.ToInt32(dataGridView1.Rows[0].Cells[1].Value)-1);
                     waved.Add(point);
-                    var wave = waving_in_domain_from_point(point);
+                    var resultwaving = waving_in_domain_from_point(point);
+                    var wave = resultwaving.destinl;
                     waves.Add(wave);
                     Parallel.For(0, wavessum.GetLength(0), i => {
                         for (int j = 0; j < wavessum.GetLength(1); j++){
                             wavessum[i, j] = wave[i, j];
-
                         }
-
-                    });
-                    
+                    });                    
                     int x = Convert.ToInt32(dataGridView1.Rows[0].Cells[0].Value) - 1;
                     int y = Convert.ToInt32(dataGridView1.Rows[0].Cells[1].Value) - 1;
                     carte.FillRectangle(new SolidBrush(Color.Chocolate), y * d + 1, x * d + 1, d - 1, d - 1);
@@ -173,7 +172,9 @@ namespace l_application_pour_diploma{
                                 .DefaultIfEmpty(unvisited[0])
                                 .FirstOrDefault();
                         waved.Add(next);
-                        var wave = waving_in_domain_from_point(next);
+                        var resultwaving = waving_in_domain_from_point(next);
+                        var wave = resultwaving.destinl;
+                        var prev = resultwaving.previosl;
                         waves.Add(wave);
                         Parallel.For(0, wavessum.GetLength(0), i => {
                             for (int j = 0; j < wavessum.GetLength(1); j++){
@@ -197,32 +198,41 @@ namespace l_application_pour_diploma{
                         new_link[0] = neartonext;
                         new_link[1] = next;
                         links.Add(new_link);
-                        Point[] p1i = new Point[] {
-                            new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
-                            new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
-                            new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 2 + d / 2),
-                            new (new_link[0].Y * d + d / 2, new_link[0].X * d + d / 2),
-                            new (new_link[0].Y * d + d / 2, new_link[0].X * d + 1 + d / 2),
-                            new (new_link[0].Y * d + d / 2, new_link[0].X * d + 2 + d / 2),
-                            new (new_link[0].Y * d + d / 2 + 1, new_link[0].X * d + d / 2),
-                            new (new_link[0].Y * d + d / 2 + 1, new_link[0].X * d + 1 + d / 2),
-                            new (new_link[0].Y * d + d / 2 + 1, new_link[0].X * d + 2 + d / 2)
-                        };
-                        Point[] p2i = new Point[] {
-                            new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + d / 2),
-                            new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 1 + d / 2),
-                            new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 2 + d / 2),
-                            new(new_link[1].Y * d + d/2, new_link[1].X * d + d / 2),
-                            new(new_link[1].Y * d + d/2, new_link[1].X * d + 1 + d / 2),
-                            new(new_link[1].Y * d + d/2, new_link[1].X * d + 2 + d / 2),
-                            new(new_link[1].Y * d + d/2 + 1, new_link[1].X * d + d / 2),
-                            new(new_link[1].Y * d + d/2 + 1, new_link[1].X * d + 1 + d / 2),
-                            new(new_link[1].Y * d + d/2 + 1, new_link[1].X * d + 2 + d / 2)
-                        };
-                        for (int j = 0; j < p1i.Length; j++)
-                        {
-                            carte.DrawLine(new Pen(Color.Black), p1i[j], p2i[j]);
+                        List<Point> route = new List<Point>{ neartonext };
+                        while (route[^1] != next){
+                            int xl = route[^1].X, yl = route[^1].Y;
+                            route.Add(prev[xl,yl]);
+
                         }
+                        
+                        for (int i = 0; i < route.Count - 1; i++) {
+                            Point[] p1i = new Point[] {
+                            //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
+                            //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
+                            //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 2 + d / 2),
+                            new (route[i].Y * d + d / 2,     route[i].X * d + d / 2),
+                            new (route[i].Y * d + d / 2,     route[i].X * d + 1 + d / 2),
+                            //new (new_link[0].Y * d + d / 2,     new_link[0].X * d + 2 + d / 2),
+                            new (route[i].Y * d + d / 2 + 1, route[i].X * d + d / 2),
+                            new (route[i].Y * d + d / 2 + 1, route[i].X * d + 1 + d / 2),
+                            new (route[i].Y * d + d / 2 + 1, route[i].X * d + 2 + d / 2)
+                        };
+                            Point[] p2i = new Point[] {
+                            //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + d / 2),
+                            //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 1 + d / 2),
+                            //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 2 + d / 2),
+                            new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + d / 2),
+                            new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + 1 + d / 2),
+                            //new(new_link[1].Y * d + d/2,     new_link[1].X * d + 2 + d / 2),
+                            new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + d / 2),
+                            new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 1 + d / 2),
+                            new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 2 + d / 2)
+                        };
+                            for (int j = 0; j < 4/*p1i.Length*/; j++){                                
+                                carte.DrawLine(new Pen(Color.Black), p1i[j], p2i[j]);
+                            }
+                        }
+                        
                     }
 
 
@@ -281,6 +291,7 @@ namespace l_application_pour_diploma{
                 if (Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) == x && Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) == y)
                 {
                     toadd = false;
+                    dataGridView1.Rows.RemoveAt(i);
                     break;
                 }
             }
@@ -288,7 +299,7 @@ namespace l_application_pour_diploma{
                 dataGridView1.Rows.Add(new object[] { x, y });
             refr(true);
         }
-        private decimal[,] waving_in_domain_from_point(Point commenc)
+        private (decimal[,] destinl, Point[,] previosl) waving_in_domain_from_point(Point commenc)
         {
             decimal[,] destinl = new decimal[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
             Point[,] previosl = new Point[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
@@ -372,7 +383,7 @@ namespace l_application_pour_diploma{
                 }
             }
 
-            return destinl;
+            return (destinl, previosl);
         }
         private void calculcell(ref bool[,] access, ref decimal[,] dest, ref Point[,] prev, int xc, int yc, int xl, int yl)
         {
