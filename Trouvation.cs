@@ -1,4 +1,5 @@
-﻿using static l_application_pour_diploma.Classes;
+﻿using Windows.Graphics.Printing.Workflow;
+using static l_application_pour_diploma.Classes;
 namespace l_application_pour_diploma
 {
     public partial class Trouvation : Form
@@ -10,7 +11,6 @@ namespace l_application_pour_diploma
         internal Point[,] previos;
         internal List<List<Point>> submedia;
         bool onemedium = true;
-        internal List<decimal[,]> variants;
         int curr_med = 0;
         public Trouvation(Commencement o)
         {
@@ -25,27 +25,34 @@ namespace l_application_pour_diploma
                         return false;
             return true;
         }
-        private int currst(decimal dest, decimal chaque)
-        {
-            int shift = (int)own.numericUpDown3.Value;
-            int currstage = ((int)Math.Floor(dest / chaque)) % variants.Count;
-            if (currstage > 0 && dest % chaque == 0)
-                currstage--;
-            return ((currstage + shift) % variants.Count);
+        private int currst(decimal dest){
+            int shift = own.stateShift;
+            //own.transitions[]
+            int currstage = 0;
+            dest %= own.transitions.Sum();
+            if (own.transitions.Count > 1)
+                for (int i = 0; i < own.transitions.Count; i++){
+                    if (dest >= own.transitions[(i + shift) % own.transitions.Count]){
+                        dest -= own.transitions[(i + shift) % own.transitions.Count];
+                    }
+                    else{
+                        currstage = (i + shift) % own.transitions.Count;
+                        break;
+                    }
+                }
+            return (currstage) % own.source.Count;
         }
-        private void calculcell(int xc, int yc)
-        {
-            if (xc + 1 > 0 && yc + 1 > 0 && xc < dataGridView1.RowCount && yc < dataGridView1.ColumnCount && own.dataGridView1.Rows[xc].Cells[yc].Value != null && pointavailiter(xc, yc))
+        private void calculcell(int xc, int yc){
+            if (xc + 1 > 0 && yc + 1 > 0 && xc < dataGridView1.RowCount && yc < dataGridView1.ColumnCount && own.source.All(el => el[xc, yc] != null)  && pointavailiter(xc, yc))
             {//if exists
-                decimal chaque = own.numericUpDown11.Value;
-                int currstage = currst(Convert.ToDecimal(dataGridView1.Rows[x1].Cells[y1].Value), chaque);
+                int currstage = currst(Convert.ToDecimal(dataGridView1.Rows[x1].Cells[y1].Value));
 
-                decimal cur = (decimal)((Convert.ToDouble(variants[currstage][xc, yc]) + Convert.ToDouble(variants[currstage][x1, y1])) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dataGridView1.Rows[x1].Cells[y1].Value));
+                decimal cur = (decimal)((Convert.ToDouble(own.source[currstage][xc, yc]) + Convert.ToDouble(own.source[currstage][x1, y1])) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dataGridView1.Rows[x1].Cells[y1].Value));
 
-                if (currstage != (currst(cur, chaque)) && variants.Count > 1)
+                if (currstage != (currst(cur)) && own.source.Count > 1)
                 {
-                    int diff = (currstage + (int)Math.Abs(currstage - Math.Floor(cur / chaque))) % variants.Count;
-                    cur = (decimal)((Convert.ToDouble(variants[diff][xc, yc]) + Convert.ToDouble(variants[diff][x1, y1])) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dataGridView1.Rows[x1].Cells[y1].Value));
+                    int next = (currstage + 1) % own.source.Count;
+                    cur = (decimal)((Convert.ToDouble(own.source[next][xc, yc]) + Convert.ToDouble(own.source[next][x1, y1])) / 2 * Math.Sqrt(Math.Pow(xc - x1, 2) + Math.Pow(yc - y1, 2)) + Convert.ToDouble(dataGridView1.Rows[x1].Cells[y1].Value));
                 }
 
                 if (dataGridView1.Rows[xc].Cells[yc].Value == null)
@@ -58,7 +65,7 @@ namespace l_application_pour_diploma
                     dataGridView1.Rows[xc].Cells[yc].Value = cur;
                     previos[xc, yc] = new Point(x1, y1);
                 }
-                else if (Convert.ToDecimal(own.dataGridView1.Rows[xc].Cells[yc].Value) == -1)
+                else if (own.source.All(el=> el[xc, yc] == -1))
                 {  //if point unpassable
                     dataGridView1.Rows[xc].Cells[yc].Value = -1;
                 }
@@ -72,37 +79,10 @@ namespace l_application_pour_diploma
         }
         internal void refresh(bool changed_med){
             own.insert_log("Refreshing the shortest path...", this);
-            variants = new() { own.source[0] };
-            if (own.radioButton1.Checked && own.checkBox4.Checked)
-            {
-                decimal[,] inverseMatrix = new decimal[own.source[0].GetLength(0), own.source[0].GetLength(1)];
-                for (int i = 0; i < own.source[0].GetLength(0); i++)
-                    for (int j = 0; j < own.source[0].GetLength(1); j++)
-                        if (!own.checkBox2.Checked && own.source[0][i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
-                            inverseMatrix[i, j] = 1 / own.source[0][i, j];
-
-                variants.Add(inverseMatrix);
-            }
-            else if ((own.radioButton2.Checked) && own.checkBox4.Checked)
-            {
-                decimal multi = (100 + own.numericUpDown9.Value) / 100;
-                for (int t = 0; t < (int)own.numericUpDown8.Value; t++)
-                {
-
-                    decimal[,] next = new decimal[own.source[0].GetLength(0), own.source[0].GetLength(1)];
-                    for (int i = 0; i < own.source[0].GetLength(0); i++)
-                        for (int j = 0; j < own.source[0].GetLength(1); j++)
-                            if (!own.checkBox2.Checked && own.source[0][i, j] > 0 || own.checkBox2.Checked && own.domains.Any(l => l.Contains(new(i, j))))
-                                next[i, j] = variants[^1][i, j] * multi;
-                            else next[i, j] = variants[^1][i, j];
-                    variants.Add(next);
-                }
-
-            }
 
             Cursor.Current = Cursors.WaitCursor;
-            dataGridView1.RowCount = own.dataGridView1.RowCount;
-            dataGridView1.ColumnCount = own.dataGridView1.ColumnCount;
+            dataGridView1.RowCount = (int)own.numericUpDown1.Value;
+            dataGridView1.ColumnCount = (int)own.numericUpDown2.Value;
             x = dataGridView1.SelectedCells[0].RowIndex; x1 = x;
             y = dataGridView1.SelectedCells[0].ColumnIndex; y1 = y;
 
@@ -185,10 +165,6 @@ namespace l_application_pour_diploma
                 }
             }
             Cursor.Current = Cursors.Default;
-            own.dataGridView1.ClearSelection();
-            own.dataGridView1.CurrentCell = own.dataGridView1.Rows[x].Cells[y];
-            own.textBox1.Text = Convert.ToString(x + 1);
-            own.textBox2.Text = Convert.ToString(y + 1);
             if (checkBox1.Checked) fillcolors();
             else clearcolors();
             dataGridView1.AutoResizeColumns();
@@ -285,15 +261,13 @@ namespace l_application_pour_diploma
             else if (radioButton2.Checked) return 16;
             else return 32;
         }
-        private void reseachpoints(int u, int v)
-        {
+        private void reseachpoints(int u, int v){
             submedia = new() { new() };
             submedia[0].Add(new(u, v));
-            bool[,] known = new bool[own.dataGridView1.RowCount, own.dataGridView1.ColumnCount];
-            for (int i = 0; i < own.dataGridView1.RowCount; i++)
-                for (int j = 0; j < own.dataGridView1.ColumnCount; j++)
-                {
-                    if (Convert.ToDecimal(own.dataGridView1.Rows[i].Cells[j].Value) > -1)
+            bool[,] known = new bool[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
+            for (int i = 0; i < (int)own.numericUpDown1.Value; i++)
+                for (int j = 0; j < (int)own.numericUpDown2.Value; j++){
+                    if (own.source.All(el => el[i,j] > 0))
                         known[i, j] = false;
                     else known[i, j] = true;
                 }
@@ -417,7 +391,7 @@ namespace l_application_pour_diploma
             }
             catch (Exception) { return false; }
         }
-        private bool availpoint(int u, int v) { return Convert.ToDecimal(own.dataGridView1.Rows[u].Cells[v].Value) >= 0; }
+        private bool availpoint(int u, int v) { return own.source.All(el => el[u, v] > 0); }
         public void clearcells()
         {
             for (int i = 0; i < dataGridView1.RowCount; i++)
@@ -525,8 +499,8 @@ namespace l_application_pour_diploma
         }
         private void fillcolors()
         {
-            int r = own.dataGridView1.RowCount;
-            int c = own.dataGridView1.ColumnCount;
+            int r = (int)own.numericUpDown1.Value;
+            int c = (int)own.numericUpDown2.Value;
             dataGridView1.RowCount = r;
             dataGridView1.ColumnCount = c;
             decimal maxval = 0, minval = Decimal.MaxValue;

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             numericUpDown1 = new NumericUpDown();
             numericUpDown2 = new NumericUpDown();
             label1 = new Label();
@@ -42,73 +42,47 @@
             desCalculationsDeCheminsToolStripMenuItem = new ToolStripMenuItem();
             calculationsDeChemanPourBeaucoupPointsToolStripMenuItem = new ToolStripMenuItem();
             diagrammeDeVoronoїToolStripMenuItem = new ToolStripMenuItem();
+            arbreCouvrantToolStripMenuItem = new ToolStripMenuItem();
+            environnementAvancésToolStripMenuItem = new ToolStripMenuItem();
             langueToolStripMenuItem = new ToolStripMenuItem();
             françaisToolStripMenuItem = new ToolStripMenuItem();
             russeToolStripMenuItem = new ToolStripMenuItem();
             sûrLauteurToolStripMenuItem = new ToolStripMenuItem();
-            dataGridView1 = new DataGridView();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
             groupBox1 = new GroupBox();
-            groupBox2 = new GroupBox();
-            label4 = new Label();
-            label3 = new Label();
-            button2 = new Button();
+            timer1 = new System.Windows.Forms.Timer(components);
+            dataGridView2 = new DataGridView();
+            Column1 = new DataGridViewTextBoxColumn();
+            Column2 = new DataGridViewTextBoxColumn();
+            groupBox5 = new GroupBox();
+            checkBox3 = new CheckBox();
             checkBox1 = new CheckBox();
+            button2 = new Button();
             groupBox4 = new GroupBox();
             numericUpDown5 = new NumericUpDown();
             numericUpDown6 = new NumericUpDown();
             label7 = new Label();
             label8 = new Label();
-            groupBox5 = new GroupBox();
-            checkBox3 = new CheckBox();
-            timer1 = new System.Windows.Forms.Timer(components);
-            groupBox6 = new GroupBox();
+            dataGridView1 = new DataGridView();
+            groupBox2 = new GroupBox();
             checkBox5 = new CheckBox();
-            groupBox3 = new GroupBox();
-            button5 = new Button();
-            button4 = new Button();
-            button3 = new Button();
-            button1 = new Button();
-            groupBox8 = new GroupBox();
-            label6 = new Label();
-            textBox4 = new TextBox();
-            label14 = new Label();
-            textBox3 = new TextBox();
-            checkBox2 = new CheckBox();
-            label5 = new Label();
-            groupBox7 = new GroupBox();
-            label13 = new Label();
-            numericUpDown11 = new NumericUpDown();
-            label9 = new Label();
-            numericUpDown7 = new NumericUpDown();
-            label11 = new Label();
+            label4 = new Label();
+            label3 = new Label();
             label10 = new Label();
-            numericUpDown9 = new NumericUpDown();
+            numericUpDown4 = new NumericUpDown();
             numericUpDown3 = new NumericUpDown();
             numericUpDown8 = new NumericUpDown();
-            radioButton3 = new RadioButton();
-            radioButton2 = new RadioButton();
-            radioButton1 = new RadioButton();
-            checkBox4 = new CheckBox();
-            arbreCouvrantToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox1.SuspendLayout();
-            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            groupBox5.SuspendLayout();
             groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).BeginInit();
-            groupBox5.SuspendLayout();
-            groupBox6.SuspendLayout();
-            groupBox3.SuspendLayout();
-            groupBox8.SuspendLayout();
-            groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown11).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown7).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown9).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown8).BeginInit();
             SuspendLayout();
@@ -116,12 +90,12 @@
             // numericUpDown1
             // 
             numericUpDown1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericUpDown1.Location = new Point(163, 17);
+            numericUpDown1.Location = new Point(160, 17);
             numericUpDown1.Margin = new Padding(4);
             numericUpDown1.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDown1.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(80, 29);
+            numericUpDown1.Size = new Size(57, 29);
             numericUpDown1.TabIndex = 1;
             numericUpDown1.Value = new decimal(new int[] { 41, 0, 0, 0 });
             numericUpDown1.ValueChanged += numericUpDown1_ValueChanged;
@@ -131,12 +105,12 @@
             // numericUpDown2
             // 
             numericUpDown2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            numericUpDown2.Location = new Point(163, 50);
+            numericUpDown2.Location = new Point(160, 50);
             numericUpDown2.Margin = new Padding(4);
             numericUpDown2.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDown2.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
             numericUpDown2.Name = "numericUpDown2";
-            numericUpDown2.Size = new Size(80, 29);
+            numericUpDown2.Size = new Size(57, 29);
             numericUpDown2.TabIndex = 1;
             numericUpDown2.Value = new decimal(new int[] { 41, 0, 0, 0 });
             numericUpDown2.ValueChanged += numericUpDown2_ValueChanged;
@@ -170,7 +144,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, desFenêtresToolStripMenuItem, langueToolStripMenuItem, sûrLauteurToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1128, 30);
+            menuStrip1.Size = new Size(961, 30);
             menuStrip1.TabIndex = 5;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -197,7 +171,7 @@
             // 
             // desFenêtresToolStripMenuItem
             // 
-            desFenêtresToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desCalculationsDeCheminsToolStripMenuItem, calculationsDeChemanPourBeaucoupPointsToolStripMenuItem, diagrammeDeVoronoїToolStripMenuItem, arbreCouvrantToolStripMenuItem });
+            desFenêtresToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desCalculationsDeCheminsToolStripMenuItem, calculationsDeChemanPourBeaucoupPointsToolStripMenuItem, diagrammeDeVoronoїToolStripMenuItem, arbreCouvrantToolStripMenuItem, environnementAvancésToolStripMenuItem });
             desFenêtresToolStripMenuItem.Name = "desFenêtresToolStripMenuItem";
             desFenêtresToolStripMenuItem.Size = new Size(78, 26);
             desFenêtresToolStripMenuItem.Text = "Fenêtres";
@@ -222,6 +196,20 @@
             diagrammeDeVoronoїToolStripMenuItem.Size = new Size(392, 26);
             diagrammeDeVoronoїToolStripMenuItem.Text = "Diagramme de Voronoї";
             diagrammeDeVoronoїToolStripMenuItem.Click += diagrammeDeVoronoїToolStripMenuItem_Click;
+            // 
+            // arbreCouvrantToolStripMenuItem
+            // 
+            arbreCouvrantToolStripMenuItem.Name = "arbreCouvrantToolStripMenuItem";
+            arbreCouvrantToolStripMenuItem.Size = new Size(392, 26);
+            arbreCouvrantToolStripMenuItem.Text = "Arbre couvrant";
+            arbreCouvrantToolStripMenuItem.Click += arbreCouvrantToolStripMenuItem_Click;
+            // 
+            // environnementAvancésToolStripMenuItem
+            // 
+            environnementAvancésToolStripMenuItem.Name = "environnementAvancésToolStripMenuItem";
+            environnementAvancésToolStripMenuItem.Size = new Size(392, 26);
+            environnementAvancésToolStripMenuItem.Text = "Environnement avancés";
+            environnementAvancésToolStripMenuItem.Click += environnementAvancésToolStripMenuItem_Click;
             // 
             // langueToolStripMenuItem
             // 
@@ -251,193 +239,61 @@
             sûrLauteurToolStripMenuItem.Text = "Sûr l'auteur";
             sûrLauteurToolStripMenuItem.Click += sûrLauteurToolStripMenuItem_Click;
             // 
-            // dataGridView1
-            // 
-            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.ColumnHeadersVisible = false;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Palatino Linotype", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.NullValue = null;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView1.Location = new Point(12, 284);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersVisible = false;
-            dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(1104, 285);
-            dataGridView1.TabIndex = 6;
-            dataGridView1.CellClick += dataGridView1_CellClick;
-            dataGridView1.CellDoubleClick += dataGridView1_CellDoubleClick;
-            dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
-            dataGridView1.ColumnAdded += dataGridView1_ColumnAdded;
-            dataGridView1.KeyDown += dataGridView1_KeyDown;
-            dataGridView1.KeyPress += dataGridView1_KeyPress;
-            dataGridView1.KeyUp += dataGridView1_KeyUp;
-            // 
-            // textBox1
-            // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox1.Location = new Point(114, 20);
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(44, 29);
-            textBox1.TabIndex = 7;
-            // 
-            // textBox2
-            // 
-            textBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox2.Location = new Point(114, 53);
-            textBox2.Name = "textBox2";
-            textBox2.ReadOnly = true;
-            textBox2.Size = new Size(44, 29);
-            textBox2.TabIndex = 7;
-            // 
             // groupBox1
             // 
             groupBox1.Controls.Add(numericUpDown2);
             groupBox1.Controls.Add(numericUpDown1);
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(label2);
-            groupBox1.Location = new Point(12, 35);
+            groupBox1.Location = new Point(204, 17);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(250, 86);
+            groupBox1.Size = new Size(224, 86);
             groupBox1.TabIndex = 8;
             groupBox1.TabStop = false;
             groupBox1.Text = "Dimensions";
             // 
-            // groupBox2
+            // timer1
             // 
-            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            groupBox2.Controls.Add(textBox1);
-            groupBox2.Controls.Add(textBox2);
-            groupBox2.Controls.Add(label4);
-            groupBox2.Controls.Add(label3);
-            groupBox2.Location = new Point(951, 38);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(165, 92);
-            groupBox2.TabIndex = 9;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Le point actuel";
+            timer1.Interval = 20000;
             // 
-            // label4
+            // dataGridView2
             // 
-            label4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            label4.AutoSize = true;
-            label4.Location = new Point(7, 23);
-            label4.Margin = new Padding(4, 0, 4, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(65, 22);
-            label4.TabIndex = 2;
-            label4.Text = "La ligne";
+            dataGridView2.AllowUserToAddRows = false;
+            dataGridView2.AllowUserToDeleteRows = false;
+            dataGridView2.AllowUserToOrderColumns = true;
+            dataGridView2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2 });
+            dataGridView2.Location = new Point(701, 35);
+            dataGridView2.MultiSelect = false;
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.RowHeadersWidth = 21;
+            dataGridView2.RowTemplate.Height = 20;
+            dataGridView2.Size = new Size(248, 179);
+            dataGridView2.TabIndex = 21;
+            dataGridView2.CellEndEdit += dataGridView2_CellEndEdit;
             // 
-            // label3
+            // Column1
             // 
-            label3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label3.AutoSize = true;
-            label3.Location = new Point(7, 56);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(84, 22);
-            label3.TabIndex = 2;
-            label3.Text = "La colonne";
+            Column1.HeaderText = "Le temps";
+            Column1.Name = "Column1";
             // 
-            // button2
+            // Column2
             // 
-            button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button2.Location = new Point(234, 17);
-            button2.Name = "button2";
-            button2.Size = new Size(191, 32);
-            button2.TabIndex = 3;
-            button2.Text = "Remplir toutes les unités";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
-            // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(6, 57);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(213, 26);
-            checkBox1.TabIndex = 4;
-            checkBox1.Text = "Sauvegarder les unités neg.";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // groupBox4
-            // 
-            groupBox4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            groupBox4.Controls.Add(numericUpDown5);
-            groupBox4.Controls.Add(numericUpDown6);
-            groupBox4.Controls.Add(label7);
-            groupBox4.Controls.Add(label8);
-            groupBox4.Location = new Point(705, 38);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(240, 92);
-            groupBox4.TabIndex = 13;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Reflexion de cellules";
-            // 
-            // numericUpDown5
-            // 
-            numericUpDown5.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            numericUpDown5.Location = new Point(181, 54);
-            numericUpDown5.Margin = new Padding(5, 6, 5, 6);
-            numericUpDown5.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
-            numericUpDown5.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
-            numericUpDown5.Name = "numericUpDown5";
-            numericUpDown5.ReadOnly = true;
-            numericUpDown5.Size = new Size(51, 29);
-            numericUpDown5.TabIndex = 12;
-            numericUpDown5.Value = new decimal(new int[] { 9, 0, 0, 0 });
-            numericUpDown5.ValueChanged += numericUpDown5_ValueChanged;
-            // 
-            // numericUpDown6
-            // 
-            numericUpDown6.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericUpDown6.Location = new Point(181, 20);
-            numericUpDown6.Margin = new Padding(5, 6, 5, 6);
-            numericUpDown6.Maximum = new decimal(new int[] { 5, 0, 0, 0 });
-            numericUpDown6.Name = "numericUpDown6";
-            numericUpDown6.ReadOnly = true;
-            numericUpDown6.Size = new Size(51, 29);
-            numericUpDown6.TabIndex = 12;
-            numericUpDown6.Value = new decimal(new int[] { 2, 0, 0, 0 });
-            numericUpDown6.ValueChanged += numericUpDown6_ValueChanged;
-            // 
-            // label7
-            // 
-            label7.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label7.AutoSize = true;
-            label7.Location = new Point(7, 56);
-            label7.Margin = new Padding(4, 0, 4, 0);
-            label7.Name = "label7";
-            label7.Size = new Size(122, 22);
-            label7.TabIndex = 11;
-            label7.Text = "La taille de fonte";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(7, 25);
-            label8.Margin = new Padding(4, 0, 4, 0);
-            label8.Name = "label8";
-            label8.Size = new Size(146, 22);
-            label8.TabIndex = 11;
-            label8.Text = "La quantité de signs";
+            Column2.HeaderText = "L'etat";
+            Column2.Name = "Column2";
+            Column2.Width = 120;
             // 
             // groupBox5
             // 
+            groupBox5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             groupBox5.Controls.Add(checkBox3);
             groupBox5.Controls.Add(checkBox1);
             groupBox5.Controls.Add(button2);
-            groupBox5.Location = new Point(268, 35);
+            groupBox5.Location = new Point(204, 107);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(431, 95);
-            groupBox5.TabIndex = 14;
+            groupBox5.Size = new Size(239, 136);
+            groupBox5.TabIndex = 20;
             groupBox5.TabStop = false;
             groupBox5.Text = "Autres";
             // 
@@ -454,349 +310,210 @@
             checkBox3.UseVisualStyleBackColor = true;
             checkBox3.CheckedChanged += checkBox3_CheckedChanged;
             // 
-            // timer1
+            // checkBox1
             // 
-            timer1.Interval = 20000;
-            timer1.Tick += timer1_Tick;
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(6, 57);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(213, 26);
+            checkBox1.TabIndex = 4;
+            checkBox1.Text = "Sauvegarder les unités neg.";
+            checkBox1.UseVisualStyleBackColor = true;
             // 
-            // groupBox6
+            // button2
             // 
-            groupBox6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox6.Controls.Add(checkBox5);
-            groupBox6.Controls.Add(groupBox3);
-            groupBox6.Controls.Add(label5);
-            groupBox6.Controls.Add(groupBox7);
-            groupBox6.Controls.Add(label11);
-            groupBox6.Controls.Add(label10);
-            groupBox6.Controls.Add(numericUpDown9);
-            groupBox6.Controls.Add(numericUpDown3);
-            groupBox6.Controls.Add(numericUpDown8);
-            groupBox6.Controls.Add(radioButton3);
-            groupBox6.Controls.Add(radioButton2);
-            groupBox6.Controls.Add(radioButton1);
-            groupBox6.Controls.Add(checkBox4);
-            groupBox6.Location = new Point(12, 130);
-            groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(1104, 148);
-            groupBox6.TabIndex = 15;
-            groupBox6.TabStop = false;
-            groupBox6.Text = "Changement de milieu";
+            button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button2.Location = new Point(12, 92);
+            button2.Name = "button2";
+            button2.Size = new Size(221, 32);
+            button2.TabIndex = 3;
+            button2.Text = "Remplir toutes les unités";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(numericUpDown5);
+            groupBox4.Controls.Add(numericUpDown6);
+            groupBox4.Controls.Add(label7);
+            groupBox4.Controls.Add(label8);
+            groupBox4.Location = new Point(478, 33);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(221, 92);
+            groupBox4.TabIndex = 19;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Reflexion de cellules";
+            // 
+            // numericUpDown5
+            // 
+            numericUpDown5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericUpDown5.Location = new Point(164, 57);
+            numericUpDown5.Margin = new Padding(5, 6, 5, 6);
+            numericUpDown5.Maximum = new decimal(new int[] { 20, 0, 0, 0 });
+            numericUpDown5.Minimum = new decimal(new int[] { 3, 0, 0, 0 });
+            numericUpDown5.Name = "numericUpDown5";
+            numericUpDown5.ReadOnly = true;
+            numericUpDown5.Size = new Size(51, 29);
+            numericUpDown5.TabIndex = 12;
+            numericUpDown5.Value = new decimal(new int[] { 9, 0, 0, 0 });
+            numericUpDown5.ValueChanged += numericUpDown5_ValueChanged;
+            // 
+            // numericUpDown6
+            // 
+            numericUpDown6.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            numericUpDown6.Location = new Point(164, 23);
+            numericUpDown6.Margin = new Padding(5, 6, 5, 6);
+            numericUpDown6.Maximum = new decimal(new int[] { 5, 0, 0, 0 });
+            numericUpDown6.Name = "numericUpDown6";
+            numericUpDown6.ReadOnly = true;
+            numericUpDown6.Size = new Size(51, 29);
+            numericUpDown6.TabIndex = 12;
+            numericUpDown6.Value = new decimal(new int[] { 2, 0, 0, 0 });
+            numericUpDown6.ValueChanged += numericUpDown6_ValueChanged;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(7, 59);
+            label7.Margin = new Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(122, 22);
+            label7.TabIndex = 11;
+            label7.Text = "La taille de fonte";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(7, 25);
+            label8.Margin = new Padding(4, 0, 4, 0);
+            label8.Name = "label8";
+            label8.Size = new Size(146, 22);
+            label8.TabIndex = 11;
+            label8.Text = "La quantité de signs";
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.ColumnHeadersVisible = false;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Palatino Linotype", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.NullValue = null;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridView1.Location = new Point(12, 288);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.RowTemplate.Height = 25;
+            dataGridView1.Size = new Size(937, 250);
+            dataGridView1.TabIndex = 18;
+            dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(checkBox5);
+            groupBox2.Controls.Add(groupBox5);
+            groupBox2.Controls.Add(label4);
+            groupBox2.Controls.Add(label3);
+            groupBox2.Controls.Add(label10);
+            groupBox2.Controls.Add(numericUpDown4);
+            groupBox2.Controls.Add(groupBox1);
+            groupBox2.Controls.Add(numericUpDown3);
+            groupBox2.Controls.Add(numericUpDown8);
+            groupBox2.Location = new Point(12, 33);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(460, 249);
+            groupBox2.TabIndex = 17;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Paramètres de base";
             // 
             // checkBox5
             // 
             checkBox5.AutoSize = true;
-            checkBox5.Location = new Point(123, 26);
+            checkBox5.Location = new Point(7, 29);
+            checkBox5.Margin = new Padding(4);
             checkBox5.Name = "checkBox5";
-            checkBox5.Size = new Size(198, 26);
-            checkBox5.TabIndex = 8;
-            checkBox5.Text = "Reflexer les changements";
+            checkBox5.Size = new Size(193, 26);
+            checkBox5.TabIndex = 1;
+            checkBox5.Text = "Mercredi est changeable";
             checkBox5.UseVisualStyleBackColor = true;
-            checkBox5.CheckedChanged += checkBox5_CheckedChanged;
             // 
-            // groupBox3
+            // label4
             // 
-            groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            groupBox3.Controls.Add(button5);
-            groupBox3.Controls.Add(button4);
-            groupBox3.Controls.Add(button3);
-            groupBox3.Controls.Add(button1);
-            groupBox3.Controls.Add(groupBox8);
-            groupBox3.Controls.Add(checkBox2);
-            groupBox3.Location = new Point(456, 18);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(412, 124);
-            groupBox3.TabIndex = 7;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Domains";
+            label4.AutoSize = true;
+            label4.Location = new Point(7, 131);
+            label4.Name = "label4";
+            label4.Size = new Size(84, 22);
+            label4.TabIndex = 7;
+            label4.Text = "État initial:";
             // 
-            // button5
+            // label3
             // 
-            button5.Location = new Point(6, 89);
-            button5.Name = "button5";
-            button5.Size = new Size(100, 29);
-            button5.TabIndex = 11;
-            button5.Text = "Nettoyer";
-            button5.UseVisualStyleBackColor = true;
-            button5.Click += button5_Click;
-            // 
-            // button4
-            // 
-            button4.Location = new Point(6, 52);
-            button4.Name = "button4";
-            button4.Size = new Size(100, 29);
-            button4.TabIndex = 11;
-            button4.Text = "Afficher";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
-            // 
-            // button3
-            // 
-            button3.Anchor = AnchorStyles.Top;
-            button3.Location = new Point(125, 90);
-            button3.Name = "button3";
-            button3.Size = new Size(100, 29);
-            button3.TabIndex = 10;
-            button3.Text = "Suppremer";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
-            // 
-            // button1
-            // 
-            button1.Anchor = AnchorStyles.Top;
-            button1.Location = new Point(125, 51);
-            button1.Name = "button1";
-            button1.Size = new Size(100, 30);
-            button1.TabIndex = 9;
-            button1.Text = "Aujouter";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // groupBox8
-            // 
-            groupBox8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            groupBox8.Controls.Add(label6);
-            groupBox8.Controls.Add(textBox4);
-            groupBox8.Controls.Add(label14);
-            groupBox8.Controls.Add(textBox3);
-            groupBox8.Location = new Point(270, 22);
-            groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(136, 96);
-            groupBox8.TabIndex = 8;
-            groupBox8.TabStop = false;
-            groupBox8.Text = "Quantité";
-            // 
-            // label6
-            // 
-            label6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label6.AutoSize = true;
-            label6.Location = new Point(6, 64);
-            label6.Name = "label6";
-            label6.Size = new Size(62, 22);
-            label6.TabIndex = 2;
-            label6.Text = "Cellules";
-            // 
-            // textBox4
-            // 
-            textBox4.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBox4.Location = new Point(90, 61);
-            textBox4.Name = "textBox4";
-            textBox4.ReadOnly = true;
-            textBox4.Size = new Size(40, 29);
-            textBox4.TabIndex = 7;
-            // 
-            // label14
-            // 
-            label14.AutoSize = true;
-            label14.Location = new Point(6, 30);
-            label14.Name = "label14";
-            label14.Size = new Size(71, 22);
-            label14.TabIndex = 2;
-            label14.Text = "Domains";
-            // 
-            // textBox3
-            // 
-            textBox3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            textBox3.Location = new Point(90, 27);
-            textBox3.Name = "textBox3";
-            textBox3.ReadOnly = true;
-            textBox3.Size = new Size(40, 29);
-            textBox3.TabIndex = 7;
-            // 
-            // checkBox2
-            // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(6, 22);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(78, 26);
-            checkBox2.TabIndex = 0;
-            checkBox2.Text = "Utiliser";
-            checkBox2.UseVisualStyleBackColor = true;
-            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
-            // 
-            // label5
-            // 
-            label5.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            label5.AutoSize = true;
-            label5.Location = new Point(203, 114);
-            label5.Margin = new Padding(4, 0, 4, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(80, 22);
-            label5.TabIndex = 2;
-            label5.Text = "Etat initial";
-            // 
-            // groupBox7
-            // 
-            groupBox7.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            groupBox7.Controls.Add(label13);
-            groupBox7.Controls.Add(numericUpDown11);
-            groupBox7.Controls.Add(label9);
-            groupBox7.Controls.Add(numericUpDown7);
-            groupBox7.Location = new Point(874, 23);
-            groupBox7.Name = "groupBox7";
-            groupBox7.Size = new Size(224, 113);
-            groupBox7.TabIndex = 6;
-            groupBox7.TabStop = false;
-            groupBox7.Text = "Conformité de changement";
-            // 
-            // label13
-            // 
-            label13.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label13.AutoSize = true;
-            label13.Location = new Point(6, 72);
-            label13.Name = "label13";
-            label13.Size = new Size(54, 22);
-            label13.TabIndex = 0;
-            label13.Text = "Unités";
-            // 
-            // numericUpDown11
-            // 
-            numericUpDown11.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            numericUpDown11.DecimalPlaces = 2;
-            numericUpDown11.Location = new Point(141, 72);
-            numericUpDown11.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown11.Minimum = new decimal(new int[] { 1, 0, 0, 262144 });
-            numericUpDown11.Name = "numericUpDown11";
-            numericUpDown11.Size = new Size(77, 29);
-            numericUpDown11.TabIndex = 1;
-            numericUpDown11.Value = new decimal(new int[] { 5, 0, 0, 0 });
-            numericUpDown11.ValueChanged += numericUpDown11_ValueChanged;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(6, 31);
-            label9.Name = "label9";
-            label9.Size = new Size(88, 22);
-            label9.TabIndex = 2;
-            label9.Text = "Temps (ms)";
-            // 
-            // numericUpDown7
-            // 
-            numericUpDown7.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            numericUpDown7.Location = new Point(141, 31);
-            numericUpDown7.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
-            numericUpDown7.Minimum = new decimal(new int[] { 100, 0, 0, 0 });
-            numericUpDown7.Name = "numericUpDown7";
-            numericUpDown7.Size = new Size(77, 29);
-            numericUpDown7.TabIndex = 1;
-            numericUpDown7.Value = new decimal(new int[] { 5000, 0, 0, 0 });
-            numericUpDown7.ValueChanged += numericUpDown7_ValueChanged;
-            // 
-            // label11
-            // 
-            label11.Anchor = AnchorStyles.Bottom;
-            label11.AutoSize = true;
-            label11.Location = new Point(342, 61);
-            label11.Name = "label11";
-            label11.Size = new Size(25, 22);
-            label11.TabIndex = 5;
-            label11.Text = "M";
+            label3.AutoSize = true;
+            label3.Location = new Point(7, 95);
+            label3.Name = "label3";
+            label3.Size = new Size(86, 22);
+            label3.TabIndex = 7;
+            label3.Text = "État actuel:";
             // 
             // label10
             // 
-            label10.Anchor = AnchorStyles.Bottom;
             label10.AutoSize = true;
-            label10.Location = new Point(344, 27);
+            label10.Location = new Point(6, 61);
             label10.Name = "label10";
-            label10.Size = new Size(23, 22);
-            label10.TabIndex = 5;
-            label10.Text = "N";
+            label10.Size = new Size(82, 22);
+            label10.TabIndex = 7;
+            label10.Text = "États total:";
             // 
-            // numericUpDown9
+            // numericUpDown4
             // 
-            numericUpDown9.Anchor = AnchorStyles.Bottom;
-            numericUpDown9.Location = new Point(373, 57);
-            numericUpDown9.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            numericUpDown9.Minimum = new decimal(new int[] { 99, 0, 0, int.MinValue });
-            numericUpDown9.Name = "numericUpDown9";
-            numericUpDown9.Size = new Size(67, 29);
-            numericUpDown9.TabIndex = 4;
-            numericUpDown9.Value = new decimal(new int[] { 100, 0, 0, 0 });
-            numericUpDown9.ValueChanged += numericUpDown9_ValueChanged;
+            numericUpDown4.Location = new Point(124, 61);
+            numericUpDown4.Margin = new Padding(6, 9, 6, 9);
+            numericUpDown4.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown4.Name = "numericUpDown4";
+            numericUpDown4.ReadOnly = true;
+            numericUpDown4.Size = new Size(68, 29);
+            numericUpDown4.TabIndex = 6;
+            numericUpDown4.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown4.ValueChanged += numericUpDown4_ValueChanged;
             // 
             // numericUpDown3
             // 
-            numericUpDown3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            numericUpDown3.Location = new Point(373, 112);
+            numericUpDown3.Location = new Point(124, 129);
+            numericUpDown3.Margin = new Padding(6, 9, 6, 9);
+            numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
-            numericUpDown3.Size = new Size(67, 29);
-            numericUpDown3.TabIndex = 4;
+            numericUpDown3.ReadOnly = true;
+            numericUpDown3.Size = new Size(68, 29);
+            numericUpDown3.TabIndex = 6;
+            numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.ValueChanged += numericUpDown3_ValueChanged;
             // 
             // numericUpDown8
             // 
-            numericUpDown8.Anchor = AnchorStyles.Bottom;
-            numericUpDown8.Location = new Point(373, 25);
+            numericUpDown8.Location = new Point(124, 93);
+            numericUpDown8.Margin = new Padding(6, 9, 6, 9);
             numericUpDown8.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown8.Name = "numericUpDown8";
-            numericUpDown8.Size = new Size(67, 29);
-            numericUpDown8.TabIndex = 4;
-            numericUpDown8.Value = new decimal(new int[] { 3, 0, 0, 0 });
+            numericUpDown8.ReadOnly = true;
+            numericUpDown8.Size = new Size(68, 29);
+            numericUpDown8.TabIndex = 6;
+            numericUpDown8.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown8.ValueChanged += numericUpDown8_ValueChanged;
-            // 
-            // radioButton3
-            // 
-            radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(7, 113);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(171, 26);
-            radioButton3.TabIndex = 3;
-            radioButton3.Text = "Charger personnalisé";
-            radioButton3.UseVisualStyleBackColor = true;
-            radioButton3.CheckedChanged += radioButton2_CheckedChanged;
-            // 
-            // radioButton2
-            // 
-            radioButton2.AutoSize = true;
-            radioButton2.Checked = true;
-            radioButton2.Location = new Point(7, 87);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(261, 26);
-            radioButton2.TabIndex = 3;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "Changer N fois par M % et revenir";
-            radioButton2.UseVisualStyleBackColor = true;
-            radioButton2.CheckedChanged += radioButton2_CheckedChanged;
-            // 
-            // radioButton1
-            // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(7, 56);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(82, 26);
-            radioButton1.TabIndex = 3;
-            radioButton1.Text = "Inverser";
-            radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            checkBox4.AutoSize = true;
-            checkBox4.Location = new Point(7, 26);
-            checkBox4.Name = "checkBox4";
-            checkBox4.Size = new Size(110, 26);
-            checkBox4.TabIndex = 0;
-            checkBox4.Text = "Changeable";
-            checkBox4.UseVisualStyleBackColor = true;
-            checkBox4.CheckedChanged += checkBox4_CheckedChanged;
-            // 
-            // arbreCouvrantToolStripMenuItem
-            // 
-            arbreCouvrantToolStripMenuItem.Name = "arbreCouvrantToolStripMenuItem";
-            arbreCouvrantToolStripMenuItem.Size = new Size(392, 26);
-            arbreCouvrantToolStripMenuItem.Text = "Arbre couvrant";
-            arbreCouvrantToolStripMenuItem.Click += arbreCouvrantToolStripMenuItem_Click;
             // 
             // Commencement
             // 
             AutoScaleDimensions = new SizeF(9F, 22F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1128, 581);
-            Controls.Add(groupBox6);
-            Controls.Add(groupBox5);
+            ClientSize = new Size(961, 550);
+            Controls.Add(dataGridView2);
             Controls.Add(groupBox4);
-            Controls.Add(groupBox2);
-            Controls.Add(groupBox1);
             Controls.Add(dataGridView1);
+            Controls.Add(groupBox2);
             Controls.Add(menuStrip1);
             Font = new Font("Palatino Linotype", 12F, FontStyle.Regular, GraphicsUnit.Point);
             MainMenuStrip = menuStrip1;
@@ -808,28 +525,19 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            groupBox5.ResumeLayout(false);
+            groupBox5.PerformLayout();
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown5).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6).EndInit();
-            groupBox5.ResumeLayout(false);
-            groupBox5.PerformLayout();
-            groupBox6.ResumeLayout(false);
-            groupBox6.PerformLayout();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
-            groupBox8.ResumeLayout(false);
-            groupBox8.PerformLayout();
-            groupBox7.ResumeLayout(false);
-            groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown11).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown7).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown9).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown8).EndInit();
             ResumeLayout(false);
@@ -837,8 +545,6 @@
         }
 
         #endregion
-        private NumericUpDown numericUpDown1;
-        private NumericUpDown numericUpDown2;
         private Label label1;
         private Label label2;
         private MenuStrip menuStrip1;
@@ -847,57 +553,38 @@
         private ToolStripMenuItem desCalculationsDeCheminsToolStripMenuItem;
         private ToolStripMenuItem chargerToolStripMenuItem;
         private ToolStripMenuItem sauvegarderToolStripMenuItem;
-        internal DataGridView dataGridView1;
-        public TextBox textBox1;
-        public TextBox textBox2;
         private GroupBox groupBox1;
-        private GroupBox groupBox2;
-        private Label label4;
-        private Label label3;
         private ToolStripMenuItem langueToolStripMenuItem;
         private ToolStripMenuItem françaisToolStripMenuItem;
         private ToolStripMenuItem russeToolStripMenuItem;
-        private Button button2;
         private ToolStripMenuItem sûrLauteurToolStripMenuItem;
+        private ToolStripMenuItem calculationsDeChemanPourBeaucoupPointsToolStripMenuItem;
+        private ToolStripMenuItem diagrammeDeVoronoїToolStripMenuItem;
+        private System.Windows.Forms.Timer timer1;
+        private ToolStripMenuItem arbreCouvrantToolStripMenuItem;
+        private ToolStripMenuItem environnementAvancésToolStripMenuItem;
+        internal NumericUpDown numericUpDown1;
+        internal NumericUpDown numericUpDown2;
+        private DataGridView dataGridView2;
+        private DataGridViewTextBoxColumn Column1;
+        private DataGridViewTextBoxColumn Column2;
+        private GroupBox groupBox5;
+        private CheckBox checkBox3;
         private CheckBox checkBox1;
+        private Button button2;
         private GroupBox groupBox4;
         private NumericUpDown numericUpDown5;
         private NumericUpDown numericUpDown6;
         private Label label7;
         private Label label8;
-        private GroupBox groupBox5;
-        private CheckBox checkBox3;
-        private ToolStripMenuItem calculationsDeChemanPourBeaucoupPointsToolStripMenuItem;
-        private ToolStripMenuItem diagrammeDeVoronoїToolStripMenuItem;
-        private System.Windows.Forms.Timer timer1;
-        private GroupBox groupBox6;
-        private Label label9;
-        private NumericUpDown numericUpDown7;
-        private Label label11;
+        internal DataGridView dataGridView1;
+        private GroupBox groupBox2;
+        internal CheckBox checkBox5;
+        private Label label3;
         private Label label10;
-        private GroupBox groupBox7;
-        private Label label13;
-        private GroupBox groupBox3;
-        private GroupBox groupBox8;
-        public TextBox textBox4;
-        public TextBox textBox3;
-        private Label label14;
-        private Label label6;
-        private Button button1;
-        private Button button3;
-        private Button button5;
-        private Button button4;
-        private CheckBox checkBox5;
-        internal CheckBox checkBox4;
-        internal RadioButton radioButton1;
-        internal RadioButton radioButton2;
+        internal NumericUpDown numericUpDown4;
         internal NumericUpDown numericUpDown8;
-        internal NumericUpDown numericUpDown9;
-        internal CheckBox checkBox2;
-        internal NumericUpDown numericUpDown11;
+        private Label label4;
         internal NumericUpDown numericUpDown3;
-        private Label label5;
-        internal RadioButton radioButton3;
-        private ToolStripMenuItem arbreCouvrantToolStripMenuItem;
     }
 }
