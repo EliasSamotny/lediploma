@@ -32,7 +32,7 @@ namespace l_application_pour_diploma
             dest %= own.transitions.Sum();
             if (own.transitions.Count > 1)
                 for (int i = 0; i < own.transitions.Count; i++){
-                    if (dest >= own.transitions[(i + shift) % own.transitions.Count]){
+                    if (dest > own.transitions[(i + shift) % own.transitions.Count]){
                         dest -= own.transitions[(i + shift) % own.transitions.Count];
                     }
                     else{

@@ -13,7 +13,8 @@ using System.Windows.Forms;
 using static l_application_pour_diploma.Classes;
 
 namespace l_application_pour_diploma{
-    public partial class Spann : Form{
+    public partial class Spann : Form
+    {
         List<Point[]> links;
         Commencement own;
         List<Point> waved;
@@ -29,7 +30,8 @@ namespace l_application_pour_diploma{
         internal List<Point> curr_points;
         private int size_rayon;
 
-        public Spann(Commencement o){
+        public Spann(Commencement o)
+        {
             InitializeComponent();
             own = o;
             curr_points = new();
@@ -37,18 +39,20 @@ namespace l_application_pour_diploma{
             comboBox1.SelectedIndex = 2;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
         }
-        internal void refr(bool nouv){
-            if (nouv) {
+        internal void refr(bool nouv)
+        {
+            if (nouv)
+            {
                 waved = new();
                 waves = new();
-                wavessum = new decimal[(int)own.numericUpDown1.Value,(int)own.numericUpDown2.Value];
+                wavessum = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
                 links = new();
                 List<decimal[,]> destins;
                 List<Point[,]> previos;
                 owingpoints = new();
-                
+
             }
-            
+
             Bitmap bmp = new(pictureBox1.Width, pictureBox1.Height);
             Graphics carte = Graphics.FromImage(bmp);
             d = Math.Min(pictureBox1.Width, pictureBox1.Height) / Math.Max((int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value);
@@ -62,15 +66,19 @@ namespace l_application_pour_diploma{
                 }
 
             }
-            if (dataGridView1.Rows.Count > 0){
-                
-                for (int i = 0; i < dataGridView1.RowCount; i++){
+            if (dataGridView1.Rows.Count > 0)
+            {
+
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
                     int x = Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) - 1;
                     int y = Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) - 1;
                     carte.FillRectangle(new SolidBrush(Color.Brown), y * d + 1, x * d + 1, d - 1, d - 1);
                 }
-                if (!nouv && links.Count > 0) {//to redraw links 
-                    foreach (var new_link in links){
+                if (!nouv && links.Count > 0)
+                {//to redraw links 
+                    foreach (var new_link in links)
+                    {
                         Point[] p1i = new Point[] {
                             new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
                             new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
@@ -106,38 +114,46 @@ namespace l_application_pour_diploma{
             pictureBox1.Image = bmp;
 
         }
-        public void build_tree_finis() {
+        public void build_tree_finis()
+        {
             while (waved.Count < dataGridView1.RowCount)
                 build_tree_step();
         }
-        public void build_tree_step(){
-            
-            
-            if (dataGridView1.Rows.Count > 0){
+        public void build_tree_step()
+        {
+
+
+            if (dataGridView1.Rows.Count > 0)
+            {
                 Bitmap bmp = new(pictureBox1.Image);
                 Graphics carte = Graphics.FromImage(bmp);
                 d = Math.Min(pictureBox1.Width, pictureBox1.Height) / Math.Max((int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value);
-                if (waved.Count == 0) {
-                    Point point = new(Convert.ToInt32(dataGridView1.Rows[0].Cells[0].Value)-1, Convert.ToInt32(dataGridView1.Rows[0].Cells[1].Value)-1);
+                if (waved.Count == 0)
+                {
+                    Point point = new(Convert.ToInt32(dataGridView1.Rows[0].Cells[0].Value) - 1, Convert.ToInt32(dataGridView1.Rows[0].Cells[1].Value) - 1);
                     waved.Add(point);
                     var resultwaving = waving_in_domain_from_point(point);
                     var wave = resultwaving.destinl;
                     waves.Add(wave);
-                    Parallel.For(0, wavessum.GetLength(0), i => {
-                        for (int j = 0; j < wavessum.GetLength(1); j++){
+                    Parallel.For(0, wavessum.GetLength(0), i =>
+                    {
+                        for (int j = 0; j < wavessum.GetLength(1); j++)
+                        {
                             wavessum[i, j] = wave[i, j];
                         }
-                    });                    
+                    });
                     int x = Convert.ToInt32(dataGridView1.Rows[0].Cells[0].Value) - 1;
                     int y = Convert.ToInt32(dataGridView1.Rows[0].Cells[1].Value) - 1;
                     carte.FillRectangle(new SolidBrush(Color.Chocolate), y * d + 1, x * d + 1, d - 1, d - 1);
                 }
-                else{
+                else
+                {
                     List<Point> points = dataGridView1.Rows.Cast<DataGridViewRow>()
-                                  .Select(row => new Point(Convert.ToInt32(row.Cells[0].Value) - 1,Convert.ToInt32(row.Cells[1].Value) - 1))
+                                  .Select(row => new Point(Convert.ToInt32(row.Cells[0].Value) - 1, Convert.ToInt32(row.Cells[1].Value) - 1))
                                   .ToList();
                     List<Point> unvisited = points.Except(waved).ToList();
-                    if (unvisited.Count > 0) {
+                    if (unvisited.Count > 0)
+                    {
                         Point next = unvisited.Where(p => wavessum[p.X, p.Y] > 0)
                                 .OrderBy(p => wavessum[p.X, p.Y])
                                 .DefaultIfEmpty(unvisited[0])
@@ -147,17 +163,20 @@ namespace l_application_pour_diploma{
                         var wave = resultwaving.destinl;
                         var prev = resultwaving.previosl;
                         waves.Add(wave);
-                        Parallel.For(0, wavessum.GetLength(0), i => {
-                            for (int j = 0; j < wavessum.GetLength(1); j++){
+                        Parallel.For(0, wavessum.GetLength(0), i =>
+                        {
+                            for (int j = 0; j < wavessum.GetLength(1); j++)
+                            {
                                 wavessum[i, j] += wave[i, j];
                             }
 
                         });
-                        Point[] new_link = new Point [2];
+                        Point[] new_link = new Point[2];
 
-                        decimal min = waves[0][next.X,next.Y];
+                        decimal min = waves[0][next.X, next.Y];
                         Point neartonext = waved[0];
-                        for (int i = 1; i < waves.Count; i++) {
+                        for (int i = 1; i < waves.Count; i++)
+                        {
                             if (min > waves[i][next.X, next.Y] && waves[i][next.X, next.Y] > 0)
                             {
                                 min = waves[i][next.X, next.Y];
@@ -169,14 +188,16 @@ namespace l_application_pour_diploma{
                         new_link[0] = neartonext;
                         new_link[1] = next;
                         links.Add(new_link);
-                        List<Point> route = new List<Point>{ neartonext };
-                        while (route[^1] != next){
+                        List<Point> route = new List<Point> { neartonext };
+                        while (route[^1] != next)
+                        {
                             int xl = route[^1].X, yl = route[^1].Y;
-                            route.Add(prev[xl,yl]);
+                            route.Add(prev[xl, yl]);
 
                         }
-                        
-                        for (int i = 0; i < route.Count - 1; i++) {
+
+                        for (int i = 0; i < route.Count - 1; i++)
+                        {
                             Point[] p1i = new Point[] {
                             //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
                             //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
@@ -199,11 +220,12 @@ namespace l_application_pour_diploma{
                             new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 1 + d / 2),
                             new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 2 + d / 2)
                         };
-                            for (int j = 0; j < 4/*p1i.Length*/; j++){                                
+                            for (int j = 0; j < 4/*p1i.Length*/; j++)
+                            {
                                 carte.DrawLine(new Pen(Color.Black), p1i[j], p2i[j]);
                             }
                         }
-                        
+
                     }
 
 
@@ -240,7 +262,8 @@ namespace l_application_pour_diploma{
             }
             refr(true);
         }
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e){
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
             int x = e.Y;
             int y = e.X;
             numericUpDown3.Value = Math.Min(x / d + 1, (int)own.numericUpDown1.Value);
@@ -267,7 +290,8 @@ namespace l_application_pour_diploma{
                 dataGridView1.Rows.Add(new object[] { x, y });
             refr(true);
         }
-        private (decimal[,] destinl, Point[,] previosl) waving_in_domain_from_point(Point commenc){
+        private (decimal[,] destinl, Point[,] previosl) waving_in_domain_from_point(Point commenc)
+        {
             decimal[,] destinl = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
             Point[,] previosl = new Point[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
             int xlc = commenc.X; int xlc1 = xlc;
@@ -280,7 +304,7 @@ namespace l_application_pour_diploma{
             {
                 for (int j = 0; j < (int)own.numericUpDown2.Value; j++)
                 {
-                    if (own.source.All(el => el[i,j] > 0 ))
+                    if (own.source.All(el => el[i, j] > 0))
                     {
                         accessl[i, j] = true;
                         destinl[i, j] = -2;
@@ -352,12 +376,14 @@ namespace l_application_pour_diploma{
 
             return (destinl, previosl);
         }
-        private void calculcell(ref bool[,] access, ref decimal[,] dest, ref Point[,] prev, int xc, int yc, int xl, int yl){
+        private void calculcell(ref bool[,] access, ref decimal[,] dest, ref Point[,] prev, int xc, int yc, int xl, int yl)
+        {
             if (xc >= 0 && yc >= 0 && xc < (int)own.numericUpDown1.Value && yc < (int)own.numericUpDown2.Value && access[xc, yc])
             {//if consists
                 int currstage = currst(dest[xl, yl]);
                 decimal cur = Convert.ToDecimal((Convert.ToDouble(own.source[currstage][xc, yc]) + Convert.ToDouble(own.source[currstage][xl, yl])) / 2 * Math.Sqrt(Math.Pow(xc - xl, 2) + Math.Pow(yc - yl, 2)) + Convert.ToDouble(dest[xl, yl]));
-                if (currstage != currst(cur) && own.source.Count > 1){
+                if (currstage != currst(cur) && own.source.Count > 1)
+                {
                     int next = (currstage + 1) % own.source.Count;
                     cur = Convert.ToDecimal((Convert.ToDouble(own.source[next][xc, yc]) + Convert.ToDouble(own.source[next][xl, yl])) / 2 * Math.Sqrt(Math.Pow(xc - xl, 2) + Math.Pow(yc - yl, 2)) + Convert.ToDouble(dest[xl, yl]));
                 }
@@ -378,28 +404,35 @@ namespace l_application_pour_diploma{
                 }
             }
         }
-        private int currst(decimal dest){
+        private int currst(decimal dest)
+        {
             int shift = own.stateShift;
             //own.transitions[]
             int currstage = 0;
             dest %= own.transitions.Sum();
             if (own.transitions.Count > 1)
-                for (int i = 0; i < own.transitions.Count; i++){
-                    if (dest >= own.transitions[(i + shift) % own.transitions.Count]){
+                for (int i = 0; i < own.transitions.Count; i++)
+                {
+                    if (dest >= own.transitions[(i + shift) % own.transitions.Count])
+                    {
                         dest -= own.transitions[(i + shift) % own.transitions.Count];
                     }
-                    else{
+                    else
+                    {
                         currstage = (i + shift) % own.transitions.Count;
                         break;
                     }
                 }
             return (currstage) % own.source.Count;
         }
-        internal List<Point> get_frontiers(List<Point> set){
+        internal List<Point> get_frontiers(List<Point> set)
+        {
             List<Point> frontl = new();
             object lock_front = new();
-            Parallel.ForEach(set, el =>{
-                if (if_front(set, el)){
+            Parallel.ForEach(set, el =>
+            {
+                if (if_front(set, el))
+                {
                     lock (lock_front)
                         frontl.Add(el);
                 }
@@ -423,12 +456,16 @@ namespace l_application_pour_diploma{
         private void button4_Click(object sender, EventArgs e) { build_tree_step(); }
 
         private void button3_Click(object sender, EventArgs e) { build_tree_finis(); }
-        internal void ToRusse()
-        {
+        internal void ToRusse(){
             Text = "Остовное дерево";
             groupBox2.Text = "Кол-во направлений поиска";
+
+            button1.Text = "Задать начальную точку";
+            button3.Text = "Достроить дерево";
+            button4.Text = "Шаговое";
             button5.Text = "Удалить";
             button6.Text = "Добавить";
+
             comboBox1.Items[2] = "III радиус (32 направления)";
             comboBox1.Items[1] = "II радиус (16 направления)";
             comboBox1.Items[0] = "I радиус (8 направлений)";
@@ -436,12 +473,12 @@ namespace l_application_pour_diploma{
             Column1.HeaderText = "Строка";
             Column2.HeaderText = "Стоблец";
         }
-        internal void ToFrancais()
-        {
+        internal void ToFrancais(){
             Text = "Un arbre couvrant";
 
+            button1.Text = "Définir par défaut";
             button3.Text = "Finir les calculations";
-            button4.Text = "Le pas";
+            button4.Text = "Un pas";
             button5.Text = "Suppremer";
             button6.Text = "Aujouter";
 
@@ -458,6 +495,24 @@ namespace l_application_pour_diploma{
             if (comboBox1.SelectedIndex == 0) size_rayon = 8;
             else if (comboBox1.SelectedIndex == 1) size_rayon = 16;
             else size_rayon = 32;
+        }
+
+        private void button1_Click(object sender, EventArgs e){
+            if (dataGridView1.SelectedRows.Count > 0){
+                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+                // Remove the selected row
+                dataGridView1.Rows.RemoveAt(selectedRow.Index);
+                // Insert the selected row at the beginning (index 0)
+                dataGridView1.Rows.Insert(0, selectedRow);
+            }
+            else if (dataGridView1.SelectedCells.Count > 0){
+                DataGridViewRow selectedRow = dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex];
+                // Remove the selected row
+                dataGridView1.Rows.RemoveAt(selectedRow.Index);
+                // Insert the selected row at the beginning (index 0)
+                dataGridView1.Rows.Insert(0, selectedRow);
+            }
+            refr(true);
         }
     }
 }

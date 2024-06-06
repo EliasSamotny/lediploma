@@ -41,6 +41,7 @@
             comboBox1 = new ComboBox();
             button3 = new Button();
             button4 = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
@@ -129,7 +130,7 @@
             // button5
             // 
             button5.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button5.Location = new Point(152, 305);
+            button5.Location = new Point(152, 270);
             button5.Name = "button5";
             button5.Size = new Size(140, 29);
             button5.TabIndex = 21;
@@ -140,7 +141,7 @@
             // button6
             // 
             button6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button6.Location = new Point(12, 305);
+            button6.Location = new Point(12, 270);
             button6.Name = "button6";
             button6.Size = new Size(134, 29);
             button6.TabIndex = 20;
@@ -171,7 +172,7 @@
             // button3
             // 
             button3.Anchor = AnchorStyles.Left;
-            button3.Location = new Point(130, 270);
+            button3.Location = new Point(130, 235);
             button3.Name = "button3";
             button3.Size = new Size(162, 29);
             button3.TabIndex = 23;
@@ -181,13 +182,23 @@
             // 
             // button4
             // 
-            button4.Location = new Point(12, 270);
+            button4.Location = new Point(12, 235);
             button4.Name = "button4";
             button4.Size = new Size(112, 29);
             button4.TabIndex = 24;
-            button4.Text = "Recomputer";
+            button4.Text = "Un pas";
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(12, 305);
+            button1.Name = "button1";
+            button1.Size = new Size(280, 29);
+            button1.TabIndex = 24;
+            button1.Text = "Définir par défaut";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // Spann
             // 
@@ -195,6 +206,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1050, 648);
             Controls.Add(button3);
+            Controls.Add(button1);
             Controls.Add(button4);
             Controls.Add(groupBox2);
             Controls.Add(button5);
@@ -231,5 +243,6 @@
         private ComboBox comboBox1;
         private Button button3;
         private Button button4;
+        private Button button1;
     }
 }
