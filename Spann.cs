@@ -45,6 +45,7 @@ namespace l_application_pour_diploma{
             {
                 waved = new();
                 waves = new();
+                label1.Text = Convert.ToString(0);
                 wavessum = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
                 links = new();
                 List<decimal[,]> destins;
@@ -61,7 +62,7 @@ namespace l_application_pour_diploma{
                 for (int j = 0; j < (int)own.numericUpDown2.Value; j++)
                 {
                     carte.DrawRectangle(new Pen(Color.Black), j * d, i * d, d, d);
-                    carte.FillRectangle(new SolidBrush(Color.White), j * d + 1, i * d + 1, d - 1, d - 1);
+                    carte.FillRectangle(new SolidBrush(own.dataGridView1.Rows[i].Cells[j].Style.BackColor), j * d + 1, i * d + 1, d - 1, d - 1);
                     //carte.FillRectangle(new SolidBrush(own.dataGridView1.Rows[i].Cells[j].Style.BackColor), j * d + 1, i * d + 1, d - 1, d - 1);
                 }
 
@@ -187,6 +188,7 @@ namespace l_application_pour_diploma{
 
                         new_link[0] = neartonext;
                         new_link[1] = next;
+                        label1.Text = Convert.ToString(Convert.ToDecimal(label1.Text) + min);
                         links.Add(new_link);
                         List<Point> route = new List<Point> { neartonext };
                         while (route[^1] != next)

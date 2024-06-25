@@ -144,7 +144,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, desFenêtresToolStripMenuItem, langueToolStripMenuItem, sûrLauteurToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(961, 30);
+            menuStrip1.Size = new Size(969, 30);
             menuStrip1.TabIndex = 5;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -264,7 +264,7 @@
             dataGridView2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView2.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2 });
-            dataGridView2.Location = new Point(701, 35);
+            dataGridView2.Location = new Point(709, 35);
             dataGridView2.MultiSelect = false;
             dataGridView2.Name = "dataGridView2";
             dataGridView2.RowHeadersWidth = 21;
@@ -409,7 +409,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(937, 250);
+            dataGridView1.Size = new Size(945, 304);
             dataGridView1.TabIndex = 18;
             dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
             // 
@@ -510,7 +510,7 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 22F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(961, 550);
+            ClientSize = new Size(969, 604);
             Controls.Add(dataGridView2);
             Controls.Add(groupBox4);
             Controls.Add(dataGridView1);

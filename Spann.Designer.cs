@@ -42,12 +42,15 @@
             button3 = new Button();
             button4 = new Button();
             button1 = new Button();
+            groupBox1 = new GroupBox();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox2.SuspendLayout();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox1
@@ -66,9 +69,9 @@
             // 
             groupBox3.Controls.Add(numericUpDown3);
             groupBox3.Controls.Add(numericUpDown4);
-            groupBox3.Location = new Point(18, 74);
+            groupBox3.Location = new Point(164, 74);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(153, 56);
+            groupBox3.Size = new Size(128, 56);
             groupBox3.TabIndex = 17;
             groupBox3.TabStop = false;
             groupBox3.Text = "Le point actuel";
@@ -81,19 +84,19 @@
             numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.ReadOnly = true;
-            numericUpDown3.Size = new Size(61, 29);
+            numericUpDown3.Size = new Size(38, 29);
             numericUpDown3.TabIndex = 1;
             numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // numericUpDown4
             // 
-            numericUpDown4.Location = new Point(81, 22);
+            numericUpDown4.Location = new Point(77, 21);
             numericUpDown4.Margin = new Padding(8, 13, 8, 13);
             numericUpDown4.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDown4.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown4.Name = "numericUpDown4";
             numericUpDown4.ReadOnly = true;
-            numericUpDown4.Size = new Size(61, 29);
+            numericUpDown4.Size = new Size(40, 29);
             numericUpDown4.TabIndex = 1;
             numericUpDown4.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
@@ -200,11 +203,31 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(label1);
+            groupBox1.Location = new Point(18, 69);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(140, 55);
+            groupBox1.TabIndex = 25;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Length d'arbre";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(6, 25);
+            label1.Name = "label1";
+            label1.Size = new Size(18, 22);
+            label1.TabIndex = 0;
+            label1.Text = "0";
+            // 
             // Spann
             // 
             AutoScaleDimensions = new SizeF(9F, 22F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1050, 648);
+            Controls.Add(groupBox1);
             Controls.Add(button3);
             Controls.Add(button1);
             Controls.Add(button4);
@@ -225,6 +248,8 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown4).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             groupBox2.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -244,5 +269,7 @@
         private Button button3;
         private Button button4;
         private Button button1;
+        private GroupBox groupBox1;
+        private Label label1;
     }
 }
