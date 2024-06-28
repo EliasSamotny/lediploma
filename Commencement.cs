@@ -25,6 +25,7 @@ namespace l_application_pour_diploma {
         private static readonly object log_locker = new object();
         string logFilePath = "C:\\Users\\Elias\\Desktop\\lediploma\\log.log";
         internal int stateShift;
+        private bool loaded;
         public void insert_log(string log_mess, Form caller)
         {
             if (global_log_allowed)
@@ -73,8 +74,7 @@ namespace l_application_pour_diploma {
             insert_log("Form loaded.", this);
             dataGridView1.AutoResizeColumns();
         }
-        private void set_unites()
-        {
+        private void set_unites(){
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
             source[(int)numericUpDown8.Value - 1] = new decimal[r, c];
             for (int i = 0; i < dataGridView1.RowCount; i++)
@@ -92,43 +92,80 @@ namespace l_application_pour_diploma {
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
         }
-        private void set_mount()
-        {
+        private void set_mount(){
             int r = (int)numericUpDown1.Value, c = (int)numericUpDown2.Value;
             source = new() { new decimal[r, c] };
-            for (int i = 0; i < r; i++)
-            {
-                for (int j = 0; j < c; j++)
-                {
-                    try
-                    {
+            for (int i = 0; i < r; i++){
+                for (int j = 0; j < c; j++) {
+                    try{
                         source[0][i, j] = mountagne(i, j, r, c);
                     }
-                    catch (Exception)
-                    {
+                    catch (Exception){
                         source[0][i, j] = -1;
                     }
                 }
             }
         }
-        private decimal mountagne(int i, int j, int r, int c)
-        {
+        private decimal mountagne(int i, int j, int r, int c){
             double icoef = 0.5;
             double jcoef = 0.5;
             return 1 / (decimal)(Math.Pow((i - r / 2) * icoef, 2) / 2 + Math.Pow((j - c / 2) * jcoef, 2) / 2);
         }
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e) { }
-        internal void refreshdata()
-        {
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) {
+            if (source[0].GetLength(0) < (int)numericUpDown1.Value && !loaded)
+                for (int k = 0; k < source.Count; k++){
+                    decimal[,] newArray = new decimal[(int)numericUpDown1.Value, source[0].GetLength(1)];
+
+                    // Copy the values from the original array to the new array
+                    //Array.Copy(source[k], 0, newArray, 0, source[k].Length);
+
+                    for (int i = 0; i < source[k].GetLength(0); i++){
+                        for (int j = 0; j < source[k].GetLength(1); j++){
+                            newArray[i, j] = source[k][i, j];
+                        }
+                    }
+                    for (int i = source[k].GetLength(0); i < (int)numericUpDown1.Value; i++){
+                        for (int j = 0; j < source[k].GetLength(1); j++){
+                            newArray[i, j] = source[k][source[k].GetLength(0) - 1, j];
+                        }
+                    }
+                    //Array.Copy(newArray, 0, source[k], 0, newArray.Length);
+                    source[k] = newArray;
+                    refreshdata();
+                }
+            else if (!loaded){
+                for (int k = 0; k < source.Count; k++){
+                    decimal[,] newArray = new decimal[(int)numericUpDown1.Value, source[0].GetLength(1)];
+
+                    // Copy the values from the original array to the new array
+                    //Array.Copy(source[k], 0, newArray, 0, source[k].Length);
+                    for (int i = 0; i < newArray.GetLength(0); i++){
+                        for (int j = 0; j < source[k].GetLength(1); j++){
+                            newArray[i, j] = source[k][i, j];
+                        }
+                    }
+                    /*for (int i = source[k].GetLength(0); i < (int)numericUpDown1.Value; i++){
+                        for (int j = 0; j < source[k].GetLength(1); j++)
+                        {
+                            newArray[i, j] = source[k][i, j];
+                        }
+                    }*/
+
+                    //Array.Copy(newArray, 0, source[k], 0, newArray.Length);
+                    source[k] = newArray;
+                }
+                refreshdata();
+            }
+            
+        }
+        internal void refreshdata(){
             dataGridView1.RowCount = (int)numericUpDown1.Value;
             dataGridView1.ColumnCount = (int)numericUpDown2.Value;
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
 
             insert_log("Refreshing forms...", this);
-            for (int i = 0; i < r; i++)
-            {
-                for (int j = 0; j < c; j++)
-                {
+            for (int i = 0; i < r; i++){
+                for (int j = 0; j < c; j++){
                     dataGridView1.Rows[i].Cells[j].Value = source[Convert.ToInt32(numericUpDown8.Value) - 1][i, j];
                 }
             }
@@ -137,75 +174,57 @@ namespace l_application_pour_diploma {
             span?.refr(true);
             insert_log("Forms refreshed.", this);
         }
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e) { }
-        private void numericUpDown1_KeyPress(object sender, KeyPressEventArgs e) { }
-        private void numericUpDown1_KeyUp(object sender, KeyEventArgs e){
-            if (source[0].GetLength(0) < (int)numericUpDown1.Value)
-                for (int k = 0; k < source.Count; k++){
-                    decimal[,] newArray = new decimal[(int)numericUpDown1.Value, source[0].GetLength(1)];
-
-                    // Copy the values from the original array to the new array
-                    Array.Copy(source[k], 0, newArray, 0, source[k].Length);
-                    for (int i = source[k].GetLength(0); i < (int)numericUpDown1.Value; i++) {
-                        for (int j = 0; j < source[k].GetLength(1); j++){
-                            newArray[i,j] = source[k][source[k].GetLength(0)-1,j];
-                        }
-                    }
-                    Array.Copy(newArray, 0, source[k], 0, newArray.Length);
-                }
-            else {
-                for (int k = 0; k < source.Count; k++){
-                    decimal[,] newArray = new decimal[(int)numericUpDown1.Value, source[0].GetLength(1)];
-
-                    // Copy the values from the original array to the new array
-                    Array.Copy(source[k], 0, newArray, 0, source[k].Length);
-                    for (int i = source[k].GetLength(0); i < (int)numericUpDown1.Value; i++){
-                        for (int j = 0; j < source[k].GetLength(1); j++){
-                            newArray[i, j] = source[k][i, j];
-                        }
-                    }
-                    Array.Copy(newArray, 0, source[k], 0, newArray.Length);
-                }
-
-            }
-            refreshdata();
-        }
-        private void numericUpDown2_KeyPress(object sender, KeyPressEventArgs e) { }
-        private void numericUpDown2_KeyUp(object sender, KeyEventArgs e) {
-            if (source[0].GetLength(1) < (int)numericUpDown2.Value){
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e) {
+            if (source[0].GetLength(1) < (int)numericUpDown2.Value && !loaded){
                 for (int k = 0; k < source.Count; k++){
                     decimal[,] newArray = new decimal[source[0].GetLength(0), (int)numericUpDown2.Value];
 
                     // Copy the values from the original array to the new array
-                    Array.Copy(source[k], 0, newArray, 0, source[k].Length);
-                    for (int j = source[k].GetLength(1); j < (int)numericUpDown2.Value; j++){
-                        for (int i = 0; i < source[k].GetLength(1); i++){
-                            newArray[i, j] = source[k][i, source[k].GetLength(1)];
-                        }
-                    }
-                    Array.Copy(newArray, 0, source[k], 0, newArray.Length);
-                }
-
-            }
-            else{
-                for (int k = 0; k < source.Count; k++){
-                    decimal[,] newArray = new decimal[source[0].GetLength(0), (int)numericUpDown2.Value];
-
-                    // Copy the values from the original array to the new array
-                    Array.Copy(source[k], 0, newArray, 0, source[k].Length);
-                    for (int i = source[k].GetLength(0); i < (int)numericUpDown1.Value; i++)
-                    {
+                    //Array.Copy(source[k], 0, newArray, 0, source[k].Length);
+                    for (int i = 0; i < source[k].GetLength(0); i++){
                         for (int j = 0; j < source[k].GetLength(1); j++)
                         {
                             newArray[i, j] = source[k][i, j];
                         }
                     }
-                    Array.Copy(newArray, 0, source[k], 0, newArray.Length);
+                    for (int j = source[k].GetLength(1); j < (int)numericUpDown2.Value; j++){
+                        for (int i = 0; i < source[k].GetLength(0); i++){
+                            newArray[i, j] = source[k][i, source[k].GetLength(1) - 1];
+                        }
+                    }
+                    //Array.Copy(newArray, 0, source[k], 0, newArray.Length);
+                    source[k] = newArray;
                 }
-
+                refreshdata();
             }
+            else if (!loaded){
+                for (int k = 0; k < source.Count; k++){
+                    decimal[,] newArray = new decimal[source[0].GetLength(0), (int)numericUpDown2.Value];
 
-            refreshdata(); }
+                    // Copy the values from the original array to the new array
+                    //Array.Copy(source[k], 0, newArray, 0, source[k].Length);
+                    /*for (int i = source[k].GetLength(0); i < (int)numericUpDown1.Value; i++){
+                        for (int j = 0; j < source[k].GetLength(1); j++){
+                            newArray[i, j] = source[k][i, j];
+                        }
+                    }*/
+                    for (int i = 0; i < source[k].GetLength(0); i++)
+                    {
+                        for (int j = 0; j < newArray.GetLength(1); j++)
+                        {
+                            newArray[i, j] = source[k][i, j];
+                        }
+                    }
+                    //Array.Copy(newArray, 0, source[k], 0, newArray.Length);
+                    source[k] = newArray;
+                }
+                refreshdata();
+            }
+        }
+        private void numericUpDown1_KeyPress(object sender, KeyPressEventArgs e) { }
+        private void numericUpDown1_KeyUp(object sender, KeyEventArgs e){ }
+        private void numericUpDown2_KeyPress(object sender, KeyPressEventArgs e) { }
+        private void numericUpDown2_KeyUp(object sender, KeyEventArgs e) { }
         private void desCalculationsDeCheminsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (trouv == null)
@@ -224,8 +243,7 @@ namespace l_application_pour_diploma {
             }
             trouv.Focus();
         }
-        private void sauvegarderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void sauvegarderToolStripMenuItem_Click(object sender, EventArgs e){
             insert_log("Choosing file for saving media...", this);
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "Tableur | *.xlsx| Tableur | *.xls| All files | *.*";
@@ -287,22 +305,20 @@ namespace l_application_pour_diploma {
             }
             return colLetter;
         }
-        private void chargerToolStripMenuItem_Click(object sender, EventArgs e)
-        {            
+        private void chargerToolStripMenuItem_Click(object sender, EventArgs e){
+            loaded = true;
             insert_log("Choosing file for loading media...", this);
             OpenFileDialog file = new OpenFileDialog(); //open dialog to choose file
             file.Filter = "Tableur | *.xlsx| Tableur | *.xls| All files | *.*";
             file.Title = "Charger la table";
             string filePath = string.Empty;
             string fileExt = string.Empty;
-            if (file.ShowDialog() == DialogResult.OK)
-            {
+            if (file.ShowDialog() == DialogResult.OK){
                 insert_log("Loading media...", this);
                 
                 filePath = file.FileName; //get the path of the file
                 fileExt = Path.GetExtension(filePath); //get the file extension
-                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0)
-                {
+                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0) {
                     //try{
                     source = new List<decimal[,]>();
                     transitions = new List<decimal>();
@@ -313,22 +329,19 @@ namespace l_application_pour_diploma {
                     ex._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
                     ex.Range xlRange = xlWorksheet.UsedRange;
                     int a = 1, b = 1;
-                    while (true)
-                    {
+                    while (true){
                         if (xlWorksheet.Cells[a + 1, b + 1].Value != null) { a++; b++; }
                         else if (xlWorksheet.Cells[a + 1, b].Value != null) a++;
                         else if (xlWorksheet.Cells[a, b + 1].Value != null) b++;
                         else break;
                     }
 
-                    for (int k = 1; k < xlWorkbook.Sheets.Count; k++)
-                    {
+                    for (int k = 1; k < xlWorkbook.Sheets.Count; k++){
                         xlWorksheet = xlWorkbook.Sheets[k];
                         xlRange = xlWorksheet.UsedRange;
                         source.Add(new decimal[a - 1, b - 1]);
                         for (int i = 0; i < a - 1; i++)
-                            for (int j = 0; j < b - 1; j++)
-                            {
+                            for (int j = 0; j < b - 1; j++){
                                 //xlRange = xlWorksheet.UsedRange;
                                 var currval = Convert.ToDecimal(xlWorksheet.Cells[i + 2, j + 2].Value);
                                 source[k - 1][i, j] = currval;
@@ -342,8 +355,9 @@ namespace l_application_pour_diploma {
                     }
                     xlWorksheet = xlWorkbook.Sheets[xlWorkbook.Sheets.Count];
                     xlRange = xlWorksheet.UsedRange;
-                    for (int k = 0; k < xlWorkbook.Sheets.Count - 1; k++)
-                    {                        
+                    transitions = new();
+                    dataGridView2.RowCount = 0;
+                    for (int k = 0; k < xlWorkbook.Sheets.Count - 2; k++) {                        
                         var valueloc = Convert.ToDecimal(xlWorksheet.Cells[k + 2, 2].Value);
                         transitions.Add(valueloc);
                         dataGridView2.Rows.Add(new object[] { transitions[k], k + 1 });
@@ -351,10 +365,9 @@ namespace l_application_pour_diploma {
                     }
                     numericUpDown1.Value = a - 1;
                     numericUpDown2.Value = b - 1;
-
-
-
-                    numericUpDown8.Value = 1;
+                    dataGridView1.RowCount = a - 2;
+                    dataGridView1.ColumnCount = b - 2;
+                    //numericUpDown8.Value = 1;
                     numericUpDown4.Value = source.Count;
                     numericUpDown3.Value = 1;
 
@@ -382,7 +395,7 @@ namespace l_application_pour_diploma {
                     MessageBox.Show("Please choose .xls or .xlsx file only.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
+            loaded = false;
         }
         private void sûrLauteurToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -546,7 +559,7 @@ namespace l_application_pour_diploma {
         private void dataGridView2_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 0) { transitions[e.RowIndex] = Convert.ToDecimal(dataGridView2.SelectedCells[0].Value); }
-            else if (e.ColumnIndex == 1) { }
+            //else if (e.ColumnIndex == 1) { }
         }
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
@@ -610,95 +623,24 @@ namespace l_application_pour_diploma {
         }
 
         private void button2_Click(object sender, EventArgs e) { set_unites(); }
-        private void cascade_update(bool changed)
-        {
+        private void cascade_update(bool changed){
             vran?.refr(changed);
             trouv?.refresh(changed);
-
-
         }
-        private void numericUpDown8_ValueChanged(object sender, EventArgs e)
-        {
-            if (numericUpDown4.Value >= numericUpDown8.Value)
-            {
+        private void numericUpDown8_ValueChanged(object sender, EventArgs e){
+            if (numericUpDown4.Value >= numericUpDown8.Value){
                 for (int i = 0; i < dataGridView1.RowCount; i++)
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++){
                         if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
                             dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
                         else dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
                     }
             }
-            else numericUpDown8.Value = numericUpDown1.Value;
+            else numericUpDown8.Value = numericUpDown4.Value;
         }
 
-        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            bool curr = false;
-            int currstate = (int)numericUpDown8.Value - 1;
-            if (dataGridView1.SelectedCells[0].Value != null)
-            {
-                string str = dataGridView1.SelectedCells[0].Value.ToString();
-                if ((str[0] >= '0' && str[0] <= '9' || str[0] == '-') && str.Length > 0)
-                {
-                    curr = true;
-                    for (int i = 1; i < str.Length; i++)
-                        if ((str[i] < '0' || str[i] > '9') && str[i] != ',')
-                        {
-                            curr = false;
-                            break;
-                        }
-                }
-                if (curr)
-                {
-                    source[currstate][e.RowIndex, e.ColumnIndex] = Convert.ToDecimal(dataGridView1.SelectedCells[0].Value);
-                    if (checkBox3.Checked) fillcolors();
-                    trouv?.refresh(true);
-                    vran?.refr(true);
-                    span?.refr(true);
-
-                }
-                else
-                {
-                    MessageBox.Show("Invalid number");
-                    //if (own.trouv != null) own.trouv.clearcells();
-                    dataGridView1.SelectedCells[0].Value = -1;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Invalid number");
-                //if (own.trouv != null) own.trouv.clearcells();
-                dataGridView1.SelectedCells[0].Value = -1;
-            }
-        }
-
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
-        {
-            if (numericUpDown4.Value >= numericUpDown8.Value)
-            {
-                for (int i = 0; i < dataGridView1.RowCount; i++)
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
-                    {
-                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
-                            dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
-                        else dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
-                    }
-
-            }
-            else numericUpDown3.Value = numericUpDown1.Value;
-            stateShift = (int)numericUpDown3.Value;
-            if (checkBox5.Checked) refreshdata();
-        }
-
-        private void numericUpDown4_KeyUp(object sender, KeyEventArgs e){
-            if (source.Count > (int)numericUpDown4.Value)
-            {
+        private void numericUpDown4_ValueChanged(object sender, EventArgs e){
+            if (source.Count > (int)numericUpDown4.Value){
                 source.RemoveAt(source.Count - 1);
                 dataGridView2.Rows.RemoveAt(source.Count - 1);
                 transitions.RemoveAt(transitions.Count - 1);
@@ -706,14 +648,11 @@ namespace l_application_pour_diploma {
                 numericUpDown3.Maximum = transitions.Count;
                 numericUpDown8.Value = transitions.Count;
             }
-            else
-            {
+            else{
                 int r = (int)numericUpDown1.Value, c = (int)numericUpDown2.Value;
                 decimal[,] newsource = new decimal[r, c];
-                for (int i = 0; i < r; i++)
-                {
-                    for (int j = 0; j < c; j++)
-                    {
+                for (int i = 0; i < r; i++){
+                    for (int j = 0; j < c; j++) {
                         newsource[i, j] = source[^1][i, j] * 1.1m;
                     }
 
@@ -727,5 +666,57 @@ namespace l_application_pour_diploma {
             }
             if (checkBox5.Checked) refreshdata();
         }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e){
+            bool curr = false;
+            int currstate = (int)numericUpDown8.Value - 1;
+            if (dataGridView1.SelectedCells[0].Value != null){
+                string str = dataGridView1.SelectedCells[0].Value.ToString();
+                if ((str[0] >= '0' && str[0] <= '9' || str[0] == '-') && str.Length > 0){
+                    curr = true;
+                    for (int i = 1; i < str.Length; i++)
+                        if ((str[i] < '0' || str[i] > '9') && str[i] != ',')
+                        {
+                            curr = false;
+                            break;
+                        }
+                }
+                if (curr){
+                    source[currstate][e.RowIndex, e.ColumnIndex] = Convert.ToDecimal(dataGridView1.SelectedCells[0].Value);
+                    if (checkBox3.Checked) fillcolors();
+                    trouv?.refresh(true);
+                    vran?.refr(true);
+                    span?.refr(true);
+
+                }
+                else{
+                    MessageBox.Show("Invalid number");
+                    //if (own.trouv != null) own.trouv.clearcells();
+                    dataGridView1.SelectedCells[0].Value = -1;
+                }
+            }
+            else{
+                MessageBox.Show("Invalid number");
+                //if (own.trouv != null) own.trouv.clearcells();
+                dataGridView1.SelectedCells[0].Value = -1;
+            }
+        }
+
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e){
+            if (numericUpDown4.Value >= numericUpDown8.Value){
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++){
+                        if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
+                            dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
+                        else dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
+                    }
+
+            }
+            else numericUpDown3.Value = numericUpDown1.Value;
+            stateShift = (int)numericUpDown3.Value;
+            if (checkBox5.Checked) refreshdata();
+        }
+
+        private void numericUpDown4_KeyUp(object sender, KeyEventArgs e){ }
     }
 }

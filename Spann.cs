@@ -1,5 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
+using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.VariantTypes;
+using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,23 +13,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static l_application_pour_diploma.Classes;
+using Color = System.Drawing.Color;
 
 namespace l_application_pour_diploma{
     public partial class Spann : Form
     {
-        List<Point[]> links;
+        List<Point[]> links; //for Fermat - detected, for Kruskal - all
+        List<decimal> links_length;
+        List<List<Point>> forest; //contains trees
         Commencement own;
-        List<Point> waved;
+        List<Point> waved, rawPointList;
         decimal[,] wavessum;
         List<decimal[,]> waves;
+        List<Point[,]> prevs;
         internal List<List<Point>> owingpoints;
         int d;
+        List<Point[]> KruskalEdges;
         List<Point> voisins = new List<Point>() {
             new(- 1, - 1), new( 0, - 1), new(1, - 1), new(1, 0),   new(1, 1),   new(0, 1),   new(- 1, 1),   new(- 1, 0),
             new(- 1, - 2), new( 1, - 2), new(2, - 1), new(2, 1),   new(1, 2),   new(- 1, 2), new(- 2, 1),   new(- 2, - 1),
             new(- 2, - 3), new(- 1,- 3), new(1, - 3), new(2, - 3), new(3, - 2), new(3, - 1), new(3, 1),     new(3, 2),
             new(  2,   3), new( 1, 3  ), new(- 1, 3), new(- 2, 3), new(- 3, 2), new(- 3, 1), new(- 3, - 1), new(- 3, - 2)};
         internal List<Point> curr_points;
+        List<Point> points;
         private int size_rayon;
 
         public Spann(Commencement o)
@@ -38,22 +46,10 @@ namespace l_application_pour_diploma{
             refr(true);
             comboBox1.SelectedIndex = 2;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox2.SelectedIndex = 0;
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
         }
-        internal void refr(bool nouv)
-        {
-            if (nouv)
-            {
-                waved = new();
-                waves = new();
-                label1.Text = Convert.ToString(0);
-                wavessum = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
-                links = new();
-                List<decimal[,]> destins;
-                List<Point[,]> previos;
-                owingpoints = new();
-
-            }
-
+        internal void refr(bool nouv){
             Bitmap bmp = new(pictureBox1.Width, pictureBox1.Height);
             Graphics carte = Graphics.FromImage(bmp);
             d = Math.Min(pictureBox1.Width, pictureBox1.Height) / Math.Max((int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value);
@@ -67,19 +63,107 @@ namespace l_application_pour_diploma{
                 }
 
             }
-            if (dataGridView1.Rows.Count > 0)
-            {
+            if (nouv) {
+                waves = new();
+                links = new();
+                waved = new();
+                label1.Text = "0";
+                if (comboBox2.SelectedIndex == 0) {
+                    label1.Text = Convert.ToString(0);
+                    wavessum = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
+                    
+                    List<decimal[,]> destins;
+                    List<Point[,]> previos;
+                    owingpoints = new();
+                    List<Point> points = dataGridView1.Rows.Cast<DataGridViewRow>()
+                                      .Select(row => new Point(Convert.ToInt32(row.Cells[0].Value) - 1, Convert.ToInt32(row.Cells[1].Value) - 1))
+                                      .ToList();
+                }
+                else if (comboBox2.SelectedIndex == 1) {
+                    KruskalEdges = new();
+                    links_length = new();
+                    rawPointList = new();
+                    prevs = new();
+                    if (dataGridView1.Rows.Count > 1)
+                    {//waving et getting all edges
+                        for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                        {//from datagridview to list <Point>
+                            rawPointList.Add(new(Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) - 1, Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) - 1));
+                        }
+                        for (int i = 0; i < dataGridView1.Rows.Count; i++) {
+                            Point currpoint = rawPointList[i];
+                            waved.Add(currpoint);
+                            var resultwaving = waving_in_domain_from_point(currpoint);
+                            var wave = resultwaving.destinl;
+                            var prev = resultwaving.previosl;
+                            prevs.Add(prev);
+                            for (int j = i + 1; j < dataGridView1.Rows.Count; j++) {
+                                var link = new Point[2];
+                                link[0] = rawPointList[i];
+                                link[1] = rawPointList[j];
+                                links.Add(link);
+                                links_length.Add(wave[rawPointList[j].X, rawPointList[j].Y]);
+                                /*List<Point> route = new List<Point> { link[1] };
+                                while (route[^1] != link[0])
+                                {
+                                    int xl = route[^1].X, yl = route[^1].Y;
+                                    route.Add(prev[xl, yl]);
 
-                for (int i = 0; i < dataGridView1.RowCount; i++)
-                {
+                                }
+
+                                for (int k = 0; k < route.Count - 1; k++)
+                                {
+                                    Point[] p1i = new Point[] {
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 2 + d / 2),
+                                    new (route[k].Y * d + d / 2,     route[k].X * d + d / 2),
+                                    new (route[k].Y * d + d / 2,     route[k].X * d + 1 + d / 2),
+                                    //new (new_link[0].Y * d + d / 2,     new_link[0].X * d + 2 + d / 2),
+                                    new (route[k].Y * d + d / 2 + 1, route[k].X * d + d / 2),
+                                    new (route[k].Y * d + d / 2 + 1, route[k].X * d + 1 + d / 2),
+                                    new (route[k].Y * d + d / 2 + 1, route[k].X * d + 2 + d / 2)
+                                };
+                                    Point[] p2i = new Point[] {
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + d / 2),
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 1 + d / 2),
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 2 + d / 2),
+                                    new(route[k + 1].Y * d + d/2,     route[k + 1].X * d + d / 2),
+                                    new(route[k + 1].Y * d + d/2,     route[k + 1].X * d + 1 + d / 2),
+                                    //new(new_link[1].Y * d + d/2,     new_link[1].X * d + 2 + d / 2),
+                                    new(route[k + 1].Y * d + d/2 + 1, route[k + 1].X * d + d / 2),
+                                    new(route[k + 1].Y * d + d/2 + 1, route[k + 1].X * d + 1 + d / 2),
+                                    new(route[k + 1].Y * d + d/2 + 1, route[k + 1].X * d + 2 + d / 2)
+                                };
+                                    for (int l = 0; l < 4; l++)//p1i.Length
+                                {
+                                    carte.DrawLine(new Pen(Color.Black), p1i[l], p2i[l]);
+                                    }
+                                }*/
+                            }
+                            var sortedData = links
+                                 .Select((l, i) => new { Link = l, Length = links_length[i]})
+                                 .OrderBy(x => x.Length)
+                                 .ToList();
+
+                            // Выделяем отсортированные списки в отдельные переменные
+                            links = sortedData.Select(x => x.Link).ToList();
+                            links_length = sortedData.Select(x => x.Length).ToList();
+                        }
+                        forest = new();
+                    }
+                }
+            }
+
+            
+            if (dataGridView1.Rows.Count > 0){
+                for (int i = 0; i < dataGridView1.RowCount; i++){
                     int x = Convert.ToInt32(dataGridView1.Rows[i].Cells[0].Value) - 1;
                     int y = Convert.ToInt32(dataGridView1.Rows[i].Cells[1].Value) - 1;
                     carte.FillRectangle(new SolidBrush(Color.Brown), y * d + 1, x * d + 1, d - 1, d - 1);
                 }
-                if (!nouv && links.Count > 0)
-                {//to redraw links 
-                    foreach (var new_link in links)
-                    {
+                if (!nouv && links.Count > 0){//to redraw links 
+                    foreach (var new_link in links){
                         Point[] p1i = new Point[] {
                             new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
                             new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
@@ -115,29 +199,22 @@ namespace l_application_pour_diploma{
             pictureBox1.Image = bmp;
 
         }
-        public void build_tree_finis()
-        {
+        public void build_tree_finis(){
             while (waved.Count < dataGridView1.RowCount)
                 build_tree_step();
         }
-        public void build_tree_step()
-        {
-
-
-            if (dataGridView1.Rows.Count > 0)
-            {
+        public void build_tree_step() {
+            if (dataGridView1.Rows.Count > 0){
                 Bitmap bmp = new(pictureBox1.Image);
                 Graphics carte = Graphics.FromImage(bmp);
                 d = Math.Min(pictureBox1.Width, pictureBox1.Height) / Math.Max((int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value);
-                if (waved.Count == 0)
-                {
+                if (waved.Count == 0){
                     Point point = new(Convert.ToInt32(dataGridView1.Rows[0].Cells[0].Value) - 1, Convert.ToInt32(dataGridView1.Rows[0].Cells[1].Value) - 1);
                     waved.Add(point);
                     var resultwaving = waving_in_domain_from_point(point);
                     var wave = resultwaving.destinl;
                     waves.Add(wave);
-                    Parallel.For(0, wavessum.GetLength(0), i =>
-                    {
+                    Parallel.For(0, wavessum.GetLength(0), i => {
                         for (int j = 0; j < wavessum.GetLength(1); j++)
                         {
                             wavessum[i, j] = wave[i, j];
@@ -147,14 +224,12 @@ namespace l_application_pour_diploma{
                     int y = Convert.ToInt32(dataGridView1.Rows[0].Cells[1].Value) - 1;
                     carte.FillRectangle(new SolidBrush(Color.Chocolate), y * d + 1, x * d + 1, d - 1, d - 1);
                 }
-                else
-                {
+                else{
                     List<Point> points = dataGridView1.Rows.Cast<DataGridViewRow>()
                                   .Select(row => new Point(Convert.ToInt32(row.Cells[0].Value) - 1, Convert.ToInt32(row.Cells[1].Value) - 1))
                                   .ToList();
                     List<Point> unvisited = points.Except(waved).ToList();
-                    if (unvisited.Count > 0)
-                    {
+                    if (unvisited.Count > 0){
                         Point next = unvisited.Where(p => wavessum[p.X, p.Y] > 0)
                                 .OrderBy(p => wavessum[p.X, p.Y])
                                 .DefaultIfEmpty(unvisited[0])
@@ -164,73 +239,62 @@ namespace l_application_pour_diploma{
                         var wave = resultwaving.destinl;
                         var prev = resultwaving.previosl;
                         waves.Add(wave);
-                        Parallel.For(0, wavessum.GetLength(0), i =>
-                        {
-                            for (int j = 0; j < wavessum.GetLength(1); j++)
-                            {
+                        Parallel.For(0, wavessum.GetLength(0), i => {
+                            for (int j = 0; j < wavessum.GetLength(1); j++){
                                 wavessum[i, j] += wave[i, j];
                             }
 
                         });
                         Point[] new_link = new Point[2];
 
-                        decimal min = waves[0][next.X, next.Y];
+                        decimal min = waves[0][next.X, next.Y];//wavessum
                         Point neartonext = waved[0];
-                        for (int i = 1; i < waves.Count; i++)
-                        {
-                            if (min > waves[i][next.X, next.Y] && waves[i][next.X, next.Y] > 0)
-                            {
+                        for (int i = 1; i < waves.Count - 1; i++){
+                            if (min > waves[i][next.X, next.Y] && waves[i][next.X, next.Y] > 0){
                                 min = waves[i][next.X, next.Y];
                                 neartonext = waved[i];
                             }
-
                         }
-
                         new_link[0] = neartonext;
                         new_link[1] = next;
                         label1.Text = Convert.ToString(Convert.ToDecimal(label1.Text) + min);
                         links.Add(new_link);
                         List<Point> route = new List<Point> { neartonext };
-                        while (route[^1] != next)
-                        {
+                        while (route[^1] != next){
                             int xl = route[^1].X, yl = route[^1].Y;
                             route.Add(prev[xl, yl]);
 
                         }
-
                         for (int i = 0; i < route.Count - 1; i++)
                         {
                             Point[] p1i = new Point[] {
-                            //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
-                            //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
-                            //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 2 + d / 2),
-                            new (route[i].Y * d + d / 2,     route[i].X * d + d / 2),
-                            new (route[i].Y * d + d / 2,     route[i].X * d + 1 + d / 2),
-                            //new (new_link[0].Y * d + d / 2,     new_link[0].X * d + 2 + d / 2),
-                            new (route[i].Y * d + d / 2 + 1, route[i].X * d + d / 2),
-                            new (route[i].Y * d + d / 2 + 1, route[i].X * d + 1 + d / 2),
-                            new (route[i].Y * d + d / 2 + 1, route[i].X * d + 2 + d / 2)
-                        };
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 2 + d / 2),
+                                    new (route[i].Y * d + d / 2,     route[i].X * d + d / 2),
+                                    new (route[i].Y * d + d / 2,     route[i].X * d + 1 + d / 2),
+                                    //new (new_link[0].Y * d + d / 2,     new_link[0].X * d + 2 + d / 2),
+                                    new (route[i].Y * d + d / 2 + 1, route[i].X * d + d / 2),
+                                    new (route[i].Y * d + d / 2 + 1, route[i].X * d + 1 + d / 2),
+                                    new (route[i].Y * d + d / 2 + 1, route[i].X * d + 2 + d / 2)
+                                };
                             Point[] p2i = new Point[] {
-                            //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + d / 2),
-                            //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 1 + d / 2),
-                            //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 2 + d / 2),
-                            new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + d / 2),
-                            new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + 1 + d / 2),
-                            //new(new_link[1].Y * d + d/2,     new_link[1].X * d + 2 + d / 2),
-                            new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + d / 2),
-                            new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 1 + d / 2),
-                            new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 2 + d / 2)
-                        };
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + d / 2),
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 1 + d / 2),
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 2 + d / 2),
+                                    new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + d / 2),
+                                    new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + 1 + d / 2),
+                                    //new(new_link[1].Y * d + d/2,     new_link[1].X * d + 2 + d / 2),
+                                    new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + d / 2),
+                                    new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 1 + d / 2),
+                                    new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 2 + d / 2)
+                                };
                             for (int j = 0; j < 4/*p1i.Length*/; j++)
                             {
                                 carte.DrawLine(new Pen(Color.Black), p1i[j], p2i[j]);
                             }
                         }
-
                     }
-
-
                 }
                 pictureBox1.Image = bmp;
             }
@@ -270,6 +334,7 @@ namespace l_application_pour_diploma{
             int y = e.X;
             numericUpDown3.Value = Math.Min(x / d + 1, (int)own.numericUpDown1.Value);
             numericUpDown4.Value = Math.Min(y / d + 1, (int)own.numericUpDown2.Value);
+
         }
 
         private void Spann_FormClosing(object sender, FormClosingEventArgs e) { own.span = null; }
@@ -406,6 +471,148 @@ namespace l_application_pour_diploma{
                 }
             }
         }
+        
+        private void reduce_links() {
+            Bitmap bmp = new(pictureBox1.Image);
+            Graphics carte = Graphics.FromImage(bmp);
+            d = Math.Min(pictureBox1.Width, pictureBox1.Height) / Math.Max((int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value);
+            if (KruskalEdges.Count == 0){
+                KruskalEdges.Add(links[0]);
+                List<Point> tree = new() { links[0][0], links[0][1] };
+                forest.Add(new(tree));
+                links.RemoveAt(0);
+                List<Point> route = new List<Point> { tree[0] };
+                int ind = waved.IndexOf(tree[1]);
+                while (route[^1] != tree[1]){
+                    int xl = route[^1].X, yl = route[^1].Y;
+                    route.Add(prevs[ind][xl, yl]);
+
+                }
+                for (int i = 0; i < route.Count - 1; i++){
+                    Point[] p1i = new Point[] {
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 2 + d / 2),
+                                    new (route[i].Y * d + d / 2,     route[i].X * d + d / 2),
+                                    new (route[i].Y * d + d / 2,     route[i].X * d + 1 + d / 2),
+                                    //new (new_link[0].Y * d + d / 2,     new_link[0].X * d + 2 + d / 2),
+                                    new (route[i].Y * d + d / 2 + 1, route[i].X * d + d / 2),
+                                    new (route[i].Y * d + d / 2 + 1, route[i].X * d + 1 + d / 2),
+                                    new (route[i].Y * d + d / 2 + 1, route[i].X * d + 2 + d / 2)
+                                };
+                    Point[] p2i = new Point[] {
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + d / 2),
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 1 + d / 2),
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 2 + d / 2),
+                                    new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + d / 2),
+                                    new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + 1 + d / 2),
+                                    //new(new_link[1].Y * d + d/2,     new_link[1].X * d + 2 + d / 2),
+                                    new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + d / 2),
+                                    new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 1 + d / 2),
+                                    new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 2 + d / 2)
+                                };
+                    for (int j = 0; j < 4/*p1i.Length*/; j++)
+                    {
+                        carte.DrawLine(new Pen(Color.Black), p1i[j], p2i[j]);
+                    }
+                }
+                label1.Text = Convert.ToString(Convert.ToDecimal(label1.Text) + links_length[0]);
+                links_length.RemoveAt(0);
+            }
+            else{
+                if (KruskalEdges.Count + 1 < dataGridView1.Rows.Count){
+                    List<Point> link = new() { links[0][0], links[0][1] };
+                   while (check_edge_vertices(link[0], link[1]) == 0){ // if in the same tree
+                        links.RemoveAt(0);
+                        links_length.RemoveAt(0);
+                        link = new() { links[0][0], links[0][1] };
+                        //if (links.Count > 0) reduce_links();
+                    }
+                    //link = new() { links[0][0], links[0][1] };
+                    if (check_edge_vertices(link[0], link[1]) == 1)
+                    { // first in a tree, other - not
+                        KruskalEdges.Add(links[0]);
+                        forest[forest.FindIndex(f => f.Contains(link[0]))].Add(link[1]);
+                    }
+                    if (check_edge_vertices(link[0], link[1]) == 2)
+                    { // second in a tree, other - not
+                        KruskalEdges.Add(links[0]);
+                        forest[forest.FindIndex(f => f.Contains(link[1]))].Add(link[0]);
+                    }
+                    if (check_edge_vertices(link[0], link[1]) == 3)
+                    { // tree to create
+                        KruskalEdges.Add(links[0]);
+                        forest.Add(new(link));
+                    }
+                    if (check_edge_vertices(link[0], link[1]) == 4)
+                    { // merging trees
+                        KruskalEdges.Add(links[0]);
+                        int ind0 = forest.FindIndex(f => f.Contains(link[0]));
+                        int ind1 = forest.FindIndex(f => f.Contains(link[1]));
+                        foreach (var el in forest[ind1])
+                            forest[ind0].Add(el);
+                        forest.RemoveAt(ind1);
+                    }
+
+                    List<Point> route = new List<Point> { link[0] };
+                    int ind = waved.IndexOf(link[1]);
+                    while (route[^1] != link[1])
+                    {
+                        int xl = route[^1].X, yl = route[^1].Y;
+                        route.Add(prevs[ind][xl, yl]);
+                    }
+                    for (int i = 0; i < route.Count - 1; i++)
+                    {
+                        Point[] p1i = new Point[] {
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + d / 2),
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 1 + d / 2),
+                                    //new (new_link[0].Y * d + d / 2 - 1, new_link[0].X * d + 2 + d / 2),
+                                    new (route[i].Y * d + d / 2,     route[i].X * d + d / 2),
+                                    new (route[i].Y * d + d / 2,     route[i].X * d + 1 + d / 2),
+                                    //new (new_link[0].Y * d + d / 2,     new_link[0].X * d + 2 + d / 2),
+                                    new (route[i].Y * d + d / 2 + 1, route[i].X * d + d / 2),
+                                    new (route[i].Y * d + d / 2 + 1, route[i].X * d + 1 + d / 2),
+                                    new (route[i].Y * d + d / 2 + 1, route[i].X * d + 2 + d / 2)
+                                };
+                        Point[] p2i = new Point[] {
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + d / 2),
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 1 + d / 2),
+                                    //new(new_link[1].Y * d + d/2 - 1, new_link[1].X * d + 2 + d / 2),
+                                    new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + d / 2),
+                                    new(route[i + 1].Y * d + d/2,     route[i + 1].X * d + 1 + d / 2),
+                                    //new(new_link[1].Y * d + d/2,     new_link[1].X * d + 2 + d / 2),
+                                    new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + d / 2),
+                                    new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 1 + d / 2),
+                                    new(route[i + 1].Y * d + d/2 + 1, route[i + 1].X * d + 2 + d / 2)
+                                };
+                        for (int j = 0; j < 4/*p1i.Length*/; j++)
+                        {
+                            carte.DrawLine(new Pen(Color.Black), p1i[j], p2i[j]);
+                        }
+                    }
+                    label1.Text = Convert.ToString(Convert.ToDecimal(label1.Text) + links_length[0]);
+
+
+                    links.RemoveAt(0);
+                    links_length.RemoveAt(0);
+                }
+            }
+
+            pictureBox1.Image = bmp;
+        }
+        private int check_edge_vertices(Point p1, Point p2) {// 0 - same, 1 - first in a tree, other - not, 2 - second in a tree, other - not, 3 - tree to create, 4 - merge trees
+            //if (forest.FindIndex(f => f.Contains(p1)) == forest.FindIndex(f => f.Contains(p2))) return 0; //discard
+            if (forest.Any(f => f.Contains(p1)) && !forest.Any(f => f.Contains(p2))) return 1; //add sec to first
+            if (forest.Any(f => f.Contains(p2)) && !forest.Any(f => f.Contains(p1))) return 2; //add first to sec
+            if (!forest.Any(f => f.Contains(p2)) && !forest.Any(f => f.Contains(p1))) return 3; //new tree
+            if (forest.FindIndex(f => f.Contains(p1)) != forest.FindIndex(f => f.Contains(p2))) return 4; //merging
+            return 0;//-1 ;
+        }
+
+        private void reduce_links_finis(){
+            while (KruskalEdges.Count + 1 < dataGridView1.RowCount)
+                reduce_links();
+        }
         private int currst(decimal dest)
         {
             int shift = own.stateShift;
@@ -455,10 +662,19 @@ namespace l_application_pour_diploma{
                     if (!set[i, j]) return false;
             return true;
         }
-        private void button4_Click(object sender, EventArgs e) { build_tree_step(); }
+        private void button4_Click(object sender, EventArgs e){
+            if (comboBox2.SelectedIndex == 0)
+                build_tree_step();
+            if (comboBox2.SelectedIndex == 1)
+                reduce_links();
+        }
 
-        private void button3_Click(object sender, EventArgs e) { build_tree_finis(); }
-        internal void ToRusse(){
+        private void button3_Click(object sender, EventArgs e) { 
+            if (comboBox2.SelectedIndex == 0) build_tree_finis();
+            if (comboBox2.SelectedIndex == 1) reduce_links_finis();
+        }
+        internal void ToRusse()
+        {
             Text = "Остовное дерево";
             groupBox2.Text = "Кол-во направлений поиска";
 
@@ -475,7 +691,8 @@ namespace l_application_pour_diploma{
             Column1.HeaderText = "Строка";
             Column2.HeaderText = "Стоблец";
         }
-        internal void ToFrancais(){
+        internal void ToFrancais()
+        {
             Text = "Un arbre couvrant";
 
             button1.Text = "Définir par défaut";
@@ -497,23 +714,32 @@ namespace l_application_pour_diploma{
             if (comboBox1.SelectedIndex == 0) size_rayon = 8;
             else if (comboBox1.SelectedIndex == 1) size_rayon = 16;
             else size_rayon = 32;
+            refr(true);
         }
 
-        private void button1_Click(object sender, EventArgs e){
-            if (dataGridView1.SelectedRows.Count > 0){
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
                 // Remove the selected row
                 dataGridView1.Rows.RemoveAt(selectedRow.Index);
                 // Insert the selected row at the beginning (index 0)
                 dataGridView1.Rows.Insert(0, selectedRow);
             }
-            else if (dataGridView1.SelectedCells.Count > 0){
+            else if (dataGridView1.SelectedCells.Count > 0)
+            {
                 DataGridViewRow selectedRow = dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex];
                 // Remove the selected row
                 dataGridView1.Rows.RemoveAt(selectedRow.Index);
                 // Insert the selected row at the beginning (index 0)
                 dataGridView1.Rows.Insert(0, selectedRow);
             }
+            refr(true);
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
             refr(true);
         }
     }

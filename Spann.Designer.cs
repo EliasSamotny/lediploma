@@ -44,6 +44,8 @@
             button1 = new Button();
             groupBox1 = new GroupBox();
             label1 = new Label();
+            groupBox4 = new GroupBox();
+            comboBox2 = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
@@ -51,6 +53,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
+            groupBox4.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox1
@@ -69,7 +72,7 @@
             // 
             groupBox3.Controls.Add(numericUpDown3);
             groupBox3.Controls.Add(numericUpDown4);
-            groupBox3.Location = new Point(164, 74);
+            groupBox3.Location = new Point(164, 137);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(128, 56);
             groupBox3.TabIndex = 17;
@@ -206,7 +209,7 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(label1);
-            groupBox1.Location = new Point(18, 69);
+            groupBox1.Location = new Point(18, 138);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(140, 55);
             groupBox1.TabIndex = 25;
@@ -222,6 +225,26 @@
             label1.TabIndex = 0;
             label1.Text = "0";
             // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(comboBox2);
+            groupBox4.Location = new Point(12, 74);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(280, 56);
+            groupBox4.TabIndex = 22;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "L'algorythme";
+            // 
+            // comboBox2
+            // 
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Items.AddRange(new object[] { "Fermat", "Kruskal" });
+            comboBox2.Location = new Point(6, 21);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(268, 30);
+            comboBox2.TabIndex = 0;
+            comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
+            // 
             // Spann
             // 
             AutoScaleDimensions = new SizeF(9F, 22F);
@@ -231,6 +254,7 @@
             Controls.Add(button3);
             Controls.Add(button1);
             Controls.Add(button4);
+            Controls.Add(groupBox4);
             Controls.Add(groupBox2);
             Controls.Add(button5);
             Controls.Add(button6);
@@ -250,6 +274,7 @@
             groupBox2.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            groupBox4.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -271,5 +296,7 @@
         private Button button1;
         private GroupBox groupBox1;
         private Label label1;
+        private GroupBox groupBox4;
+        private ComboBox comboBox2;
     }
 }
