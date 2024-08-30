@@ -713,7 +713,7 @@ namespace l_application_pour_diploma {
 
             }
             else numericUpDown3.Value = numericUpDown1.Value;
-            stateShift = (int)numericUpDown3.Value;
+            stateShift = (int)numericUpDown3.Value - 1;
             if (checkBox5.Checked) refreshdata();
         }
 

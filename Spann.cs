@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Presentation;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.VariantTypes;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -14,12 +15,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static l_application_pour_diploma.Classes;
 using Color = System.Drawing.Color;
+using ex = Microsoft.Office.Interop.Excel;
 
 namespace l_application_pour_diploma{
-    public partial class Spann : Form
-    {
+    public partial class Spann : Form{
+        private ex.Application? excelapp;
+        private ex.Workbooks? excelappworkbooks;
+        private ex.Workbook? excelappworkbook;
+        private ex.Sheets? excelsheets;
+        private ex.Worksheet? excelworksheet;
+        private ex.Range? excelcells;
         List<Point[]> links; //for Fermat - detected, for Kruskal - all
-        List<decimal> links_length;
+        List<decimal> links_length, curr_links_length;
         List<List<Point>> forest; //contains trees
         Commencement own;
         List<Point> waved, rawPointList;
@@ -37,9 +44,9 @@ namespace l_application_pour_diploma{
         internal List<Point> curr_points;
         List<Point> points;
         private int size_rayon;
+        List<List<Point>> routes, curr_routes;
 
-        public Spann(Commencement o)
-        {
+        public Spann(Commencement o){
             InitializeComponent();
             own = o;
             curr_points = new();
@@ -59,7 +66,6 @@ namespace l_application_pour_diploma{
                 {
                     carte.DrawRectangle(new Pen(Color.Black), j * d, i * d, d, d);
                     carte.FillRectangle(new SolidBrush(own.dataGridView1.Rows[i].Cells[j].Style.BackColor), j * d + 1, i * d + 1, d - 1, d - 1);
-                    //carte.FillRectangle(new SolidBrush(own.dataGridView1.Rows[i].Cells[j].Style.BackColor), j * d + 1, i * d + 1, d - 1, d - 1);
                 }
 
             }
@@ -67,7 +73,11 @@ namespace l_application_pour_diploma{
                 waves = new();
                 links = new();
                 waved = new();
+                links_length = new();
                 label1.Text = "0";
+                routes = new();
+                curr_links_length = new();
+                curr_routes = new();
                 if (comboBox2.SelectedIndex == 0) {
                     label1.Text = Convert.ToString(0);
                     wavessum = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
@@ -81,7 +91,6 @@ namespace l_application_pour_diploma{
                 }
                 else if (comboBox2.SelectedIndex == 1) {
                     KruskalEdges = new();
-                    links_length = new();
                     rawPointList = new();
                     prevs = new();
                     if (dataGridView1.Rows.Count > 1)
@@ -103,14 +112,16 @@ namespace l_application_pour_diploma{
                                 link[1] = rawPointList[j];
                                 links.Add(link);
                                 links_length.Add(wave[rawPointList[j].X, rawPointList[j].Y]);
-                                /*List<Point> route = new List<Point> { link[1] };
+                                List<Point> route = new List<Point> { link[1] };
                                 while (route[^1] != link[0])
                                 {
                                     int xl = route[^1].X, yl = route[^1].Y;
                                     route.Add(prev[xl, yl]);
 
                                 }
-
+                                route.Reverse();
+                                routes.Add(route);
+                                /*
                                 for (int k = 0; k < route.Count - 1; k++)
                                 {
                                     Point[] p1i = new Point[] {
@@ -142,13 +153,14 @@ namespace l_application_pour_diploma{
                                 }*/
                             }
                             var sortedData = links
-                                 .Select((l, i) => new { Link = l, Length = links_length[i]})
+                                 .Select((l, i) => new { Link = l, Length = links_length[i], route = routes[i] })
                                  .OrderBy(x => x.Length)
                                  .ToList();
 
                             // Выделяем отсортированные списки в отдельные переменные
                             links = sortedData.Select(x => x.Link).ToList();
                             links_length = sortedData.Select(x => x.Length).ToList();
+                            routes = sortedData.Select(x => x.route).ToList();
                         }
                         forest = new();
                     }
@@ -257,6 +269,7 @@ namespace l_application_pour_diploma{
                         }
                         new_link[0] = neartonext;
                         new_link[1] = next;
+                        links_length.Add(min);
                         label1.Text = Convert.ToString(Convert.ToDecimal(label1.Text) + min);
                         links.Add(new_link);
                         List<Point> route = new List<Point> { neartonext };
@@ -265,6 +278,7 @@ namespace l_application_pour_diploma{
                             route.Add(prev[xl, yl]);
 
                         }
+                        routes.Add(route);
                         for (int i = 0; i < route.Count - 1; i++)
                         {
                             Point[] p1i = new Point[] {
@@ -317,8 +331,7 @@ namespace l_application_pour_diploma{
             refr(true);
         }
 
-        private void button5_Click(object sender, EventArgs e)
-        {
+        private void button5_Click(object sender, EventArgs e){
             if (dataGridView1.SelectedRows.Count > 0)
             {
                 for (int i = dataGridView1.SelectedRows.Count - 1; i >= 0; i--)
@@ -328,13 +341,11 @@ namespace l_application_pour_diploma{
             }
             refr(true);
         }
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
-        {
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e){
             int x = e.Y;
             int y = e.X;
             numericUpDown3.Value = Math.Min(x / d + 1, (int)own.numericUpDown1.Value);
             numericUpDown4.Value = Math.Min(y / d + 1, (int)own.numericUpDown2.Value);
-
         }
 
         private void Spann_FormClosing(object sender, FormClosingEventArgs e) { own.span = null; }
@@ -478,9 +489,13 @@ namespace l_application_pour_diploma{
             d = Math.Min(pictureBox1.Width, pictureBox1.Height) / Math.Max((int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value);
             if (KruskalEdges.Count == 0){
                 KruskalEdges.Add(links[0]);
+                curr_links_length.Add(links_length[0]);
+                curr_routes.Add(routes[0]);
                 List<Point> tree = new() { links[0][0], links[0][1] };
                 forest.Add(new(tree));
                 links.RemoveAt(0);
+                //links_length.RemoveAt(0);
+                //routes.RemoveAt(0);
                 List<Point> route = new List<Point> { tree[0] };
                 int ind = waved.IndexOf(tree[1]);
                 while (route[^1] != tree[1]){
@@ -518,6 +533,7 @@ namespace l_application_pour_diploma{
                 }
                 label1.Text = Convert.ToString(Convert.ToDecimal(label1.Text) + links_length[0]);
                 links_length.RemoveAt(0);
+                routes.RemoveAt(0);
             }
             else{
                 if (KruskalEdges.Count + 1 < dataGridView1.Rows.Count){
@@ -525,6 +541,7 @@ namespace l_application_pour_diploma{
                    while (check_edge_vertices(link[0], link[1]) == 0){ // if in the same tree
                         links.RemoveAt(0);
                         links_length.RemoveAt(0);
+                        routes.RemoveAt(0);
                         link = new() { links[0][0], links[0][1] };
                         //if (links.Count > 0) reduce_links();
                     }
@@ -532,21 +549,29 @@ namespace l_application_pour_diploma{
                     if (check_edge_vertices(link[0], link[1]) == 1)
                     { // first in a tree, other - not
                         KruskalEdges.Add(links[0]);
+                        curr_links_length.Add(links_length[0]);
+                        curr_routes.Add(routes[0]);
                         forest[forest.FindIndex(f => f.Contains(link[0]))].Add(link[1]);
                     }
                     if (check_edge_vertices(link[0], link[1]) == 2)
                     { // second in a tree, other - not
                         KruskalEdges.Add(links[0]);
+                        curr_links_length.Add(links_length[0]);
+                        curr_routes.Add(routes[0]);
                         forest[forest.FindIndex(f => f.Contains(link[1]))].Add(link[0]);
                     }
                     if (check_edge_vertices(link[0], link[1]) == 3)
                     { // tree to create
                         KruskalEdges.Add(links[0]);
+                        curr_links_length.Add(links_length[0]);
+                        curr_routes.Add(routes[0]);
                         forest.Add(new(link));
                     }
                     if (check_edge_vertices(link[0], link[1]) == 4)
                     { // merging trees
                         KruskalEdges.Add(links[0]);
+                        curr_links_length.Add(links_length[0]);
+                        curr_routes.Add(routes[0]);
                         int ind0 = forest.FindIndex(f => f.Contains(link[0]));
                         int ind1 = forest.FindIndex(f => f.Contains(link[1]));
                         foreach (var el in forest[ind1])
@@ -595,6 +620,7 @@ namespace l_application_pour_diploma{
 
                     links.RemoveAt(0);
                     links_length.RemoveAt(0);
+                    routes.RemoveAt(0);
                 }
             }
 
@@ -672,7 +698,159 @@ namespace l_application_pour_diploma{
         private void button3_Click(object sender, EventArgs e) { 
             if (comboBox2.SelectedIndex == 0) build_tree_finis();
             if (comboBox2.SelectedIndex == 1) reduce_links_finis();
+            make_report();
         }
+        public string? Filename;
+        internal void make_report(){
+            own.insert_log("Choosing file for saving report...", this);
+            if (dataGridView1.Rows.Count > 1) { 
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "Table | *.xlsx| Table | *.xls| All files | *.*";
+            saveFileDialog1.Title = "Saving table";
+            saveFileDialog1.ShowDialog();
+            if (saveFileDialog1.FileName != ""){
+                    own.insert_log("Saving media...", this);
+                    Filename = saveFileDialog1.FileName;
+
+
+                    excelapp = new ex.Application();
+                    excelapp.SheetsInNewWorkbook = 1;
+                    excelapp.Workbooks.Add(Type.Missing);
+                    excelappworkbooks = excelapp.Workbooks;
+                    excelappworkbook = excelappworkbooks[1];
+                    excelsheets = excelappworkbook.Sheets;
+
+                    excelworksheet = excelsheets[1];
+                    excelworksheet.Name = $"MST report";
+                    //List points
+                    excelcells = excelworksheet.get_Range(numColu(1) + Convert.ToString(2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "#"));
+                    excelcells = excelworksheet.get_Range(numColu(2) + Convert.ToString(2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "Points"));
+                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                    {
+                        excelcells = excelworksheet.get_Range(numColu(1) + Convert.ToString(i + 3), Type.Missing);
+                        excelcells.set_Value(Type.Missing, String.Format("{0}", i + 1));
+                        excelcells = excelworksheet.get_Range(numColu(2) + Convert.ToString(i + 3), Type.Missing);
+                        excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{dataGridView1.Rows[i].Cells[0].Value}, {dataGridView1.Rows[i].Cells[1].Value}")));
+                    }
+
+                    excelcells = excelworksheet.get_Range(numColu(4) + Convert.ToString(1), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "Edges"));
+                    excelcells = excelworksheet.get_Range(numColu(4) + Convert.ToString(2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "Point1"));
+                    excelcells = excelworksheet.get_Range(numColu(5) + Convert.ToString(2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "Point2"));
+                    excelcells = excelworksheet.get_Range(numColu(6) + Convert.ToString(2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "Calculated destination"));
+                    excelcells = excelworksheet.get_Range(numColu(7) + Convert.ToString(2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "Euclid destination"));
+                    excelcells = excelworksheet.get_Range(numColu(8) + Convert.ToString(2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "Delta abs"));
+                    excelcells = excelworksheet.get_Range(numColu(9) + Convert.ToString(2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "Delta rel"));
+
+
+                    excelcells = excelworksheet.get_Range(numColu(11) + Convert.ToString(1), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", "Routes"));
+                    List<decimal> euclid = new List<decimal>();
+
+                    for (int k = 0; k < routes.Select(list => list.Count).Max(); k++){ //routes points numbers init
+                        excelcells = excelworksheet.get_Range(numColu(11+ k) + Convert.ToString(2), Type.Missing);
+                        excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{k+1}")));
+                    }
+                    if (comboBox2.SelectedIndex == 0)
+                    { //fermat
+                        excelcells = excelworksheet.get_Range(numColu(5) + Convert.ToString(1), Type.Missing);
+                        excelcells.set_Value(Type.Missing, String.Format("{0}", "Fermat"));
+                        for (int i = 0; i < links.Count; i++)
+                        {
+                            excelcells = excelworksheet.get_Range(numColu(4) + Convert.ToString(i + 3), Type.Missing);
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{links[i][0].X + 1}, {links[i][0].Y + 1}")));//1 point
+                            excelcells = excelworksheet.get_Range(numColu(5) + Convert.ToString(i + 3), Type.Missing);
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{links[i][1].X + 1}, {links[i][1].Y + 1}")));//2 point
+                            excelcells = excelworksheet.get_Range(numColu(6) + Convert.ToString(i + 3), Type.Missing);//calc length
+                            string val = Convert.ToString(links_length[i]).Replace(',', '.');
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", val));
+                            excelcells = excelworksheet.get_Range(numColu(7) + Convert.ToString(i + 3), Type.Missing);//euclid dest
+                            decimal valu = (own.source[(int)own.numericUpDown8.Value - 1][links[i][0].X, links[i][0].Y] + own.source[(int)own.numericUpDown8.Value - 1][links[i][1].X, links[i][1].Y]) / 2 *
+                                (decimal)Math.Sqrt(Math.Pow(links[i][1].X - links[i][0].X, 2) + Math.Pow(links[i][1].Y - links[i][0].Y, 2));
+                            euclid.Add(valu);
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{valu}").Replace(',', '.')));
+
+                            excelcells = excelworksheet.get_Range(numColu(8) + Convert.ToString(3+i), Type.Missing); //delta abs
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{links_length[i] - valu}").Replace(',', '.')));
+                            excelcells = excelworksheet.get_Range(numColu(9) + Convert.ToString(i+3), Type.Missing); //delta rel
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{(links_length[i] - valu)/ links_length[i]*100}%").Replace(',', '.')));
+
+                            for (int k = 0; k < routes[i].Count; k++) { //route constucting
+                                excelcells = excelworksheet.get_Range(numColu(11 + k) + Convert.ToString(3 + i), Type.Missing);
+                                excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{routes[i][k].X + 1}, {routes[i][k].Y + 1}")));
+                            }
+                        }
+                    }
+                    if (comboBox2.SelectedIndex == 1)
+                    { //kruskal
+                        excelcells = excelworksheet.get_Range(numColu(5) + Convert.ToString(1), Type.Missing);
+                        excelcells.set_Value(Type.Missing, String.Format("{0}", "Kruskal"));
+                        for (int i = 0; i < KruskalEdges.Count; i++)
+                        {
+                            excelcells = excelworksheet.get_Range(numColu(4) + Convert.ToString(i + 3), Type.Missing);
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{KruskalEdges[i][0].X + 1}, {KruskalEdges[i][0].Y + 1}")));
+                            excelcells = excelworksheet.get_Range(numColu(5) + Convert.ToString(i + 3), Type.Missing);
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{KruskalEdges[i][1].X + 1}, {KruskalEdges[i][1].Y + 1}")));
+                            excelcells = excelworksheet.get_Range(numColu(6) + Convert.ToString(i + 3), Type.Missing);
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{curr_links_length[i]}").Replace(',', '.')));
+                            excelcells = excelworksheet.get_Range(numColu(7) + Convert.ToString(i + 3), Type.Missing);
+                            decimal val = (own.source[(int)own.numericUpDown8.Value - 1][KruskalEdges[i][0].X, KruskalEdges[i][0].Y] + own.source[(int)own.numericUpDown8.Value - 1][KruskalEdges[i][1].X, KruskalEdges[i][1].Y]) / 2 *
+                                (decimal)Math.Sqrt(Math.Pow(KruskalEdges[i][1].X - KruskalEdges[i][0].X, 2) + Math.Pow(KruskalEdges[i][1].Y - KruskalEdges[i][0].Y, 2));
+                            euclid.Add(val);
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{val}").Replace(',', '.')));
+
+                            excelcells = excelworksheet.get_Range(numColu(8) + Convert.ToString(3 + i), Type.Missing); //delta abs
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{curr_links_length[i] - val}").Replace(',', '.')));
+                            excelcells = excelworksheet.get_Range(numColu(9) + Convert.ToString(i + 3), Type.Missing); //delta rel
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{(curr_links_length[i] - val) / links_length[i] * 100}%").Replace(',', '.')));
+
+                            for (int k = 0; k < curr_routes[i].Count; k++)
+                            { //route constucting
+                                excelcells = excelworksheet.get_Range(numColu(11 + k) + Convert.ToString(3 + i), Type.Missing);
+                                excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{curr_routes[i][k].X + 1}, {curr_routes[i][k].Y + 1}")));
+                            }
+                        }
+
+                    }
+                    excelcells = excelworksheet.get_Range(numColu(5) + Convert.ToString(dataGridView1.Rows.Count + 2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"Sum")));
+                    excelcells = excelworksheet.get_Range(numColu(6) + Convert.ToString(dataGridView1.Rows.Count + 2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{curr_links_length.Sum()}").Replace(',', '.')));
+                    excelcells = excelworksheet.get_Range(numColu(7) + Convert.ToString(dataGridView1.Rows.Count + 2), Type.Missing);
+                    excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{euclid.Sum()}").Replace(',', '.')));
+                    excelapp.DisplayAlerts = true;
+                    excelappworkbook.SaveAs(Filename, Type.Missing, Type.Missing,
+                   Type.Missing, Type.Missing, Type.Missing, ex.XlSaveAsAccessMode.xlNoChange,
+                   Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+                    excelappworkbook.Close();
+                    MessageBox.Show("Report saved.");
+                    own.insert_log("Report saved.", this);
+                }else MessageBox.Show("There should be chosen at least 2 points");
+            }
+        }
+        private string numColu(int f)
+        {
+            int div = f;
+            string colLetter = String.Empty;
+            int mod;
+            while (div > 0)
+            {
+                mod = (div - 1) % 26;
+                colLetter = (char)(65 + mod) + colLetter;
+                div = ((div - mod) / 26);
+            }
+            return colLetter;
+        }
+
+    
         internal void ToRusse()
         {
             Text = "Остовное дерево";
