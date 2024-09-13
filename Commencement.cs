@@ -23,7 +23,7 @@ namespace l_application_pour_diploma {
         internal List<decimal[,]> source;
         private bool global_log_allowed = true;
         private static readonly object log_locker = new object();
-        string logFilePath = "C:\\Users\\Elias\\Desktop\\lediploma\\log.log";
+        string logFilePath = "C:\\Users\\Intell\\Desktop\\log.log.txt";
         internal int stateShift;
         private bool loaded;
         public void insert_log(string log_mess, Form caller)
@@ -472,7 +472,6 @@ namespace l_application_pour_diploma {
                 trouv?.toFrancais();
                 beaucoup?.toFrancais();
                 vran?.ToFrancais();
-                mediaset?.ToFrancais();
                 lang = 0;
             }
         }
@@ -501,7 +500,6 @@ namespace l_application_pour_diploma {
                 label10.Text = "Кол-во сост.:";
                 label3.Text = "Тек. сост.:";
                 label4.Text = "Нач. сост.:";
-                environnementAvancésToolStripMenuItem.Text = "Параметры среды";
 
                 button2.Text = "Сгенерировать единицы";
                 checkBox1.Text = "Сохранить препятствия";
@@ -520,8 +518,7 @@ namespace l_application_pour_diploma {
             }
         }
 
-        private void arbreCouvrantToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void arbreCouvrantToolStripMenuItem_Click(object sender, EventArgs e){
             if (span == null)
             {
                 span = new Spann(this);
@@ -529,19 +526,6 @@ namespace l_application_pour_diploma {
                 span.Show();
             }
             span.Focus();
-        }
-        internal MediaSettings? mediaset;
-
-
-        private void environnementAvancésToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (mediaset == null)
-            {
-                mediaset = new MediaSettings(this);
-                if (lang == 1) mediaset.ToRusse();
-                mediaset.Show();
-            }
-            mediaset.Focus();
         }
 
         private void numericUpDown6_ValueChanged(object sender, EventArgs e)

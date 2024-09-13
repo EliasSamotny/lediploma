@@ -45,7 +45,13 @@
             groupBox1 = new GroupBox();
             label1 = new Label();
             groupBox4 = new GroupBox();
+            groupBox5 = new GroupBox();
+            comboBox3 = new ComboBox();
             comboBox2 = new ComboBox();
+            groupBox6 = new GroupBox();
+            groupBox7 = new GroupBox();
+            comboBox4 = new ComboBox();
+            comboBox5 = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
@@ -54,6 +60,9 @@
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
             groupBox4.SuspendLayout();
+            groupBox5.SuspendLayout();
+            groupBox6.SuspendLayout();
+            groupBox7.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox1
@@ -61,7 +70,7 @@
             pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox1.Location = new Point(298, 12);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(740, 624);
+            pictureBox1.Size = new Size(740, 665);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             pictureBox1.MouseClick += pictureBox1_MouseClick;
@@ -72,7 +81,7 @@
             // 
             groupBox3.Controls.Add(numericUpDown3);
             groupBox3.Controls.Add(numericUpDown4);
-            groupBox3.Location = new Point(164, 137);
+            groupBox3.Location = new Point(164, 215);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(128, 56);
             groupBox3.TabIndex = 17;
@@ -111,7 +120,7 @@
             dataGridView1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2 });
-            dataGridView1.Location = new Point(12, 340);
+            dataGridView1.Location = new Point(12, 381);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowTemplate.Height = 25;
@@ -136,7 +145,7 @@
             // button5
             // 
             button5.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button5.Location = new Point(152, 270);
+            button5.Location = new Point(152, 311);
             button5.Name = "button5";
             button5.Size = new Size(140, 29);
             button5.TabIndex = 21;
@@ -147,7 +156,7 @@
             // button6
             // 
             button6.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button6.Location = new Point(12, 270);
+            button6.Location = new Point(12, 311);
             button6.Name = "button6";
             button6.Size = new Size(134, 29);
             button6.TabIndex = 20;
@@ -178,7 +187,7 @@
             // button3
             // 
             button3.Anchor = AnchorStyles.Left;
-            button3.Location = new Point(130, 235);
+            button3.Location = new Point(130, 276);
             button3.Name = "button3";
             button3.Size = new Size(162, 29);
             button3.TabIndex = 23;
@@ -188,7 +197,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(12, 235);
+            button4.Location = new Point(12, 276);
             button4.Name = "button4";
             button4.Size = new Size(112, 29);
             button4.TabIndex = 24;
@@ -198,7 +207,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(12, 305);
+            button1.Location = new Point(12, 346);
             button1.Name = "button1";
             button1.Size = new Size(280, 29);
             button1.TabIndex = 24;
@@ -209,12 +218,12 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(label1);
-            groupBox1.Location = new Point(18, 138);
+            groupBox1.Location = new Point(12, 215);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(140, 55);
+            groupBox1.Size = new Size(146, 55);
             groupBox1.TabIndex = 25;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Length d'arbre";
+            groupBox1.Text = "Longueur d'arbre";
             // 
             // label1
             // 
@@ -227,6 +236,7 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(groupBox5);
             groupBox4.Controls.Add(comboBox2);
             groupBox4.Location = new Point(12, 74);
             groupBox4.Name = "groupBox4";
@@ -234,6 +244,25 @@
             groupBox4.TabIndex = 22;
             groupBox4.TabStop = false;
             groupBox4.Text = "L'algorythme";
+            // 
+            // groupBox5
+            // 
+            groupBox5.Controls.Add(comboBox3);
+            groupBox5.Location = new Point(158, 57);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Size = new Size(280, 56);
+            groupBox5.TabIndex = 26;
+            groupBox5.TabStop = false;
+            groupBox5.Text = "L'algorythme";
+            // 
+            // comboBox3
+            // 
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Items.AddRange(new object[] { "Fermat", "Kruskal" });
+            comboBox3.Location = new Point(6, 21);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new Size(268, 30);
+            comboBox3.TabIndex = 0;
             // 
             // comboBox2
             // 
@@ -245,27 +274,69 @@
             comboBox2.TabIndex = 0;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
+            // groupBox6
+            // 
+            groupBox6.Controls.Add(groupBox7);
+            groupBox6.Controls.Add(comboBox5);
+            groupBox6.Location = new Point(12, 136);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Size = new Size(280, 56);
+            groupBox6.TabIndex = 26;
+            groupBox6.TabStop = false;
+            groupBox6.Text = "Politique de routage (pour Krouskal)";
+            // 
+            // groupBox7
+            // 
+            groupBox7.Controls.Add(comboBox4);
+            groupBox7.Location = new Point(158, 57);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Size = new Size(280, 56);
+            groupBox7.TabIndex = 26;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "L'algorythme";
+            // 
+            // comboBox4
+            // 
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Items.AddRange(new object[] { "Fermat", "Kruskal" });
+            comboBox4.Location = new Point(6, 21);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(268, 30);
+            comboBox4.TabIndex = 0;
+            // 
+            // comboBox5
+            // 
+            comboBox5.FormattingEnabled = true;
+            comboBox5.Items.AddRange(new object[] { "Pas de point principal", "Premier point est principal" });
+            comboBox5.Location = new Point(6, 21);
+            comboBox5.Name = "comboBox5";
+            comboBox5.Size = new Size(268, 30);
+            comboBox5.TabIndex = 0;
+            comboBox5.SelectedIndexChanged += comboBox5_SelectedIndexChanged;
+            // 
             // Spann
             // 
             AutoScaleDimensions = new SizeF(9F, 22F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1050, 648);
+            ClientSize = new Size(1050, 689);
+            Controls.Add(groupBox6);
             Controls.Add(groupBox1);
             Controls.Add(button3);
             Controls.Add(button1);
             Controls.Add(button4);
-            Controls.Add(groupBox4);
-            Controls.Add(groupBox2);
             Controls.Add(button5);
             Controls.Add(button6);
             Controls.Add(dataGridView1);
             Controls.Add(groupBox3);
+            Controls.Add(groupBox4);
+            Controls.Add(groupBox2);
             Controls.Add(pictureBox1);
             Font = new Font("Palatino Linotype", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Margin = new Padding(4);
             Name = "Spann";
             Text = "Spanning tree";
             FormClosing += Spann_FormClosing;
+            Load += Spann_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
@@ -275,6 +346,9 @@
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox4.ResumeLayout(false);
+            groupBox5.ResumeLayout(false);
+            groupBox6.ResumeLayout(false);
+            groupBox7.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -298,5 +372,11 @@
         private Label label1;
         private GroupBox groupBox4;
         private ComboBox comboBox2;
+        private GroupBox groupBox5;
+        private ComboBox comboBox3;
+        private GroupBox groupBox6;
+        private GroupBox groupBox7;
+        private ComboBox comboBox4;
+        private ComboBox comboBox5;
     }
 }

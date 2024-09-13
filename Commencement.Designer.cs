@@ -43,7 +43,6 @@
             calculationsDeChemanPourBeaucoupPointsToolStripMenuItem = new ToolStripMenuItem();
             diagrammeDeVoronoїToolStripMenuItem = new ToolStripMenuItem();
             arbreCouvrantToolStripMenuItem = new ToolStripMenuItem();
-            environnementAvancésToolStripMenuItem = new ToolStripMenuItem();
             langueToolStripMenuItem = new ToolStripMenuItem();
             françaisToolStripMenuItem = new ToolStripMenuItem();
             russeToolStripMenuItem = new ToolStripMenuItem();
@@ -171,7 +170,7 @@
             // 
             // desFenêtresToolStripMenuItem
             // 
-            desFenêtresToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desCalculationsDeCheminsToolStripMenuItem, calculationsDeChemanPourBeaucoupPointsToolStripMenuItem, diagrammeDeVoronoїToolStripMenuItem, arbreCouvrantToolStripMenuItem, environnementAvancésToolStripMenuItem });
+            desFenêtresToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desCalculationsDeCheminsToolStripMenuItem, calculationsDeChemanPourBeaucoupPointsToolStripMenuItem, diagrammeDeVoronoїToolStripMenuItem, arbreCouvrantToolStripMenuItem });
             desFenêtresToolStripMenuItem.Name = "desFenêtresToolStripMenuItem";
             desFenêtresToolStripMenuItem.Size = new Size(78, 26);
             desFenêtresToolStripMenuItem.Text = "Fenêtres";
@@ -203,13 +202,6 @@
             arbreCouvrantToolStripMenuItem.Size = new Size(392, 26);
             arbreCouvrantToolStripMenuItem.Text = "Arbre couvrant";
             arbreCouvrantToolStripMenuItem.Click += arbreCouvrantToolStripMenuItem_Click;
-            // 
-            // environnementAvancésToolStripMenuItem
-            // 
-            environnementAvancésToolStripMenuItem.Name = "environnementAvancésToolStripMenuItem";
-            environnementAvancésToolStripMenuItem.Size = new Size(392, 26);
-            environnementAvancésToolStripMenuItem.Text = "Environnement avancés";
-            environnementAvancésToolStripMenuItem.Click += environnementAvancésToolStripMenuItem_Click;
             // 
             // langueToolStripMenuItem
             // 
@@ -563,7 +555,6 @@
         private ToolStripMenuItem diagrammeDeVoronoїToolStripMenuItem;
         private System.Windows.Forms.Timer timer1;
         private ToolStripMenuItem arbreCouvrantToolStripMenuItem;
-        private ToolStripMenuItem environnementAvancésToolStripMenuItem;
         internal NumericUpDown numericUpDown1;
         internal NumericUpDown numericUpDown2;
         private DataGridView dataGridView2;
