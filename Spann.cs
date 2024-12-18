@@ -58,7 +58,7 @@ namespace l_application_pour_diploma{
             refr(true);
             comboBox1.SelectedIndex = 2;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox2.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 1;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox5.SelectedIndex = 1;
             comboBox5.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -934,7 +934,7 @@ namespace l_application_pour_diploma{
                     excelcells.set_Value(Type.Missing, String.Format("{0}", "Routes"));
                     List<decimal> euclid = new List<decimal>();
 
-                    for (int k = 0; k < routes.Select(list => list.Count).Max(); k++)
+                    for (int k = 0; k < curr_routes.Select(list => list.Count).Max(); k++)
                     { //routes points numbers init
                         excelcells = excelworksheet.get_Range(numColu(11 + k) + Convert.ToString(2), Type.Missing);
                         excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{k + 1}")));
@@ -961,7 +961,7 @@ namespace l_application_pour_diploma{
                             excelcells = excelworksheet.get_Range(numColu(8) + Convert.ToString(3 + i), Type.Missing); //delta abs
                             excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{links_length[i] - valu}").Replace(',', '.')));
                             excelcells = excelworksheet.get_Range(numColu(9) + Convert.ToString(i + 3), Type.Missing); //delta rel
-                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{(links_length[i] - valu) / links_length[i] * 100}%").Replace(',', '.')));
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{(links_length[i] - valu) / links_length[i] * 100}").Replace(',', '.')));
 
                             for (int k = 0; k < routes[i].Count; k++)
                             { //route constucting
@@ -987,9 +987,9 @@ namespace l_application_pour_diploma{
                             excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{val}").Replace(',', '.')));
 
                             excelcells = excelworksheet.get_Range(numColu(7) + Convert.ToString(3 + i), Type.Missing); //delta abs
-                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{curr_links_length[i] - val}").Replace(',', '.')));
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{Math.Abs(curr_links_length[i] - val)}").Replace(',', '.')));
                             excelcells = excelworksheet.get_Range(numColu(8) + Convert.ToString(i + 3), Type.Missing); //delta rel
-                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{(curr_links_length[i] - val) / links_length[i] * 100}").Replace(',', '.')));
+                            excelcells.set_Value(Type.Missing, String.Format("{0}", Convert.ToString($"{Math.Abs(curr_links_length[i] - val) / links_length[i] * 100}").Replace(',', '.')));
 
                             for (int k = 0; k < curr_routes[i].Count; k++)
                             { //route constucting

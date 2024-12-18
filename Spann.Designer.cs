@@ -95,7 +95,6 @@
             numericUpDown3.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
-            numericUpDown3.ReadOnly = true;
             numericUpDown3.Size = new Size(38, 29);
             numericUpDown3.TabIndex = 1;
             numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -107,7 +106,6 @@
             numericUpDown4.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             numericUpDown4.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown4.Name = "numericUpDown4";
-            numericUpDown4.ReadOnly = true;
             numericUpDown4.Size = new Size(40, 29);
             numericUpDown4.TabIndex = 1;
             numericUpDown4.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -144,7 +142,7 @@
             // 
             // button5
             // 
-            button5.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button5.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             button5.Location = new Point(152, 311);
             button5.Name = "button5";
             button5.Size = new Size(140, 29);
@@ -186,7 +184,7 @@
             // 
             // button3
             // 
-            button3.Anchor = AnchorStyles.Left;
+            button3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button3.Location = new Point(130, 276);
             button3.Name = "button3";
             button3.Size = new Size(162, 29);
@@ -207,6 +205,7 @@
             // 
             // button1
             // 
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             button1.Location = new Point(12, 346);
             button1.Name = "button1";
             button1.Size = new Size(280, 29);

@@ -50,8 +50,6 @@
             groupBox1 = new GroupBox();
             timer1 = new System.Windows.Forms.Timer(components);
             dataGridView2 = new DataGridView();
-            Column1 = new DataGridViewTextBoxColumn();
-            Column2 = new DataGridViewTextBoxColumn();
             groupBox5 = new GroupBox();
             checkBox3 = new CheckBox();
             checkBox1 = new CheckBox();
@@ -70,6 +68,8 @@
             numericUpDown4 = new NumericUpDown();
             numericUpDown3 = new NumericUpDown();
             numericUpDown8 = new NumericUpDown();
+            Column1 = new DataGridViewTextBoxColumn();
+            Column2 = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             menuStrip1.SuspendLayout();
@@ -264,17 +264,6 @@
             dataGridView2.Size = new Size(248, 179);
             dataGridView2.TabIndex = 21;
             dataGridView2.CellEndEdit += dataGridView2_CellEndEdit;
-            // 
-            // Column1
-            // 
-            Column1.HeaderText = "Le temps";
-            Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            Column2.HeaderText = "L'etat";
-            Column2.Name = "Column2";
-            Column2.Width = 120;
             // 
             // groupBox5
             // 
@@ -498,6 +487,17 @@
             numericUpDown8.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown8.ValueChanged += numericUpDown8_ValueChanged;
             // 
+            // Column1
+            // 
+            Column1.HeaderText = "Длительность";
+            Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            Column2.HeaderText = "Состояние";
+            Column2.Name = "Column2";
+            Column2.Width = 120;
+            // 
             // Commencement
             // 
             AutoScaleDimensions = new SizeF(9F, 22F);
@@ -558,8 +558,6 @@
         internal NumericUpDown numericUpDown1;
         internal NumericUpDown numericUpDown2;
         private DataGridView dataGridView2;
-        private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn Column2;
         private GroupBox groupBox5;
         private CheckBox checkBox3;
         private CheckBox checkBox1;
@@ -578,5 +576,7 @@
         internal NumericUpDown numericUpDown8;
         private Label label4;
         internal NumericUpDown numericUpDown3;
+        private DataGridViewTextBoxColumn Column1;
+        private DataGridViewTextBoxColumn Column2;
     }
 }

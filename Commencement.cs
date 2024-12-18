@@ -21,9 +21,9 @@ namespace l_application_pour_diploma {
         public string? Filename;
         internal byte lang; // 0 - francais, 1 - russe
         internal List<decimal[,]> source;
-        private bool global_log_allowed = true;
+        private bool global_log_allowed = false;
         private static readonly object log_locker = new object();
-        string logFilePath = "C:\\Users\\Intell\\Desktop\\log.log.txt";
+        string logFilePath = "C:\\Users\\Intell\\Desktop\\log.log";
         internal int stateShift;
         private bool loaded;
         public void insert_log(string log_mess, Form caller)
@@ -396,6 +396,7 @@ namespace l_application_pour_diploma {
                 }
             }
             loaded = false;
+            if (checkBox3.Checked) fillcolors();
         }
         private void sûrLauteurToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -621,6 +622,7 @@ namespace l_application_pour_diploma {
                     }
             }
             else numericUpDown8.Value = numericUpDown4.Value;
+            if (checkBox3.Checked) fillcolors();
         }
 
         private void numericUpDown4_ValueChanged(object sender, EventArgs e){
@@ -642,7 +644,7 @@ namespace l_application_pour_diploma {
 
                 }
                 source.Add(newsource);
-                dataGridView2.Rows.Add(new object[] { 10, source.Count });
+                dataGridView2.Rows.Add(new object[] { 10, source.Count-1 });
                 transitions.Add(10);
                 numericUpDown8.Maximum = source.Count;
                 numericUpDown3.Maximum = source.Count;
@@ -696,7 +698,7 @@ namespace l_application_pour_diploma {
                     }
 
             }
-            else numericUpDown3.Value = numericUpDown1.Value;
+            else numericUpDown3.Value = numericUpDown4.Value;
             stateShift = (int)numericUpDown3.Value - 1;
             if (checkBox5.Checked) refreshdata();
         }
