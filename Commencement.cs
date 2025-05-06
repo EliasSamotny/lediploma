@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System;
 using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Bibliography;
+using System.Diagnostics.Metrics;
 
 namespace l_application_pour_diploma {
     public partial class Commencement : Form
@@ -57,6 +58,7 @@ namespace l_application_pour_diploma {
         internal Beaucoup? beaucoup;
         internal Vran? vran;
         internal Spann? span;
+        internal Couvertures? couver;
         internal List<decimal> transitions;
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -74,7 +76,8 @@ namespace l_application_pour_diploma {
             insert_log("Form loaded.", this);
             dataGridView1.AutoResizeColumns();
         }
-        private void set_unites(){
+        private void set_unites()
+        {
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
             source[(int)numericUpDown8.Value - 1] = new decimal[r, c];
             for (int i = 0; i < dataGridView1.RowCount; i++)
@@ -92,40 +95,52 @@ namespace l_application_pour_diploma {
             if (checkBox3.Checked) fillcolors();
             else clearcolors();
         }
-        private void set_mount(){
+        private void set_mount()
+        {
             int r = (int)numericUpDown1.Value, c = (int)numericUpDown2.Value;
             source = new() { new decimal[r, c] };
-            for (int i = 0; i < r; i++){
-                for (int j = 0; j < c; j++) {
-                    try{
+            for (int i = 0; i < r; i++)
+            {
+                for (int j = 0; j < c; j++)
+                {
+                    try
+                    {
                         source[0][i, j] = mountagne(i, j, r, c);
                     }
-                    catch (Exception){
+                    catch (Exception)
+                    {
                         source[0][i, j] = -1;
                     }
                 }
             }
         }
-        private decimal mountagne(int i, int j, int r, int c){
+        private decimal mountagne(int i, int j, int r, int c)
+        {
             double icoef = 0.5;
             double jcoef = 0.5;
             return 1 / (decimal)(Math.Pow((i - r / 2) * icoef, 2) / 2 + Math.Pow((j - c / 2) * jcoef, 2) / 2);
         }
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e) {
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
             if (source[0].GetLength(0) < (int)numericUpDown1.Value && !loaded)
-                for (int k = 0; k < source.Count; k++){
+                for (int k = 0; k < source.Count; k++)
+                {
                     decimal[,] newArray = new decimal[(int)numericUpDown1.Value, source[0].GetLength(1)];
 
                     // Copy the values from the original array to the new array
                     //Array.Copy(source[k], 0, newArray, 0, source[k].Length);
 
-                    for (int i = 0; i < source[k].GetLength(0); i++){
-                        for (int j = 0; j < source[k].GetLength(1); j++){
+                    for (int i = 0; i < source[k].GetLength(0); i++)
+                    {
+                        for (int j = 0; j < source[k].GetLength(1); j++)
+                        {
                             newArray[i, j] = source[k][i, j];
                         }
                     }
-                    for (int i = source[k].GetLength(0); i < (int)numericUpDown1.Value; i++){
-                        for (int j = 0; j < source[k].GetLength(1); j++){
+                    for (int i = source[k].GetLength(0); i < (int)numericUpDown1.Value; i++)
+                    {
+                        for (int j = 0; j < source[k].GetLength(1); j++)
+                        {
                             newArray[i, j] = source[k][source[k].GetLength(0) - 1, j];
                         }
                     }
@@ -133,14 +148,18 @@ namespace l_application_pour_diploma {
                     source[k] = newArray;
                     refreshdata();
                 }
-            else if (!loaded){
-                for (int k = 0; k < source.Count; k++){
+            else if (!loaded)
+            {
+                for (int k = 0; k < source.Count; k++)
+                {
                     decimal[,] newArray = new decimal[(int)numericUpDown1.Value, source[0].GetLength(1)];
 
                     // Copy the values from the original array to the new array
                     //Array.Copy(source[k], 0, newArray, 0, source[k].Length);
-                    for (int i = 0; i < newArray.GetLength(0); i++){
-                        for (int j = 0; j < source[k].GetLength(1); j++){
+                    for (int i = 0; i < newArray.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < source[k].GetLength(1); j++)
+                        {
                             newArray[i, j] = source[k][i, j];
                         }
                     }
@@ -156,16 +175,19 @@ namespace l_application_pour_diploma {
                 }
                 refreshdata();
             }
-            
+
         }
-        internal void refreshdata(){
+        internal void refreshdata()
+        {
             dataGridView1.RowCount = (int)numericUpDown1.Value;
             dataGridView1.ColumnCount = (int)numericUpDown2.Value;
             int r = dataGridView1.RowCount, c = dataGridView1.ColumnCount;
 
             insert_log("Refreshing forms...", this);
-            for (int i = 0; i < r; i++){
-                for (int j = 0; j < c; j++){
+            for (int i = 0; i < r; i++)
+            {
+                for (int j = 0; j < c; j++)
+                {
                     dataGridView1.Rows[i].Cells[j].Value = source[Convert.ToInt32(numericUpDown8.Value) - 1][i, j];
                 }
             }
@@ -174,21 +196,27 @@ namespace l_application_pour_diploma {
             span?.refr(true);
             insert_log("Forms refreshed.", this);
         }
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e) {
-            if (source[0].GetLength(1) < (int)numericUpDown2.Value && !loaded){
-                for (int k = 0; k < source.Count; k++){
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            if (source[0].GetLength(1) < (int)numericUpDown2.Value && !loaded)
+            {
+                for (int k = 0; k < source.Count; k++)
+                {
                     decimal[,] newArray = new decimal[source[0].GetLength(0), (int)numericUpDown2.Value];
 
                     // Copy the values from the original array to the new array
                     //Array.Copy(source[k], 0, newArray, 0, source[k].Length);
-                    for (int i = 0; i < source[k].GetLength(0); i++){
+                    for (int i = 0; i < source[k].GetLength(0); i++)
+                    {
                         for (int j = 0; j < source[k].GetLength(1); j++)
                         {
                             newArray[i, j] = source[k][i, j];
                         }
                     }
-                    for (int j = source[k].GetLength(1); j < (int)numericUpDown2.Value; j++){
-                        for (int i = 0; i < source[k].GetLength(0); i++){
+                    for (int j = source[k].GetLength(1); j < (int)numericUpDown2.Value; j++)
+                    {
+                        for (int i = 0; i < source[k].GetLength(0); i++)
+                        {
                             newArray[i, j] = source[k][i, source[k].GetLength(1) - 1];
                         }
                     }
@@ -197,8 +225,10 @@ namespace l_application_pour_diploma {
                 }
                 refreshdata();
             }
-            else if (!loaded){
-                for (int k = 0; k < source.Count; k++){
+            else if (!loaded)
+            {
+                for (int k = 0; k < source.Count; k++)
+                {
                     decimal[,] newArray = new decimal[source[0].GetLength(0), (int)numericUpDown2.Value];
 
                     // Copy the values from the original array to the new array
@@ -222,7 +252,7 @@ namespace l_application_pour_diploma {
             }
         }
         private void numericUpDown1_KeyPress(object sender, KeyPressEventArgs e) { }
-        private void numericUpDown1_KeyUp(object sender, KeyEventArgs e){ }
+        private void numericUpDown1_KeyUp(object sender, KeyEventArgs e) { }
         private void numericUpDown2_KeyPress(object sender, KeyPressEventArgs e) { }
         private void numericUpDown2_KeyUp(object sender, KeyEventArgs e) { }
         private void desCalculationsDeCheminsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -315,10 +345,10 @@ namespace l_application_pour_diploma {
             string fileExt = string.Empty;
             if (file.ShowDialog() == DialogResult.OK){
                 insert_log("Loading media...", this);
-                
+
                 filePath = file.FileName; //get the path of the file
                 fileExt = Path.GetExtension(filePath); //get the file extension
-                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0) {
+                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0){
                     //try{
                     source = new List<decimal[,]>();
                     transitions = new List<decimal>();
@@ -357,7 +387,8 @@ namespace l_application_pour_diploma {
                     xlRange = xlWorksheet.UsedRange;
                     transitions = new();
                     dataGridView2.RowCount = 0;
-                    for (int k = 0; k < xlWorkbook.Sheets.Count - 2; k++) {                        
+                    for (int k = 0; k < xlWorkbook.Sheets.Count - 2; k++)
+                    {
                         var valueloc = Convert.ToDecimal(xlWorksheet.Cells[k + 2, 2].Value);
                         transitions.Add(valueloc);
                         dataGridView2.Rows.Add(new object[] { transitions[k], k + 1 });
@@ -519,7 +550,8 @@ namespace l_application_pour_diploma {
             }
         }
 
-        private void arbreCouvrantToolStripMenuItem_Click(object sender, EventArgs e){
+        private void arbreCouvrantToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             if (span == null)
             {
                 span = new Spann(this);
@@ -608,14 +640,18 @@ namespace l_application_pour_diploma {
         }
 
         private void button2_Click(object sender, EventArgs e) { set_unites(); }
-        private void cascade_update(bool changed){
+        private void cascade_update(bool changed)
+        {
             vran?.refr(changed);
             trouv?.refresh(changed);
         }
-        private void numericUpDown8_ValueChanged(object sender, EventArgs e){
-            if (numericUpDown4.Value >= numericUpDown8.Value){
+        private void numericUpDown8_ValueChanged(object sender, EventArgs e)
+        {
+            if (numericUpDown4.Value >= numericUpDown8.Value)
+            {
                 for (int i = 0; i < dataGridView1.RowCount; i++)
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++){
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
                         if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
                             dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
                         else dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
@@ -625,8 +661,10 @@ namespace l_application_pour_diploma {
             if (checkBox3.Checked) fillcolors();
         }
 
-        private void numericUpDown4_ValueChanged(object sender, EventArgs e){
-            if (source.Count > (int)numericUpDown4.Value){
+        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
+        {
+            if (source.Count > (int)numericUpDown4.Value)
+            {
                 source.RemoveAt(source.Count - 1);
                 dataGridView2.Rows.RemoveAt(source.Count - 1);
                 transitions.RemoveAt(transitions.Count - 1);
@@ -634,17 +672,20 @@ namespace l_application_pour_diploma {
                 numericUpDown3.Maximum = transitions.Count;
                 numericUpDown8.Value = transitions.Count;
             }
-            else{
+            else
+            {
                 int r = (int)numericUpDown1.Value, c = (int)numericUpDown2.Value;
                 decimal[,] newsource = new decimal[r, c];
-                for (int i = 0; i < r; i++){
-                    for (int j = 0; j < c; j++) {
+                for (int i = 0; i < r; i++)
+                {
+                    for (int j = 0; j < c; j++)
+                    {
                         newsource[i, j] = source[^1][i, j] * 1.1m;
                     }
 
                 }
                 source.Add(newsource);
-                dataGridView2.Rows.Add(new object[] { 10, source.Count-1 });
+                dataGridView2.Rows.Add(new object[] { 10, source.Count - 1 });
                 transitions.Add(10);
                 numericUpDown8.Maximum = source.Count;
                 numericUpDown3.Maximum = source.Count;
@@ -653,12 +694,15 @@ namespace l_application_pour_diploma {
             if (checkBox5.Checked) refreshdata();
         }
 
-        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e){
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
             bool curr = false;
             int currstate = (int)numericUpDown8.Value - 1;
-            if (dataGridView1.SelectedCells[0].Value != null){
+            if (dataGridView1.SelectedCells[0].Value != null)
+            {
                 string str = dataGridView1.SelectedCells[0].Value.ToString();
-                if ((str[0] >= '0' && str[0] <= '9' || str[0] == '-') && str.Length > 0){
+                if ((str[0] >= '0' && str[0] <= '9' || str[0] == '-') && str.Length > 0)
+                {
                     curr = true;
                     for (int i = 1; i < str.Length; i++)
                         if ((str[i] < '0' || str[i] > '9') && str[i] != ',')
@@ -667,7 +711,8 @@ namespace l_application_pour_diploma {
                             break;
                         }
                 }
-                if (curr){
+                if (curr)
+                {
                     source[currstate][e.RowIndex, e.ColumnIndex] = Convert.ToDecimal(dataGridView1.SelectedCells[0].Value);
                     if (checkBox3.Checked) fillcolors();
                     trouv?.refresh(true);
@@ -675,23 +720,28 @@ namespace l_application_pour_diploma {
                     span?.refr(true);
 
                 }
-                else{
+                else
+                {
                     MessageBox.Show("Invalid number");
                     //if (own.trouv != null) own.trouv.clearcells();
                     dataGridView1.SelectedCells[0].Value = -1;
                 }
             }
-            else{
+            else
+            {
                 MessageBox.Show("Invalid number");
                 //if (own.trouv != null) own.trouv.clearcells();
                 dataGridView1.SelectedCells[0].Value = -1;
             }
         }
 
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e){
-            if (numericUpDown4.Value >= numericUpDown8.Value){
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            if (numericUpDown4.Value >= numericUpDown8.Value)
+            {
                 for (int i = 0; i < dataGridView1.RowCount; i++)
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++){
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
                         if (Convert.ToDecimal(dataGridView1.Rows[i].Cells[j].Value) < 0)
                             dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
                         else dataGridView1.Rows[i].Cells[j].Value = source[(int)numericUpDown8.Value - 1][i, j];
@@ -703,6 +753,15 @@ namespace l_application_pour_diploma {
             if (checkBox5.Checked) refreshdata();
         }
 
-        private void numericUpDown4_KeyUp(object sender, KeyEventArgs e){ }
+        private void numericUpDown4_KeyUp(object sender, KeyEventArgs e) { }
+
+        private void couverturesToolStripMenuItem_Click(object sender, EventArgs e){
+            if (couver == null){
+                couver = new Couvertures(this);
+                if (lang == 1) couver.toRusse();
+                couver.Show();
+            }
+            couver.Focus();
+        }
     }
 }

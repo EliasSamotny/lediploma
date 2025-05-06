@@ -265,10 +265,11 @@ namespace l_application_pour_diploma{
                                   .ToList();
                     List<Point> unvisited = points.Except(waved).ToList();
                     if (unvisited.Count > 0){
-                        Point next = unvisited.Where(p => wavessum[p.X, p.Y] > 0)
-                                .OrderBy(p => wavessum[p.X, p.Y])
-                                .DefaultIfEmpty(unvisited[0])
-                                .FirstOrDefault();
+                        Point next = unvisited
+                            .Where(p => wavessum[p.X, p.Y] > 0)
+                            .OrderBy(p => wavessum[p.X, p.Y])
+                            .DefaultIfEmpty(unvisited[0])
+                            .FirstOrDefault();
                         waved.Add(next);
                         var resultwaving = waving_in_domain_from_point(next);
                         var wave = resultwaving.destinl;

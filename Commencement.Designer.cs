@@ -50,6 +50,8 @@
             groupBox1 = new GroupBox();
             timer1 = new System.Windows.Forms.Timer(components);
             dataGridView2 = new DataGridView();
+            Column1 = new DataGridViewTextBoxColumn();
+            Column2 = new DataGridViewTextBoxColumn();
             groupBox5 = new GroupBox();
             checkBox3 = new CheckBox();
             checkBox1 = new CheckBox();
@@ -68,8 +70,7 @@
             numericUpDown4 = new NumericUpDown();
             numericUpDown3 = new NumericUpDown();
             numericUpDown8 = new NumericUpDown();
-            Column1 = new DataGridViewTextBoxColumn();
-            Column2 = new DataGridViewTextBoxColumn();
+            couverturesToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             menuStrip1.SuspendLayout();
@@ -170,7 +171,7 @@
             // 
             // desFenêtresToolStripMenuItem
             // 
-            desFenêtresToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desCalculationsDeCheminsToolStripMenuItem, calculationsDeChemanPourBeaucoupPointsToolStripMenuItem, diagrammeDeVoronoїToolStripMenuItem, arbreCouvrantToolStripMenuItem });
+            desFenêtresToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desCalculationsDeCheminsToolStripMenuItem, calculationsDeChemanPourBeaucoupPointsToolStripMenuItem, diagrammeDeVoronoїToolStripMenuItem, arbreCouvrantToolStripMenuItem, couverturesToolStripMenuItem });
             desFenêtresToolStripMenuItem.Name = "desFenêtresToolStripMenuItem";
             desFenêtresToolStripMenuItem.Size = new Size(78, 26);
             desFenêtresToolStripMenuItem.Text = "Fenêtres";
@@ -264,6 +265,17 @@
             dataGridView2.Size = new Size(248, 179);
             dataGridView2.TabIndex = 21;
             dataGridView2.CellEndEdit += dataGridView2_CellEndEdit;
+            // 
+            // Column1
+            // 
+            Column1.HeaderText = "Длительность";
+            Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            Column2.HeaderText = "Состояние";
+            Column2.Name = "Column2";
+            Column2.Width = 120;
             // 
             // groupBox5
             // 
@@ -487,16 +499,12 @@
             numericUpDown8.Value = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown8.ValueChanged += numericUpDown8_ValueChanged;
             // 
-            // Column1
+            // couverturesToolStripMenuItem
             // 
-            Column1.HeaderText = "Длительность";
-            Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            Column2.HeaderText = "Состояние";
-            Column2.Name = "Column2";
-            Column2.Width = 120;
+            couverturesToolStripMenuItem.Name = "couverturesToolStripMenuItem";
+            couverturesToolStripMenuItem.Size = new Size(392, 26);
+            couverturesToolStripMenuItem.Text = "Couvertures";
+            couverturesToolStripMenuItem.Click += couverturesToolStripMenuItem_Click;
             // 
             // Commencement
             // 
@@ -578,5 +586,6 @@
         internal NumericUpDown numericUpDown3;
         private DataGridViewTextBoxColumn Column1;
         private DataGridViewTextBoxColumn Column2;
+        private ToolStripMenuItem couverturesToolStripMenuItem;
     }
 }

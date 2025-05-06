@@ -47,6 +47,7 @@ namespace l_application_pour_diploma{
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox2.SelectedIndex = 0;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox3.SelectedIndex = 0;
             dataGridView1.AutoResizeColumns();
 
         }
@@ -56,7 +57,7 @@ namespace l_application_pour_diploma{
             numericUpDown4.Value = Convert.ToDecimal(dataGridView2.SelectedCells[0].ColumnIndex) + 1;
         }
         private void button4_Click(object sender, EventArgs e){refr(false);}
-        private decimal[,] waving_in_domain_from_point(List<Point> medium, Point commenc){
+        private (decimal[,], Point[,]) waving_in_domain_from_point(List<Point> medium, Point commenc){
             decimal[,] destinl = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
             Point[,] previosl = new Point[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
             int xlc = commenc.X; int xlc1 = xlc;
@@ -67,14 +68,12 @@ namespace l_application_pour_diploma{
 
             Parallel.For(0, (int)own.numericUpDown1.Value, i => {
                 for (int j = 0; j < (int)own.numericUpDown2.Value; j++) {
-                    if (medium.Contains(new(i, j)))
-                    {
+                    if (medium.Contains(new(i, j))){
                         accessl[i, j] = true;
                         destinl[i, j] = -2;
                         vis[i, j] = false;
                     }
-                    else
-                    {
+                    else{
                         accessl[i, j] = false;
                         vis[i, j] = true;
                         destinl[i, j] = -1;
@@ -86,8 +85,7 @@ namespace l_application_pour_diploma{
             previosl[xlc, ylc] = new(-2, -2);
             destinl[xlc, ylc] = 0;
 
-            while (!checkallvis(vis))
-            {
+            while (!checkallvis(vis)){
                 vis[xlc1, ylc1] = true;
                 //treads get lost here
                 Parallel.For(0, size_rayon, h => { calculcell(ref accessl, ref destinl, ref previosl, xlc1 + voisins[h].X, ylc1 + voisins[h].Y, xlc1, ylc1); });
@@ -145,11 +143,10 @@ namespace l_application_pour_diploma{
                     minim = destinl[el.X, el.Y];
                 }
             }*/
-            return destinl;
+            return (destinl, previosl);
         }
-        private decimal trouv_radius(List<Point> medium, Point centrel)
-        {
-            var wave = waving_in_domain_from_point(medium, centrel);
+        private decimal trouv_radius(List<Point> medium, Point centrel){
+            var wave = waving_in_domain_from_point(medium, centrel).Item1;
             var frontl = get_frontiers(medium);
             //Point min_point = new();
             decimal minim = frontl
@@ -159,6 +156,17 @@ namespace l_application_pour_diploma{
                 .Min(); // Find the minimum value
             return minim;
         }
+        private decimal trouv_radius_cov(List<Point> medium, Point centrel){
+            var wave = waving_in_domain_from_point(medium, centrel).Item1;
+            var frontl = get_frontiers(medium);
+            //Point min_point = new();
+            decimal minim = frontl
+                .Select(point => wave[point.X, point.Y]) // Select the corresponding wave value for each frontier point
+                .Where(value => value > 0) // Filter out negative values
+                .DefaultIfEmpty(decimal.MaxValue) // If there are no positive values, set the default value to decimal.MaxValue
+                .Max(); // Find the maximum value
+            return minim;
+        }
         private int determ_submed(Point p)
         {
             for (int i = 0; i < submedia.Count; i++)
@@ -166,8 +174,12 @@ namespace l_application_pour_diploma{
                     return i;
             return 0;
         }
-        internal void refr(bool changed_med)
-        {
+        internal void refr(bool changed_med){
+            if (comboBox3.SelectedIndex == 0)
+                own.insert_log("Voronoi diagram of circle packages is being build now...", this);
+            else
+                if (comboBox3.SelectedIndex == 1)
+                own.insert_log("Voronoi diagram of circle coverings is being build now...", this);
             own.insert_log("Refreshing the diagram...", this);
             wave_de_points = new();
             own.insert_log("Determining the pages of the media...", this);
@@ -332,63 +344,147 @@ namespace l_application_pour_diploma{
                 minrads = new();
                 own.insert_log($"        Domains established. Determining centres...", this);
                 object locker_waves = new();
-                foreach (var subset in owingpoints) {//chosing the centre for each
-                    Point centre = new();
-                    if (comboBox2.SelectedIndex == 0) {
-                                                //decimal[,] currwave = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
-                        decimal[,] waves = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
-                        var subset_front = get_frontiers(subset);
-                        //launching waves from frontiers
-                        Parallel.ForEach(subset_front, el => {
-                            decimal[,] wavesl = waving_in_domain_from_point(subset, el);
-                            lock (locker_waves){
-                                for (int i = 0; i < wavesl.GetLength(0); i++) {
-                                    for (int j = 0; j < wavesl.GetLength(1); j++){
-                                        waves[i, j] += wavesl[i, j];
+                if (comboBox3.SelectedIndex == 0){
+                    foreach (var subset in owingpoints) {//chosing the centre for each
+                        Point centre = new();
+                        if (comboBox2.SelectedIndex == 0) {
+                            //decimal[,] currwave = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
+                            decimal[,] waves = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
+                            var subset_front = get_frontiers(subset);
+                            //launching waves from frontiers
+                            Parallel.ForEach(subset_front, el => {
+                                decimal[,] wavesl = waving_in_domain_from_point(subset, el).Item1;
+                                lock (locker_waves){
+                                    for (int i = 0; i < wavesl.GetLength(0); i++) {
+                                        for (int j = 0; j < wavesl.GetLength(1); j++){
+                                            waves[i, j] += wavesl[i, j];
+                                        }
                                     }
                                 }
-                            }
-                        });
-                        decimal minl = decimal.MaxValue;
-                        for (int i = 0; i < waves.GetLength(0); i++) {
-                            for (int j = 0; j < waves.GetLength(1); j++)  {
-                                if (minl > waves[i, j] && waves[i, j] > 0) {
-                                    lock (waves) {
-                                        minl = waves[i, j];
-                                        centre = new(i, j);
+                            });
+                            decimal minl = decimal.MaxValue;
+                            for (int i = 0; i < waves.GetLength(0); i++) {
+                                for (int j = 0; j < waves.GetLength(1); j++) {
+                                    if (minl > waves[i, j] && waves[i, j] > 0) {
+                                        lock (waves) {
+                                            minl = waves[i, j];
+                                            centre = new(i, j);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    else if (comboBox2.SelectedIndex == 1){
-                        List<Points2> poiEtRadii = new();
-                        Parallel.ForEach(subset, el => {
-                            poiEtRadii.Add(new(el, trouv_radius(subset, el)));
-                        });
-                        centre = poiEtRadii.OrderByDescending(poi => poi.dest).First().point;
+                        else if (comboBox2.SelectedIndex == 1){
+                            List<Points2> poiEtRadii = new();
+                            Parallel.ForEach(subset, el => {
+                                poiEtRadii.Add(new(el, trouv_radius(subset, el)));
+                            });
+                            centre = poiEtRadii.OrderByDescending(poi => poi.dest).First().point;
 
-                    }
+                        }
 
-                    wave_de_points.Add(waving_in_domain_from_point(subset, centre));
-                    dataGridView2.Rows[centre.X].Cells[centre.Y].Style.BackColor = Color.DarkKhaki;
-                    curr_points.Add(new(centre.X, centre.Y));
+                        wave_de_points.Add(waving_in_domain_from_point(subset, centre).Item1);
+                        dataGridView2.Rows[centre.X].Cells[centre.Y].Style.BackColor = Color.DarkKhaki;
+                        curr_points.Add(new(centre.X, centre.Y));
 
-                    string formater = "0.##", formate = "0"; ;
-                    if (numericUpDown6.Value > 2) {
-                        for (int n = 2; n < numericUpDown6.Value; n++)
-                            formater += "#";
+                        string formater = "0.##", formate = "0"; ;
+                        if (numericUpDown6.Value > 2) {
+                            for (int n = 2; n < numericUpDown6.Value; n++)
+                                formater += "#";
+                        }
+                        if (numericUpDown6.Value > 0) {
+                            formate += ".";
+                            for (int n = 2; n < numericUpDown6.Value; n++)
+                                formate += "#";
+                        }
+                        minrads.Add(trouv_radius(subset, centre));
+                        dataGridView2.Rows[centre.X].Cells[centre.Y].Value = own.source[0][centre.X, centre.Y].ToString(formate) + "(" + minrads[^1].ToString(formater) + ")";
+                        label5.Text = $"Sum de radii = {minrads.Sum()}";
                     }
-                    if (numericUpDown6.Value > 0) {
-                        formate += ".";
-                        for (int n = 2; n < numericUpDown6.Value; n++)
-                            formate += "#";
-                    }
-                    minrads.Add(trouv_radius(subset, centre));
-                    dataGridView2.Rows[centre.X].Cells[centre.Y].Value = own.source[0][centre.X, centre.Y].ToString(formate) + "(" + minrads[^1].ToString(formater) + ")";
-                    label5.Text = $"Sum de radii = {minrads.Sum()}";
                 }
+                else
+                if (comboBox3.SelectedIndex == 1){
+                    Random random = new Random();
+                    var longest_pair = new List<(Point p1, Point p2, decimal length)>();
+                    foreach (var subset in owingpoints){//chosing the centre for each
+                        Point centre = new();
+                        //decimal[,] currwave = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
+                        decimal[,] waves = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
+                        var subset_front = get_frontiers(subset);
+                        if (subset_front.Count % 2 == 1){// discarding external one edged vertices to make it even
 
+                            var new_subset1 = new List<Point>(subset_front);
+                            foreach (var el in subset_front){
+                                int counter_nonvoisins = 0;
+                                for (int i = 0; i < 8; i++)
+                                    if (!new_subset1.Contains(new(el.X + voisins[i].X, el.Y + voisins[i].Y)))
+                                        counter_nonvoisins++;
+                                if (counter_nonvoisins == 1) new_subset1.Remove(el);
+                            }
+                            if (new_subset1.Count % 2 == 1 && new_subset1.Count < subset_front.Count)
+                                new_subset1.Add(new_subset1.Except(subset_front).ToList()[random.Next(new_subset1.Except(subset_front).ToList().Count)]);
+                            subset_front = new (new_subset1);
+                        }
+                        if (subset_front.Count % 2 == 1) //discard random to make it even
+                            subset_front.RemoveAt(random.Next(subset_front.Count));
+                        var greatest_pairs = new List<(Point p1, Point p2, decimal length)>();
+                        var remaining_front_points = new List<Point>(subset_front);
+                        while (remaining_front_points.Count > 0){ // forming greatest edges
+                            decimal[,] wavesl = waving_in_domain_from_point(subset, remaining_front_points[0]).Item1;
+                            var result = Enumerable.Range(0, wavesl.GetLength(0))
+                                .SelectMany(row => Enumerable.Range(0, wavesl.GetLength(1)),
+                                (row, col) => new { Row = row, Col = col, Value = wavesl[row, col] })
+                                .OrderByDescending(item => item.Value)
+                                .First();
+                            Point second = new(result.Row, result.Col);
+                            greatest_pairs.Add(new(remaining_front_points[0], second, result.Value));
+                            remaining_front_points.RemoveAt(0);
+                            remaining_front_points.Remove(second);
+                        }
+
+                        greatest_pairs.OrderByDescending(item => item.length);
+                        decimal half_max_length = greatest_pairs[0].length * 0.5m;
+                        var resultl = waving_in_domain_from_point(subset, greatest_pairs[0].p1);
+                        decimal[,] wavesll = resultl.Item1;
+                        Point[,] prevll = resultl.Item2;
+                        List<Point> routel = new List<Point> { greatest_pairs[0].p2 };
+
+                        while (routel[^1] != greatest_pairs[0].p1){// route trace
+                            routel.Add(prevll[routel[^1].X, routel[^1].Y]);
+                        }
+                        decimal delta = decimal.MaxValue;
+                        foreach (var el in routel){ //find the point which is the nearest to the center
+                            var res = wavesll[el.X, el.Y];
+                            if (delta > half_max_length - res){
+                                delta = Math.Abs(half_max_length - res);
+                                centre = new Point(el.X, el.Y);
+                            }
+                        }
+
+                        wave_de_points.Add(waving_in_domain_from_point(subset, centre).Item1);
+                        dataGridView2.Rows[centre.X].Cells[centre.Y].Style.BackColor = Color.DarkKhaki;
+                        curr_points.Add(new(centre.X, centre.Y));
+
+                        string formater = "0.##", formate = "0"; ;
+                        if (numericUpDown6.Value > 2){
+                            for (int n = 2; n < numericUpDown6.Value; n++)
+                                formater += "#";
+                        }
+                        if (numericUpDown6.Value > 0){
+                            formate += ".";
+                            for (int n = 2; n < numericUpDown6.Value; n++)
+                                formate += "#";
+                        }
+                        if (comboBox3.SelectedIndex == 0)
+                            minrads.Add(trouv_radius(subset, centre));
+                        if (comboBox3.SelectedIndex == 1)
+                            minrads.Add(trouv_radius_cov(subset, centre));
+                        dataGridView2.Rows[centre.X].Cells[centre.Y].Value = own.source[0][centre.X, centre.Y].ToString(formate) + "(" + minrads[^1].ToString(formater) + ")";
+                        label5.Text = $"Sum de radii = {minrads.Sum()}";
+                    }
+
+
+                }
                 Cursor.Current = Cursors.Default;
 
                 //waving from current centres to determine a min radius for each
@@ -889,7 +985,7 @@ namespace l_application_pour_diploma{
                             //foreach (var el in subset_front){
                             object locker_wave = new();
                             Parallel.ForEach(subset_front, el =>{
-                                decimal[,] wavesl = waving_in_domain_from_point(subset, el);
+                                decimal[,] wavesl = waving_in_domain_from_point(subset, el).Item1;
                                 for (int i = 0; i < wavesl.GetLength(0); i++){
                                     for (int j = 0; j < wavesl.GetLength(1); j++){
                                         lock (locker_wave) {
@@ -1008,6 +1104,9 @@ namespace l_application_pour_diploma{
             Column1.HeaderText = "La ligne";
             Column2.HeaderText = "La colonne";
 
+            groupBox7.Text = "Que minimiser?";
+            comboBox3.Items[0] = "Les paquets"; 
+            comboBox3.Items[1] = "Les revêtements";
 
             lesForfaitsToolStripMenuItem.Text = "Les forfaits";
 
@@ -1032,6 +1131,10 @@ namespace l_application_pour_diploma{
             comboBox1.Items[1] = "II радиус (16 направления)";
             comboBox1.Items[0] = "I радиус (8 направлений)";
             button2.Text = "Удалить";
+
+            groupBox7.Text = "Что минимизировать?";
+            comboBox3.Items[0] = "Упаковки";
+            comboBox3.Items[1] = "Покрытия";
 
 
             Text = "Диаграмма Вороного";
@@ -1186,7 +1289,7 @@ namespace l_application_pour_diploma{
                     decimal[,] waves = new decimal[(int)own.numericUpDown1.Value, (int)own.numericUpDown2.Value];
                     var subset_front = get_frontiers(subset);
                     Parallel.ForEach(subset_front, el => {
-                        decimal[,] wavesl = waving_in_domain_from_point(subset, el);
+                        decimal[,] wavesl = waving_in_domain_from_point(subset, el).Item1;
                         lock (locker) {
                             for (int i = 0; i < wavesl.GetLength(0); i++)  {
                                 for (int j = 0; j < wavesl.GetLength(1); j++)  {
